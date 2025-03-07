@@ -52,5 +52,5 @@ $ exit
 - **vlorenzolana**
 
 ## Licencia
-Este proyecto ha sido desarrollado como parte del currículo de 42 y sigue sus normas de integridad académica. Úsalo y modifícalo bajo tu propia responsabilidad :)
+Este proyecto ha sido desarrollado como parte del currículo de 42 y sigue sus normas de integridad académica. Úsalo y modifícalo bajo tu propia responsabilidad.
 
