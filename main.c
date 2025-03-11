@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/11 12:51:41 by dalabrad         ###   ########.fr       */
+/*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
+/*   Updated: 2025/03/11 13:29:12 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "inc/minishell.h"
 
-# include "../libft/inc/libft.h"
-# include <stdio.h> // printf()
-
-#endif
+int	main(int argc, char **argv, char **envp)
+{
+	(void)argv;
+	if (argc != 1)
+		return (EXIT_FAILURE);
+	printf("Printing envp...\n\n");
+	while (*envp)
+	{
+		printf("%s\n", *envp);
+		envp++;
+	}
+	return (EXIT_SUCCESS);
+}
