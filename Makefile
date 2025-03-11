@@ -39,7 +39,7 @@ $(MINISHELL_LIB): $(OBJS)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 
-all: re
+all: $(NAME)
 
 clean:
 	@echo "$(YELLOW)Deleting all the object files...$(RESET)"
