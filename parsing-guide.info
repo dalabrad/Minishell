@@ -1,4 +1,3 @@
-((sh
 # Guía de Parseo para Minishell 42
 
 ## 1. Definición de la Función main y Uso de envp
@@ -154,4 +153,3 @@ Ejemplos:
 4. **Expandir variables** (`$VAR`).
 5. **Determinar el comando principal** y sus argumentos.
 6. **Ejecutar** en el orden correcto, respetando las prioridades de cada elemento.
-))
