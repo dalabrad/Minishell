@@ -6,15 +6,17 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/13 14:13:11 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:18:21 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/minishell_exec.h"
 #include "inc/minishell_parsing.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
+	char	*arg[] = {"/usr/bin/pwd", NULL};
+
 	if (argc == 1)
 	{
 		printf("Error!!! Use:\n\t./minishell <command> <command_atribute>" \
@@ -23,6 +25,7 @@ int	main(int argc, char **argv)
 	}
 	argv++;
 	shell_exec(argv);
+	execve(arg[0], arg, envp);
 	return (EXIT_SUCCESS);
 }
 
