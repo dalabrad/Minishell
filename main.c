@@ -6,15 +6,15 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/11 18:03:50 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/13 10:31:57 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/minishell.h"
+#include "inc/minishell_exec.h"
 
 static size_t	arr_size(char **arr)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
 	while (arr[len])
@@ -26,21 +26,22 @@ static size_t	arr_size(char **arr)
 
 static void	free_array(char	**arr, size_t arr_size)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
-	while  (i < arr_size)
+	while (i < arr_size)
 	{
 		free(arr[i]);
-		arr[i] = NULL; 
+		arr[i] = NULL;
 		i++;
 	}
 	free (arr);
 	arr = NULL;
 }
+
 static void	print_array(char **arr, size_t arr_size)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < arr_size)
@@ -73,7 +74,8 @@ int	main(void)
 -----------------SALIDA DEL PROGRAMA---------------------
 Printing PATH variable...
 
-/home/dalabrad/bin:/home/dalabrad/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+/home/dalabrad/bin:/home/dalabrad/bin:/usr/local/sbin:/usr/local/bin:
+/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 
 Printing paths...
 

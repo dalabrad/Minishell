@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/11 12:51:41 by dalabrad         ###   ########.fr       */
+/*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
+/*   Updated: 2025/03/13 10:23:07 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef MINISHELL_PARSING_H
+# define MINISHELL_PARSING_H
 
 # include "../libft/inc/libft.h"
-# include <stdio.h> // printf()
 
 #endif
