@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/13 13:52:44 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:15:08 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,18 @@ static int	shell_exit(char	**args)
 
 static int	shell_env(char **args)
 {
+	extern char	**environ;
+	int			i;
+
+	i = 0;
 	(void)args;
-	printf("executed shell_env().\n");
+	if (!environ)
+		return (EXIT_FAILURE);
+	while (environ[i])
+	{
+		printf("%s\n", environ[i]);
+		i++;
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -47,6 +57,7 @@ static int	shell_echo(char **args)
 		printf("%s", args[i]);
 		if (args[i + 1])
 			printf(" ");
+		i++;
 	}
 	if (nl_flag)
 		printf("\n");
