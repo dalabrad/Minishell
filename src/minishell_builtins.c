@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/13 14:15:08 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:41:36 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,26 @@ static int	shell_echo(char **args)
 	return (EXIT_SUCCESS);
 }
 
+static int	shell_pwd(char **args)
+{
+	char	*directory;
+
+	directory = NULL;
+	if (!args || !args[0])
+		return (EXIT_FAILURE);
+	directory = getcwd(NULL, 0);
+	if (!directory)
+		return (printf("Error in getcwd()\n"));
+	printf("%s\n", directory);
+	free(directory);
+	return (EXIT_SUCCESS);
+}
+
 t_builtin	g_builtin[] = {
 {.builtin_name = "exit", .foo = shell_exit},
 {.builtin_name = "env", .foo = shell_env},
 {.builtin_name = "echo", .foo = shell_echo},
+{.builtin_name = "pwd", .foo = shell_pwd},
 {.builtin_name = NULL},
 };
 
