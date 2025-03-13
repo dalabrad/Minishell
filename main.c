@@ -6,13 +6,27 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/13 10:31:57 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:13:11 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/minishell_exec.h"
+#include "inc/minishell_parsing.h"
 
-static size_t	arr_size(char **arr)
+int	main(int argc, char **argv)
+{
+	if (argc == 1)
+	{
+		printf("Error!!! Use:\n\t./minishell <command> <command_atribute>" \
+			"<command_atribute>...\n");
+		return (EXIT_FAILURE);
+	}
+	argv++;
+	shell_exec(argv);
+	return (EXIT_SUCCESS);
+}
+
+/* static size_t	arr_size(char **arr)
 {
 	size_t	len;
 
@@ -68,7 +82,7 @@ int	main(void)
 	print_array(path_array, arr_size(path_array));
 	free_array(path_array, arr_size(path_array));
 	return (EXIT_SUCCESS);
-}
+} */
 
 /* 
 -----------------SALIDA DEL PROGRAMA---------------------
