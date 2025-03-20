@@ -9,6 +9,8 @@ MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 SRCS = $(wildcard src/*.c) $(wildcard src/built-ins/*.c)
 
 MAIN = main.c
+TEST_V = main_test_v.c
+TEST_D = main_test_d.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -25,7 +27,7 @@ RESET = \033[0m
 $(NAME): $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAIN)
 	@echo "$(YELLOW)Compiling ./minishell executable...$(RESET)"
 	$(CC) $(CFLAGS) -o $(NAME) $(MAIN) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
-	@echo "$(GREEN)./mishell executable created successfully.$(RESET)"
+	@echo "$(GREEN)./minishell executable created successfully.$(RESET)"
 
 $(LIBFT): 
 	@make -C $(LIBFT_DIR)
@@ -43,9 +45,18 @@ $(MINISHELL_PARSING_LIB): $(OBJS)
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-
 all: $(NAME)
 
+testd :  $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(TEST)
+	@echo "$(YELLOW)Compiling David's ./minishell  test executable...$(RESET)"
+	$(CC) $(CFLAGS) -o $(NAME) $(TEST_D) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
+	@echo "$(GREEN)David's ./minishell test executable created successfully.$(RESET)"
+
+testv :  $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(TEST)
+	@echo "$(YELLOW)Compiling Vanesa's ./minishell  test executable...$(RESET)"
+	$(CC) $(CFLAGS) -o $(NAME) $(TEST_V) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
+	@echo "$(GREEN)Vanesa's ./minishell  test executable created successfully.$(RESET)"
+ 
 clean:
 	@echo "$(YELLOW)Deleting all the object files...$(RESET)"
 	@$(RM) $(OBJS)
