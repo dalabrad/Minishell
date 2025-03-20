@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 12:24:32 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:12:31 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_builtin	g_builtin[] = {
 {.builtin_name = NULL},
 };
 
-void	shell_exec(char **args)
+void	command_exec(char **args)
 {
 	int			i;
 	const char	*current;
