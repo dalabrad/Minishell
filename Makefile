@@ -15,7 +15,7 @@ TEST_D = main_test_d.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Ilibft/inc -Iinc
+CFLAGS = -Wall -Wextra -Werror -Ilibft/inc -Iinc -lreadline
 RM = rm -f
 
 GREEN = \033[0;32m

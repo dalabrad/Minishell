@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 14:45:35 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/20 17:25:55 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ typedef struct s_builtin
 	int		(*foo)(char **args);
 }	t_builtin;
 
-typedef struct s_envp
+/* typedef struct s_envp
 {
 	char	*name;
 	char	*value;
 	t_env	*next;
-}	t_envp;
+}	t_envp; */
 
 //------BUILT-INS---------------------------
 
