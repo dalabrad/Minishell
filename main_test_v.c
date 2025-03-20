@@ -10,25 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_parsing.h"
 #include "minishell_exec.h"
+#include "minishell_parsing.h"
 
 // MINI-SPLIT STRUCT
 typedef struct s_split
 {
-	char				**split;
-	const char			*s;
-	char				c;
-}						t_split;
+	char			**split;
+	const char		*s;
+	char			c;
+}					t_split;
 
 // PARAMATER POSITION STRUCT
 typedef struct s_param_pos
 {
-	size_t				start;
-	size_t				end;
-	bool				in_quotes;
-	char				quote_char;
-}						t_param_pos;
+	size_t			start;
+	size_t			end;
+	bool			in_quotes;
+	char			quote_char;
+}					t_param_pos;
 
 // FREE FUNCTION
 char	**ft_free(char **split)

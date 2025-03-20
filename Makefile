@@ -15,8 +15,7 @@ TEST_D = main_test_d.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Ilibft/inc -Iinc -lreadline
-RM = rm -f
+CFLAGS = -Wall -Wextra -Werror -Ilibft/inc -Iinc
 
 GREEN = \033[0;32m
 BLUE = \033[0;34m
@@ -54,7 +53,7 @@ testd :  $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(TEST)
 
 testv :  $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(TEST)
 	@echo "$(YELLOW)Compiling Vanesa's ./minishell  test executable...$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME) $(TEST_V) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
+	$(CC) $(CFLAGS) -lreadline -o $(NAME) $(TEST_V) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
 	@echo "$(GREEN)Vanesa's ./minishell  test executable created successfully.$(RESET)"
  
 clean:
