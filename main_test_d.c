@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_test_d.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 14:27:08 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/20 17:49:42 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-t_envp	*environ = NULL;
+//t_envp	*environ = NULL;
 
 int	main(int argc, char **argv, char **envp)
 {
