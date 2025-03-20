@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/13 14:41:36 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:36:06 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,23 @@ static int	shell_pwd(char **args)
 	return (EXIT_SUCCESS);
 }
 
+static int	shell_cd(char **args)
+{
+	extern char	**environ;
+
+	if (!args || !args[0] || !args[1])
+		return (EXIT_FAILURE);
+	if (!chdir(args[1]))
+		printf("Changing directory to %s\n need to udate envp", args[1]);
+	return (EXIT_SUCCESS);
+}
+
 t_builtin	g_builtin[] = {
 {.builtin_name = "exit", .foo = shell_exit},
 {.builtin_name = "env", .foo = shell_env},
 {.builtin_name = "echo", .foo = shell_echo},
 {.builtin_name = "pwd", .foo = shell_pwd},
+{.builtin_name = "cd", .foo = shell_cd},
 {.builtin_name = NULL},
 };
 
