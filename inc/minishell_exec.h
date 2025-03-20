@@ -6,22 +6,31 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 12:25:13 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:30:58 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_EXEC_H
 # define MINISHELL_EXEC_H
 
-# include "../libft/inc/libft.h"
+# include "libft.h"
 # include "minishell_parsing.h"
 # include <stdio.h>
+
+# define MAX_ENV 100
 
 typedef struct s_builtin
 {
 	char	*builtin_name;
 	int		(*foo)(char **args);
 }	t_builtin;
+
+typedef struct s_envp
+{
+	char	*name;
+	char	*value;
+	t_env	*next;
+}	t_envp;
 
 //------BUILT-INS---------------------------
 
@@ -45,7 +54,7 @@ int		shell_pwd(char **args);
 
 //------------------------------------------
 
-//	src/minishell_exec.c
-void	shell_exec(char **args);
+//	src/command_exec.c
+void	command_exec(char **args);
 
 #endif
