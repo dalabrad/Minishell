@@ -6,14 +6,14 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MINISHELL_EXEC_LIB = ./inc/minishell_exec.a
 MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 
-SRCS = $(wildcard src/minishell*.c)
+SRCS = $(wildcard src/*.c)
 
 MAIN = main.c
 
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -Ilibft/inc -Iinc
 RM = rm -f
 
 GREEN = \033[0;32m
