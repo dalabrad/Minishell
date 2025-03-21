@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_cd.c                                     :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:08:15 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 14:25:54 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/20 21:52:45 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	shell_cd(char **args)
 {
-	extern char	**environ;
+	//extern char	**environ;
 
 	if (!args || !args[0] || !args[1])
 		return (EXIT_FAILURE);
