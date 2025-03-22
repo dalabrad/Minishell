@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environment_create.c                               :+:      :+:    :+:   */
+/*   shell_envp_create.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:36:38 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/22 12:47:14 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/22 12:57:15 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	add_shell_envp(t_env **shell_envp, t_env *new_shell_envp)
 	last_envp->next = new_shell_envp;
 }
 
-int	environment_create(char **envp, t_env **shell_envp)
+int	shell_envp_create(char **envp, t_env **shell_envp)
 {
 	t_env	*tmp;
 	int		i;
@@ -103,9 +103,10 @@ int	environment_create(char **envp, t_env **shell_envp)
 		{
 			free_shell_envp(envp); //TO DO!!
 			str_error(MALLOC_ERROR); //TO DO!!
-			return (EXIT_FAILURE);
+			return (MALLOC_ERROR);
 		}
 		add_shell_envp(shell_envp, tmp);
 		i++;
 	}
+	return (EXIT_SUCCESS)
 }
