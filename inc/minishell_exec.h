@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/21 20:08:04 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:01:36 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,22 @@ typedef struct s_builtin
 	int		(*foo)(char **args);
 }	t_builtin;
 
-//------BUILT-INS---------------------------
+////////////////////////////////////////////////
+//------ENVIRONMENT-----------------------------
+////////////////////////////////////////////////
+
+//	src/environment/shell_envp_create.c
+char	*get_envp_name(char	*envp);
+char	*get_envp_value(char *envp);
+void	print_shell_envp(t_env *shell_envp);
+t_env	*new_shell_envp(char *envp, bool was_added);
+t_env	*last_shell_envp(t_env *shell_envp);
+void	add_shell_envp(t_env **shell_envp, t_env *new_shell_envp);
+int		shell_envp_create(char **envp, t_env **shell_envp);
+
+////////////////////////////////////////////////
+//------BUILT-INS-------------------------------
+////////////////////////////////////////////////
 
 //	src/built-ins/builtin_cd.c
 int		shell_cd(char **args);
