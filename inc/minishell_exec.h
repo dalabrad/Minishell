@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 17:25:55 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/03/21 20:08:04 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,17 @@
 
 # define MAX_ENV 100
 
+typedef enum e_err
+{
+	MALLOC_ERROR = 1,
+	PIPE_ERROR,
+}	t_err;
+
 typedef struct s_builtin
 {
 	char	*builtin_name;
 	int		(*foo)(char **args);
 }	t_builtin;
-
-/* typedef struct s_envp
-{
-	char	*name;
-	char	*value;
-	t_env	*next;
-}	t_envp; */
 
 //------BUILT-INS---------------------------
 

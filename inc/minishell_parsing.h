@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/03/22 12:05:06 by vlorenzo         ###   ########.fr       */
+=======
+/*   Updated: 2025/03/21 19:20:54 by dalabrad         ###   ########.fr       */
+>>>>>>> 51d2cd090fb651d45ff029a7e0a1f6b242d0bba9
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +73,7 @@ typedef struct s_tokens
 // ENVIRONMENT
 typedef struct s_env
 {
-	int					was_added;
+	bool				was_added;
 	char				*name;
 	char				*value;
 	struct s_env		*next;
