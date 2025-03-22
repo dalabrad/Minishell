@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:36:38 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/22 13:00:07 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:07:33 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,21 @@ char	*get_envp_value(char *envp)
 	return (NULL);
 }
 
+void	print_shell_envp(t_env *shell_envp)
+{
+	while (shell_envp)
+	{
+		printf("%s=%s\n", shell_envp->name, shell_envp->value);
+		shell_envp = shell_envp->next;
+	}
+}
+
 t_env	*new_shell_envp(char *envp, bool was_added)
 {
 	t_env	*new_shell_envp;
 
 	new_shell_envp = (t_env *)malloc(sizeof(t_env));
-	if (!shell_env)
+	if (!new_shell_envp)
 		return (NULL);
 	new_shell_envp->was_added = was_added;
 	new_shell_envp->name = get_envp_name(envp);
@@ -101,8 +110,8 @@ int	shell_envp_create(char **envp, t_env **shell_envp)
 		tmp = new_shell_envp(envp[i], false);
 		if (!tmp && i != 0)
 		{
-			free_shell_envp(envp); //TO DO!!
-			str_error(MALLOC_ERROR); //TO DO!!
+			//free_shell_envp(envp); //TO DO!!
+			//str_error(MALLOC_ERROR); //TO DO!!
 			return (MALLOC_ERROR);
 		}
 		add_shell_envp(shell_envp, tmp);

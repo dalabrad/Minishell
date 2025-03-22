@@ -6,16 +6,33 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 17:49:42 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:04:07 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
+int	main(int argc, char **argv, char **envp)
+{
+	t_env	*shell_envp;
+
+	shell_envp = NULL;
+	(void)argv;
+	if (argc != 1)
+	{
+		printf("Error!!! Use:\n\t./minishell\n");
+		return (EXIT_FAILURE);
+	}
+	if (shell_envp_create(envp, &shell_envp))
+		return (EXIT_FAILURE);
+	print_shell_envp(shell_envp);
+	return (EXIT_SUCCESS);
+}
+
 //t_envp	*environ = NULL;
 
-int	main(int argc, char **argv, char **envp)
+/* int	main(int argc, char **argv, char **envp)
 {
 	char	*arg[] = {"env", NULL};
 
@@ -30,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	command_exec(argv);
 	command_exec(arg);
 	return (EXIT_SUCCESS);
-}
+} */
 
 /* static size_t	arr_size(char **arr)
 {
