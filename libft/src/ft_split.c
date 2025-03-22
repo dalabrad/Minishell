@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:20:09 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/06 12:16:20 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/21 17:04:55 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/libft.h"
 
-static size_t	count_words(char const *s, char c)
+static size_t	count_words(const char *s, char c)
 {
 	size_t	count;
 	size_t	i;
@@ -33,7 +33,7 @@ static size_t	count_words(char const *s, char c)
 	return (count);
 }
 
-static size_t	word_len(char const *s, char c)
+static size_t	word_len(const char *s, char c)
 {
 	size_t	len;
 
@@ -53,7 +53,7 @@ static void	free_array(size_t i, char **array)
 	free(array);
 }
 
-static char	**strtoarray(char const *s, char c, char **array, size_t word_count)
+static char	**strtoarray(const char *s, char c, char **array, size_t word_count)
 {
 	size_t	i;
 	size_t	j;
@@ -77,7 +77,7 @@ static char	**strtoarray(char const *s, char c, char **array, size_t word_count)
 	return (array);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(const char *s, char c)
 {
 	char	**array;
 	size_t	words;

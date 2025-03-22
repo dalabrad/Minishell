@@ -6,7 +6,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MINISHELL_EXEC_LIB = ./inc/minishell_exec.a
 MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 
-SRCS = $(wildcard src/*.c) $(wildcard src/built-ins/*.c)
+SRCS = $(wildcard src/*.c) $(wildcard src/parsing/*.c) $(wildcard src/built-ins/*.c)
 
 MAIN = main.c
 TEST_V = main_test_v.c
