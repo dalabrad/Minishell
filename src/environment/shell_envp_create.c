@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:36:38 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/22 12:57:15 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/22 12:59:03 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	shell_envp_create(char **envp, t_env **shell_envp)
 	int		i;
 
 	if (!envp || !envp[0])
-		return ;
+		return (EXIT_FAILURE);
 	i = 0;
 	while (envp[i])
 	{
