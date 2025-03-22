@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:36:38 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/21 20:06:43 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/22 12:47:14 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,24 @@ void	add_shell_envp(t_env **shell_envp, t_env *new_shell_envp)
 	last_envp->next = new_shell_envp;
 }
 
-void	environment_create(char **envp, t_env **shell_env)
+int	environment_create(char **envp, t_env **shell_envp)
 {
 	t_env	*tmp;
 	int		i;
 
 	if (!envp || !envp[0])
-		return (NULL);
+		return ;
 	i = 0;
 	while (envp[i])
 	{
+		tmp = new_shell_envp(envp[i], false);
+		if (!tmp && i != 0)
+		{
+			free_shell_envp(envp); //TO DO!!
+			str_error(MALLOC_ERROR); //TO DO!!
+			return (EXIT_FAILURE);
+		}
+		add_shell_envp(shell_envp, tmp);
 		i++;
 	}
 }
