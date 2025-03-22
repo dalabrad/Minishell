@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:36:38 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/22 12:59:03 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/22 13:00:07 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,5 @@ int	shell_envp_create(char **envp, t_env **shell_envp)
 		add_shell_envp(shell_envp, tmp);
 		i++;
 	}
-	return (EXIT_SUCCESS)
+	return (EXIT_SUCCESS);
 }
