@@ -6,7 +6,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MINISHELL_EXEC_LIB = ./inc/minishell_exec.a
 MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 
-SRCS = $(wildcard src/*.c) $(wildcard src/parsing/*.c) $(wildcard src/built-ins/*.c)
+SRCS = $(wildcard src/*.c) $(wildcard src/parsing/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c)
 
 MAIN = main.c
 TEST_V = main_test_v.c
@@ -15,7 +15,7 @@ TEST_D = main_test_d.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Ilibft/inc -Iinc
+CFLAGS = -Wall -Wextra -Werror -Iinc -Ilibft/inc
 
 GREEN = \033[0;32m
 BLUE = \033[0;34m
@@ -48,7 +48,7 @@ all: $(NAME)
 
 testd :  $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(TEST)
 	@echo "$(YELLOW)Compiling David's ./minishell  test executable...$(RESET)"
-	$(CC) $(CFLAGS) -lreadline -o $(NAME) $(TEST_D) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(TEST_D) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
 	@echo "$(GREEN)David's ./minishell test executable created successfully.$(RESET)"
 
 testv :  $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(TEST)
