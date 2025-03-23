@@ -6,13 +6,17 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 22:54:26 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 22:54:35 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/23 23:13:42 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
+/*
+ * This function prints all the shell_envp list in the same format that
+ * env shell command uses.
+*/
 void	print_shell_envp_list(t_env *shell_envp)
 {
 	while (shell_envp)
@@ -22,6 +26,12 @@ void	print_shell_envp_list(t_env *shell_envp)
 	}
 }
 
+/*
+ * This function creates the shell_envp list from the char **envp of main.
+ * Returns an int:
+ * 		~ 0 : if list is created successfully.
+ * 		~ MALLOC_ERROR: if there is a problem creating the list.
+*/
 int	shell_envp_list_create(char **envp, t_env **shell_envp)
 {
 	t_env	*tmp;

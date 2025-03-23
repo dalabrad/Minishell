@@ -6,13 +6,18 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 15:14:57 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 22:43:08 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/23 23:06:37 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
+/*
+ * This function creates a new node of shell envp list given a envp string. 
+ * Was_added boolean is true if it comes from original envp, or false if it 
+ * comes from export command.
+*/
 t_env	*new_shell_envp(char *envp, bool was_added)
 {
 	t_env	*new_shell_envp;
@@ -38,6 +43,9 @@ t_env	*new_shell_envp(char *envp, bool was_added)
 	return (new_shell_envp);
 }
 
+/*
+ * This function returns a pointer to the last node of shell envp list.
+*/
 t_env	*last_shell_envp(t_env *shell_envp)
 {
 	while (shell_envp)
@@ -49,6 +57,9 @@ t_env	*last_shell_envp(t_env *shell_envp)
 	return (shell_envp);
 }
 
+/*
+ * This function adds a node to the shell_envp list.
+*/
 void	add_shell_envp(t_env **shell_envp, t_env *new_shell_envp)
 {
 	t_env	*last_envp;
@@ -64,6 +75,9 @@ void	add_shell_envp(t_env **shell_envp, t_env *new_shell_envp)
 	last_envp->next = new_shell_envp;
 }
 
+/*
+ * This function frees all the memory allocated for shell_envp list.
+*/
 void	free_shell_envp_list(t_env **shell_envp)
 {
 	t_env	*tmp;
