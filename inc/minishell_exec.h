@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 22:51:17 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/23 23:29:17 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ typedef struct s_builtin
 	char	*builtin_name;
 	int		(*foo)(char **args);
 }	t_builtin;
+
+////////////////////////////////////////////////
+//------ERROR MESSAGES--------------------------
+////////////////////////////////////////////////
+
+//	src/error_messages/error_message.c
+int		error_msg(t_err error_code);
+void	error_msg_exit(t_err error_code);
 
 ////////////////////////////////////////////////
 //------ENVIRONMENT-----------------------------

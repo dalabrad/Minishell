@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 22:54:26 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 23:13:42 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/23 23:28:54 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	shell_envp_list_create(char **envp, t_env **shell_envp)
 		{
 			free_shell_envp_list(shell_envp);
 			printf("Minishell: Malloc Error: unable to allocate memory.");
-			//str_error(MALLOC_ERROR); //TO DO!!
+			error_msg(MALLOC_ERROR);
 			return (MALLOC_ERROR);
 		}
 		add_shell_envp(shell_envp, tmp);
