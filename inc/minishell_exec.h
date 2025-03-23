@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/22 15:20:24 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/23 22:51:17 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ char	*get_envp_value(char *envp);
 t_env	*new_shell_envp(char *envp, bool was_added);
 t_env	*last_shell_envp(t_env *shell_envp);
 void	add_shell_envp(t_env **shell_envp, t_env *new_shell_envp);
+void	free_shell_envp_list(t_env **shell_envp);
 
-//	src/environment/shell_envp_create.c
-void	print_shell_envp(t_env *shell_envp);
-int		shell_envp_create(char **envp, t_env **shell_envp);
+//	src/environment/shell_envp_list_create.c
+void	print_shell_envp_list(t_env *shell_envp);
+int		shell_envp_list_create(char **envp, t_env **shell_envp);
 
 ////////////////////////////////////////////////
 //------BUILT-INS-------------------------------

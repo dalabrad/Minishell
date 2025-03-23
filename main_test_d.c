@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/22 15:04:07 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/23 22:51:17 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ int	main(int argc, char **argv, char **envp)
 		printf("Error!!! Use:\n\t./minishell\n");
 		return (EXIT_FAILURE);
 	}
-	if (shell_envp_create(envp, &shell_envp))
+	if (shell_envp_list_create(envp, &shell_envp))
 		return (EXIT_FAILURE);
-	print_shell_envp(shell_envp);
+	print_shell_envp_list(shell_envp);
+	free_shell_envp_list(&shell_envp);
 	return (EXIT_SUCCESS);
 }
 

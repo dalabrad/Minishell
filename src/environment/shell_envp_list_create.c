@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_envp_create.c                                :+:      :+:    :+:   */
+/*   shell_envp_list_create.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/21 18:36:38 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/22 15:22:12 by dalabrad         ###   ########.fr       */
+/*   Created: 2025/03/23 22:54:26 by dalabrad          #+#    #+#             */
+/*   Updated: 2025/03/23 22:54:35 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-void	print_shell_envp(t_env *shell_envp)
+void	print_shell_envp_list(t_env *shell_envp)
 {
 	while (shell_envp)
 	{
@@ -22,7 +22,7 @@ void	print_shell_envp(t_env *shell_envp)
 	}
 }
 
-int	shell_envp_create(char **envp, t_env **shell_envp)
+int	shell_envp_list_create(char **envp, t_env **shell_envp)
 {
 	t_env	*tmp;
 	int		i;
@@ -33,9 +33,10 @@ int	shell_envp_create(char **envp, t_env **shell_envp)
 	while (envp[i])
 	{
 		tmp = new_shell_envp(envp[i], false);
-		if (!tmp && i != 0)
+		if (!tmp)
 		{
-			//free_shell_envp(envp); //TO DO!!
+			free_shell_envp_list(shell_envp);
+			printf("Minishell: Malloc Error: unable to allocate memory.");
 			//str_error(MALLOC_ERROR); //TO DO!!
 			return (MALLOC_ERROR);
 		}
