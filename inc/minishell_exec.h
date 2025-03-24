@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 16:47:58 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:32:11 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,14 @@ void	error_msg_exit(t_err error_code);
 char	*get_envp_name(char	*envp);
 char	*get_envp_value(char *envp);
 
-//	src/environment/shell_envp_list_utils.c
+//	src/environment/shell_envp_list_utils_1.c
 t_env	*new_shell_envp(char *envp, bool was_added);
 t_env	*last_shell_envp(t_env *shell_envp);
 void	add_shell_envp(t_env **shell_envp, t_env *new_shell_envp);
+
+//	src/environment/shell_envp_list_utils_2.c
 void	free_shell_envp_list(t_env **shell_envp);
+void	delete_shell_envp_node(t_env **shell_envp, char *VAR_NAME);
 
 //	src/environment/shell_envp_list_create.c
 void	print_shell_envp_list(t_env *shell_envp);
@@ -78,6 +81,9 @@ int		shell_export(char **args, t_env **shell_envp);
 
 //	src/built-ins/builtin_pwd.c
 int		shell_pwd(char **args, t_env **shell_envp);
+
+//	src/built-ins/builtin_unset.c
+int		shell_unset(char **args, t_env **shell_envp);
 
 //------------------------------------------
 

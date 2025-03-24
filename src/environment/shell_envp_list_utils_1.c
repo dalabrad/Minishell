@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_envp_list_utils.c                            :+:      :+:    :+:   */
+/*   shell_envp_list_utils_1.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 15:14:57 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 23:06:37 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:36:03 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,23 +73,4 @@ void	add_shell_envp(t_env **shell_envp, t_env *new_shell_envp)
 	}
 	last_envp = last_shell_envp(*shell_envp);
 	last_envp->next = new_shell_envp;
-}
-
-/*
- * This function frees all the memory allocated for shell_envp list.
-*/
-void	free_shell_envp_list(t_env **shell_envp)
-{
-	t_env	*tmp;
-
-	if (!shell_envp || !*shell_envp)
-		return ;
-	while (*shell_envp)
-	{
-		tmp = (*shell_envp)->next;
-		free((*shell_envp)->name);
-		free((*shell_envp)->value);
-		free(*shell_envp);
-		*shell_envp = tmp;
-	}
 }

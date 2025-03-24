@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 17:10:03 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:55:56 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_builtin	g_builtin[] = {
 {.builtin_name = "pwd", .foo = shell_pwd},
 {.builtin_name = "cd", .foo = shell_cd},
 {.builtin_name = "export", .foo = shell_export},
+{.builtin_name = "unset", .foo = shell_unset},
 {.builtin_name = NULL},
 };
 

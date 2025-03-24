@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 16:47:50 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:37:29 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_env	*shell_envp;
 	int		status;
-	
+
 	if (argc == 1)
 	{
 		printf("Error!!! Use:\n\t./minishell <command> <command_atribute>" \
@@ -29,15 +29,15 @@ int	main(int argc, char **argv, char **envp)
 		return (EXIT_FAILURE);
 	argv++;
 	print_shell_envp_list(shell_envp);
-	printf("\n\n=============================================================\n\n");
+	printf("\n\n=======================================================\n\n");
 	status = 0;
 	status += command_exec(argv, &shell_envp);
-	printf("\n\n=============================================================\n\n");
+	printf("\n\n========================================================\n\n");
 	print_shell_envp_list(shell_envp);
-	printf("\n\n=============================================================\n\n");
+	printf("\n\n========================================================\n\n");
 	free_shell_envp_list(&shell_envp);
 	return (status);
-} 
+}
 
 /* int	main(int argc, char **argv, char **envp)
 {
