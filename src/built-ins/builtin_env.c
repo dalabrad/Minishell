@@ -6,18 +6,18 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:13:03 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 12:12:17 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:46:29 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-int	shell_env(char **args, t_env *shell_envp)
+int	shell_env(char **args, t_env **shell_envp)
 {
 	(void)args;
-	if (!shell_envp)
+	if (!shell_envp || !(*shell_envp))
 		return (EXIT_FAILURE);
-	print_shell_envp_list(shell_envp);
+	print_shell_envp_list(*shell_envp);
 	return (EXIT_SUCCESS);
 }

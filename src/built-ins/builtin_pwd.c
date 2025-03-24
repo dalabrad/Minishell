@@ -6,14 +6,14 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:21:38 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 12:12:26 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:46:56 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-int	shell_pwd(char **args, t_env *shell_envp)
+int	shell_pwd(char **args, t_env **shell_envp)
 {
 	char	*directory;
 
