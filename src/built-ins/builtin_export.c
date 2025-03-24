@@ -1,46 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_export.c                                 :+:      :+:    :+:   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:20:39 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 14:34:19 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 11:29:37 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-int	shell_export(char **args)
+int	shell_export(char **args, t_env *shell_envp)
 {
-	extern char	**environ;
-	int			i;
 	int			name_len;
+	t_env		*tmp;
 
 	if (!args || !args[0] || !args[1] || !ft_strchr(args[1], '='))
 		return (EXIT_FAILURE);
-	i = 0;
 	name_len = ft_strchr(args[1], '=') - &args[1][0];
-	while (environ[i])
+	tmp = shell_envp;
+	while (tmp)
 	{
-		if (!ft_strncmp(environ[i], args[1], name_len))
+		if (!ft_strncmp(tmp->name, args[1], name_len))
 		{
-			environ[i] = ft_strdup(args[1]);
+			free(tmp->value);
+			tmp->value = get_envp_value(args[1]);
 			return (EXIT_SUCCESS);
 		}
-		i++;
+		tmp = tmp->next;
 	}
-	i = 0;
-	while (i < MAX_ENV)
-	{
-		if (!environ[i])
-		{
-			environ[i] = ft_strdup(args[1]);
-			return (EXIT_SUCCESS);
-		}
-		i++;
-	}
+	tmp = new_shell_envp(args[1], true);
+	if (!tmp)
+		return (error_msg(MALLOC_ERROR));
+	add_shell_envp(&shell_envp, tmp);
 	return (EXIT_SUCCESS);
 }

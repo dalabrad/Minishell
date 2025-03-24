@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_env.c                                    :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:13:03 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 14:25:32 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 12:12:17 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-int	shell_env(char **args)
+int	shell_env(char **args, t_env *shell_envp)
 {
-	extern char	**environ;
-	int			i;
-
-	i = 0;
 	(void)args;
-	if (!environ)
+	if (!shell_envp)
 		return (EXIT_FAILURE);
-	while (environ[i])
-	{
-		printf("%s\n", environ[i]);
-		i++;
-	}
+	print_shell_envp_list(shell_envp);
 	return (EXIT_SUCCESS);
 }

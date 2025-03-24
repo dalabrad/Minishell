@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 23:29:17 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 11:15:47 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef enum e_err
 typedef struct s_builtin
 {
 	char	*builtin_name;
-	int		(*foo)(char **args);
+	int		(*foo)(char **args, t_env *shell_envp);
 }	t_builtin;
 
 ////////////////////////////////////////////////
@@ -62,26 +62,26 @@ int		shell_envp_list_create(char **envp, t_env **shell_envp);
 ////////////////////////////////////////////////
 
 //	src/built-ins/builtin_cd.c
-int		shell_cd(char **args);
+int		shell_cd(char **args, t_env *shell_envp);
 
 //	src/built-ins/builtin_echo.c
-int		shell_echo(char **args);
+int		shell_echo(char **args, t_env *shell_envp);
 
 //	src/built-ins/builtin_env.c
-int		shell_env(char **args);
+int		shell_env(char **args, t_env *shell_envp);
 
 //	src/built-ins/builtin_exit.c
-int		shell_exit(char	**args);
+int		shell_exit(char	**args, t_env *shell_envp);
 
 //	src/built-ins/builtin_export.c
-int		shell_export(char **args);
+int		shell_export(char **args, t_env *shell_envp);
 
 //	src/built-ins/builtin_pwd.c
-int		shell_pwd(char **args);
+int		shell_pwd(char **args, t_env *shell_envp);
 
 //------------------------------------------
 
 //	src/command_exec.c
-void	command_exec(char **args);
+void	command_exec(char **args, t_env *shell_envp);
 
 #endif

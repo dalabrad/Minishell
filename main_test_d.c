@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 22:51:17 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 12:16:03 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,31 @@
 #include "minishell_parsing.h"
 
 int	main(int argc, char **argv, char **envp)
+{
+	t_env	*shell_envp;
+
+	
+	if (argc == 1)
+	{
+		printf("Error!!! Use:\n\t./minishell <command> <command_atribute>" \
+			"<command_atribute>...\n");
+		return (EXIT_FAILURE);
+	}
+	shell_envp = NULL;
+	if (shell_envp_list_create(envp, &shell_envp))
+		return (EXIT_FAILURE);
+	argv++;
+	print_shell_envp_list(shell_envp);
+	printf("\n\n=============================================================\n\n");
+	command_exec(argv, shell_envp);
+	printf("\n\n=============================================================\n\n");
+	print_shell_envp_list(shell_envp);
+	printf("\n\n=============================================================\n\n");
+	free_shell_envp_list(&shell_envp);
+	return (EXIT_SUCCESS);
+} 
+
+/* int	main(int argc, char **argv, char **envp)
 {
 	t_env	*shell_envp;
 
@@ -30,8 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	free_shell_envp_list(&shell_envp);
 	return (EXIT_SUCCESS);
 }
-
-//t_envp	*environ = NULL;
+ */
 
 /* int	main(int argc, char **argv, char **envp)
 {

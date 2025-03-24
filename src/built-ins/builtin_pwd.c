@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_pwd.c                                    :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:21:38 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/20 14:16:55 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 12:12:26 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-int	shell_pwd(char **args)
+int	shell_pwd(char **args, t_env *shell_envp)
 {
 	char	*directory;
 
 	directory = NULL;
+	(void)shell_envp;
 	if (!args || !args[0])
 		return (EXIT_FAILURE);
 	directory = getcwd(NULL, 0);
