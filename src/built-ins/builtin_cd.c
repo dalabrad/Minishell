@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:08:15 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 16:56:12 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:46:09 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,42 +23,45 @@ static void	free_array(size_t i, char **array)
 	free(array);
 }
 
-static int	export_changes(t_env **shell_envp, char *old_pwd)
+static int	export_pwd(t_env **shell_envp, char *pwd_path, char *pwd_type)
 {
 	char	**tmp;
-	char	*pwd;
 
-	printf("Directory before cd : %s\n", old_pwd);
-	tmp = (char **)malloc(3 * sizeof(char *));
-	tmp[0] = ft_strdup("export");
-	tmp[1] = ft_strjoin("OLDPWD=", old_pwd);
-	tmp[2] = NULL;
-	shell_export(tmp, shell_envp);
-	free(tmp[2]);
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
+	tmp = (char **)malloc(2 * sizeof(char *));
+	if (!tmp)
 		return (error_msg(MALLOC_ERROR));
-	printf("Directory after cd : %s\n", pwd);
-	tmp[1] = ft_strjoin("PWD=", pwd);
+	tmp[0] = ft_strjoin(pwd_type, pwd_path);
+	if (!tmp[0])
+	{
+		free(tmp);
+		return (error_msg(MALLOC_ERROR));
+	}
+	tmp[1] = NULL;
 	shell_export(tmp, shell_envp);
-	free_array(3, tmp);
-	free(pwd);
+	free_array(2, tmp);
 	return (EXIT_SUCCESS);
 }
 
 int	shell_cd(char **args, t_env **shell_envp)
 {
 	char	*old_pwd;
+	char	*pwd;
 	int		status;
 
-	if (!args || !args[0] || !args[1])
+	if (!args || !args[0])
 		return (EXIT_FAILURE);
 	old_pwd = getcwd(NULL, 0);
 	if (!old_pwd)
 		return (error_msg(MALLOC_ERROR));
-	if (chdir(args[1]))
-		return (printf("Minishell: couldn`t access %s directory", args[1]));
-	status = export_changes(shell_envp, old_pwd);
+	if (chdir(args[0]))
+		return (printf("Minishell: couldn`t access %s directory", args[0]));
+	status = 0;
+	status += export_pwd(shell_envp, old_pwd, "OLDPWD=");
 	free(old_pwd);
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (error_msg(MALLOC_ERROR));
+	status += export_pwd(shell_envp, pwd, "PWD=");
+	free(pwd);
 	return (status);
 }

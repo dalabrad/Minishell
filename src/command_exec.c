@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 16:48:03 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:10:03 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	command_exec(char **args, t_env **shell_envp)
 	{
 		current = g_builtin[i].builtin_name;
 		if (!ft_strncmp(current, args[0], ft_strlen(args[0])))
-			return (g_builtin[i].foo(args, shell_envp));
+			return (g_builtin[i].foo(args + 1, shell_envp));
 		i++;
 	}
 	printf("Aqui deberian implementarse los comandos de execve(%s)\n", args[0]);
