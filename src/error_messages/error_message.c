@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 23:16:31 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 23:29:13 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:18:16 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 
 int	error_msg(t_err error_code)
 {
-	ft_putstr_fd("Minishell: ", 2);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (error_code == MALLOC_ERROR)
-		ft_putstr_fd("Malloc Error: unable to allocate memory.\n", 2);
+		ft_putstr_fd("malloc: unable to allocate memory\n", 2);
+	if (error_code == CD_ERROR)
+		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
 	return (error_code);
 }
 

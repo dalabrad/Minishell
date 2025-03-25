@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 18:32:11 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/25 17:37:46 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 typedef enum e_err
 {
 	MALLOC_ERROR = 1,
+	CD_ERROR,
 	PIPE_ERROR,
 }	t_err;
 

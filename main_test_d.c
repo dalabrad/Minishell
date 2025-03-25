@@ -6,16 +6,32 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 18:37:29 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:11:20 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
+static void	free_array(char **array)
+{
+	size_t i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+	array = NULL;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*shell_envp;
+	char	**pwd_arr = NULL;
 	int		status;
 
 	if (argc == 1)
@@ -28,13 +44,21 @@ int	main(int argc, char **argv, char **envp)
 	if (shell_envp_list_create(envp, &shell_envp))
 		return (EXIT_FAILURE);
 	argv++;
-	print_shell_envp_list(shell_envp);
-	printf("\n\n=======================================================\n\n");
+	printf("\n=======================================================\n\n");
 	status = 0;
 	status += command_exec(argv, &shell_envp);
-	printf("\n\n========================================================\n\n");
-	print_shell_envp_list(shell_envp);
-	printf("\n\n========================================================\n\n");
+	printf("\n========================================================\n\n");
+	pwd_arr = (char **)malloc(sizeof(char *) * 2);
+	if (pwd_arr)
+	{
+		pwd_arr[0] = ft_strdup("pwd");
+		pwd_arr[1] = NULL;
+		status += command_exec( pwd_arr, &shell_envp);
+		free_array(pwd_arr);
+	}
+	else
+		printf("minishell: malloc: unable to alocate data for pwd array\n");
+	printf("\n========================================================\n\n");
 	free_shell_envp_list(&shell_envp);
 	return (status);
 }
