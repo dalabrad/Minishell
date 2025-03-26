@@ -1,4 +1,4 @@
-#include "../minishell/libft/inc/libft.h"
+#include "../libft/inc/libft.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>
@@ -37,6 +37,32 @@ typedef struct s_tokens
 	t_TokenType		type;
 	struct s_tokens	*next;
 }					t_tokens;
+
+static t_words	*init_struct(t_words *args)
+{
+	args = malloc(sizeof(t_words));
+	if (!args)
+		return (NULL);
+	args->index = 0;   // init struct
+	args->str = NULL;  // init struct
+	args->next = NULL; // init struct
+	return (args);
+}
+
+static t_words	*clean_struct(t_words *args)
+{
+	t_words	*temp;
+
+	temp = NULL;
+	while (args->next) // LIBERAMOS TODO
+	{
+		temp = args;
+		args = args->next;
+		free(temp);
+		temp = NULL;
+	}
+	return (temp);
+}
 
 void	ft_lstadd_front2(t_words **lst, t_words *new)
 {
@@ -77,16 +103,20 @@ static size_t	splitted_len(const char *s, char c)
 	return (len);
 }
 
-static void	free_array(size_t i, char **array)
+char **free_array(char **array)
 {
-	while (i > 0)
+	int	limit;
+
+	limit = 0;
+	while (array[limit] != 0)
 	{
-		i--;
-		free(array[i]);
-		array[i] = NULL;
+		free(array[limit]);
+		array[limit] = NULL;
+		limit++;
 	}
 	free(array);
 	array = NULL;
+	return (0);
 }
 
 static size_t	skip_separat(const char *s, char c, size_t pos)
@@ -110,17 +140,15 @@ static char	**split2array(const char *s, char c, char **array, size_t w_count)
 		// if balanceo de comillas NO OK --> readline
 		// si OK, entonces guardar en array
 		array[i] = ft_substr(s, j, splitted_len(&s[j], c));
-		printf("%zu\n", splitted_len(&s[j], c));
 		if (array[i] == NULL)
 		{
-			free_array(i, array);
+			array = free_array(array);
 			return (NULL);
 		}
 		j += splitted_len(&s[j], c);
 		i++;
 	}
 	array[i] = NULL;
-	printf("vueltas split %zu", i);
 	return (array);
 }
 
@@ -131,7 +159,6 @@ char	**ft_minisplit(const char *s, char c, int *i_words)
 	if (s == NULL)
 		return (NULL);
 	*i_words = count_splitted(s, c); // cuenta pipes
-	printf("%d\n", *i_words);
 	array = (char **)malloc(sizeof(char *) * (*i_words + 1));
 	if (array == NULL)
 		return (NULL);
@@ -147,68 +174,59 @@ int	main(int ac, char **av) // luego usaremos readline + (void)ac,av
 	t_words *args;
 	t_words *temp;
 	char **res;
-	/* 	char *line; */
+	char *str_exit = "exit";
 
 	i = 0;
 	i_words = 0;
 	j_words = 0;
-	args = malloc(sizeof(t_words));
-	/* 	line = NULL; */
 
-	if (!args)
-		return (1);
-	args->index = 0;   // init struct
-	args->str = NULL;  // init struct
-	args->next = NULL; // init struct
-	temp = args;       // Guardamos HEAD
-
-	args->str = readline(PROMPT);
-
-	if (strchr(args->str, '|'))
-		res = ft_minisplit(args->str, '|', &i_words); // i_words por REF
-	else
+	args = init_struct(args);
+	temp = args; // Guardamos HEAD
+	while (1)
 	{
-		res = calloc(sizeof(char **), 1); // Alloc, init, size of 1
-		*res = args->str;
-	}
-
-	j_words = i_words + 1; // i-words +1 devuelve tamaño de res** +NULL
-	while (--i_words >= 0) // recogemos i_words
-	{
-		t_words *new_node = malloc(sizeof(t_words));
-		if (!new_node)
-			return (1);
-		args->next = new_node;
-		new_node->next = NULL;        // init NEXT
-		new_node->str = res[i_words]; // metemos splitted en new_node
-		new_node->index = i_words;    // metemos i_words en new_node
-		if (new_node->next == NULL)
+		args = temp; // recuperamos HEAD
+		args->str = readline(PROMPT);
+		if (!strcmp(args->str, str_exit))
 			break ;
+		if (strchr(args->str, '|'))
+			res = ft_minisplit(args->str, '|', &i_words); // i_words por REF
 		else
-			ft_lstadd_front2(&new_node, new_node->next); // metemos en Cabeza
-	}
+		{
+			res = malloc(sizeof(char **)); // Alloc
+			*res = args->str;
+		}
 
+		j_words = i_words + 1; // i-words +1 devuelve tamaño de res** +NULL
+		while (--i_words >= 0) // recogemos i_words
+		{
+			t_words *new_node = malloc(sizeof(t_words));
+			if (!new_node)
+				return (1);
+			args->next = new_node;
+			new_node->next = NULL;        // init NEXT
+			new_node->str = res[i_words]; // metemos splitted en new_node
+			new_node->index = i_words;    // metemos i_words en new_node
+			if (new_node->next == NULL)
+				break ;
+			else
+				ft_lstadd_front2(&new_node, new_node->next); // añadir encima
+		}
+
+		args = temp; // Recuperamos HEAD
+		while (args && args->str)
+		{
+			printf("%s\n", args->str);
+			printf("%d\n", args->index);
+			if (args->next == NULL)
+				break ;
+			else
+				args = args->next;
+		}
+		args = clean_struct(args);
+		res = free_array(res);
+	}
 	args = temp; // Recuperamos HEAD
-	while (args && args->str)
-	{
-		printf("%s\n", args->str);
-		printf("%d\n", args->index);
-		if (args->next == NULL)
-			break ;
-		else
-			args = args->next;
-	}
-
-	args = temp; // Recuperamos HEAD
-	i_words = 0; // Nos aseguramos que i_words = 0;
-
-	while (args) // LIBERAMOS TOOOO
-	{
-		temp = args;
-		args = args->next;
-		free(temp);
-	}
-	free_array(j_words, res);
+	args = clean_struct(args);
 	free(args);
 	return (0);
 }
