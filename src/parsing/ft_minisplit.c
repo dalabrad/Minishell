@@ -1,8 +1,8 @@
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-// IGNORE separat
-static size_t	skip_separat(const char *s, char c, size_t pos)
+// IGNORE c
+static size_t	skip_c(const char *s, char c, size_t pos)
 {
 	while (s[pos] == c && s[pos] != 0)
 		pos++;
@@ -54,7 +54,7 @@ size_t	wordcount(t_split *param, size_t limit)
 	pos.quote_char = '\0';
 	while (param->split[limit] == NULL)
 	{
-		pos.start = skip_separat(param->s, param->c, pos.end);
+		pos.start = skip_c(param->s, param->c, pos.end);
 		pos = param_end(param->s, param->c, pos.start);
 		if (pos.end == pos.start)
 			break ;
@@ -64,15 +64,15 @@ size_t	wordcount(t_split *param, size_t limit)
 	}
 	return (limit);
 }
-
+/* 
 // SPLIT FOR MINISHEL PARAMETERS
 char	**ft_minisplit(const char *s, char c)
 {
-	char **split;
-	size_t limit;
-	size_t word_count;
-	t_split param;
-	size_t i;
+	char	**split;
+	size_t	limit;
+	size_t	word_count;
+	t_split	param;
+	size_t	i;
 
 	limit = 0;
 	i = -1;
@@ -93,3 +93,4 @@ char	**ft_minisplit(const char *s, char c)
 	split[limit] = NULL;
 	return (split);
 }
+ */

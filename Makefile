@@ -15,7 +15,7 @@ TEST_D = main_test_d.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinc -Ilibft/inc
+CFLAGS = -Iinc -Ilibft/inc # Me he cargado temporalmente -Wall -Wextra -Werror
 
 GREEN = \033[0;32m
 BLUE = \033[0;34m

@@ -23,14 +23,14 @@ static int	is_open(const char *s)
 }
 
 // PARSING QUOTES FUNCTION
-bool	quote_parse(const char *s, size_t *i, char separat)
+bool	in_out_quotes(const char *s, size_t *i, char c)
 {
 	bool	in_quotes;
 	char	quote_char;
 
 	in_quotes = false;
 	quote_char = '\0';
-	while (s[*i] != 0 && (s[*i] != separat || in_quotes))
+	while (s[*i] != 0 && (s[*i] != c || in_quotes))
 	{
 		if ((s[*i] == 34 || s[*i] == 39) && !in_quotes)
 		{
@@ -54,17 +54,17 @@ size_t	ft_param_count(const char *s, char c)
 	count = 0;
 	while (s[i] != 0)
 	{
+		if (!is_open(s))
+			exit(1);
 		while (s[i] == c && s[i] != 0)
 			i++;
+		i = 0;
 		if (s[i] != 0)
 		{
 			count++;
-			quote_parse(s, &i, c);
+			in_out_quotes(s, &i, c);
 		}
-		if (!is_open(s))
-		{
-			exit(1);
-		}
+		i++;
 	}
 	return (count);
 }
@@ -72,7 +72,7 @@ size_t	ft_param_count(const char *s, char c)
 // STRING COPY BETWEEN SEPARTOR
 void	ft_strlcpy_quote(char *dst, const char *src, size_t size)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < size - 1 && src[i])
