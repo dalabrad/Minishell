@@ -6,32 +6,12 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:08:15 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 13:52:04 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 14:27:52 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
-
-static void	free_array(size_t i, char **array)
-{
-	while (i > 0)
-	{
-		i--;
-		free(array[i]);
-	}
-	free(array);
-}
-
-static size_t	array_size(char **array)
-{
-	size_t	size;
-
-	size = 0;
-	while (array[size])
-		size++;
-	return (size);
-}
 
 static int	export_pwd(t_env **shell_envp, char *pwd_path, char *pwd_type)
 {
@@ -48,7 +28,7 @@ static int	export_pwd(t_env **shell_envp, char *pwd_path, char *pwd_type)
 	}
 	tmp[1] = NULL;
 	shell_export(tmp, shell_envp);
-	free_array(array_size(tmp), tmp);
+	free_array(tmp);
 	return (EXIT_SUCCESS);
 }
 

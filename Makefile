@@ -6,7 +6,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MINISHELL_EXEC_LIB = ./inc/minishell_exec.a
 MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 
-SRCS = $(wildcard src/*.c) $(wildcard src/parsing/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c)
+SRCS = $(wildcard src/*.c) $(wildcard src/parsing/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c) $(wildcard src/array_utils/*.c)
 
 MAIN = main.c
 TEST_V = main_test_v.c
@@ -15,7 +15,7 @@ TEST_D = main_test_d.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Iinc -Ilibft/inc # Me he cargado temporalmente -Wall -Wextra -Werror
+CFLAGS = -Iinc -Ilibft/inc -Wall -Wextra -Werror
 
 GREEN = \033[0;32m
 BLUE = \033[0;34m
@@ -31,15 +31,15 @@ $(NAME): $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAIN)
 $(LIBFT): 
 	@make -C $(LIBFT_DIR)
 
-$(MINISHELL_EXEC_LIB): $(OBJS)
-	@echo "$(YELLOW)Compiling minishell_exec.a library...$(RESET)"
-	@ar rcs $(MINISHELL_EXEC_LIB) $(OBJS)
-	@echo "$(GREEN)minishell_exec.a created successfully.$(RESET)"
-
 $(MINISHELL_PARSING_LIB): $(OBJS)
 	@echo "$(YELLOW)Compiling minishell_parsing.a library...$(RESET)"
 	@ar rcs $(MINISHELL_PARSING_LIB) $(OBJS)
 	@echo "$(GREEN)minishell_parsing.a created successfully.$(RESET)"
+
+$(MINISHELL_EXEC_LIB): $(OBJS)
+	@echo "$(YELLOW)Compiling minishell_exec.a library...$(RESET)"
+	@ar rcs $(MINISHELL_EXEC_LIB) $(OBJS)
+	@echo "$(GREEN)minishell_exec.a created successfully.$(RESET)"
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -64,7 +64,7 @@ clean:
 
 fclean: clean
 	@echo "$(YELLOW)Deleting the object files, *.a and executable file...$(RESET)"
-	@$(RM) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(NAME) 
+	@$(RM) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(NAME)
 	@make -C $(LIBFT_DIR) fclean
 	@echo "$(GREEN)Everything deleted succesfully.$(RESET)"
 

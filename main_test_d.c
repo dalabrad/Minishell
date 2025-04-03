@@ -6,27 +6,12 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/25 18:11:20 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 14:42:59 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
-
-static void	free_array(char **array)
-{
-	size_t i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	free(array);
-	array = NULL;
-}
 
 int	main(int argc, char **argv, char **envp)
 {

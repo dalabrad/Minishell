@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 13:53:28 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 14:53:47 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,18 @@ typedef enum e_err
 }	t_err;
 
 typedef struct s_env
- {
- 	bool				was_added;
- 	char				*name;
- 	char				*value;
- 	struct s_env		*next;
- }						t_env;
+{
+	bool			was_added;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
 typedef struct s_builtin
 {
 	char	*builtin_name;
 	int		(*foo)(char **args, t_env **shell_envp);
 }	t_builtin;
-
 
 ////////////////////////////////////////////////
 //------ERROR MESSAGES--------------------------
@@ -49,6 +48,16 @@ typedef struct s_builtin
 //	src/error_messages/error_message.c
 int		error_msg(t_err error_code);
 void	error_msg_exit(t_err error_code);
+
+////////////////////////////////////////////////
+//------ARRAY-UTILS-----------------------------
+////////////////////////////////////////////////
+
+//  src/array_utils/array_utils.c
+
+void	free_array(char **array);
+size_t	array_size(char **array);
+void	print_array(char **array);
 
 ////////////////////////////////////////////////
 //------ENVIRONMENT-----------------------------
