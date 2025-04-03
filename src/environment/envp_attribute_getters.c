@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 15:14:01 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 17:42:51 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:47:51 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ char	*get_envp_value(char *envp)
 	return (NULL);
 }
 
+/*
+ * This function checks in the envp list of minishell for name parameter 
+ * and returns the value string if exists. If parameter dosen`t exist or malloc 
+ * error occurs NULL is returned.
+*/
 char	*get_shell_envp_value(t_env *shell_envp, const char *name)
 {
 	char	*value;
