@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:08:15 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 16:53:57 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:12:00 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	shell_cd(char **args, t_env **shell_envp)
 {
 	char	*old_pwd;
 	char	*pwd;
-	int		status;
 
 	if (!args || !args[0])
 		return (EXIT_FAILURE);
@@ -58,12 +57,12 @@ int	shell_cd(char **args, t_env **shell_envp)
 		return (error_msg(MALLOC_ERROR));
 	if (chdir(args[0]))
 		return (free(old_pwd), error_msg(CHDIR_ERROR));
-	status = export_pwd(shell_envp, old_pwd, "OLDPWD=");
+	export_pwd(shell_envp, old_pwd, "OLDPWD=");
 	free(old_pwd);
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (error_msg(MALLOC_ERROR));
-	status += export_pwd(shell_envp, pwd, "PWD=");
+	export_pwd(shell_envp, pwd, "PWD=");
 	free(pwd);
-	return (status);
+	return (EXIT_SUCCESS);
 }
