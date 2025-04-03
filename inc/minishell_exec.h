@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 10:50:01 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 13:53:28 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef enum e_err
 	MALLOC_ERROR = 1,
 	CD_ERROR,
 	PIPE_ERROR,
+	UNVALID_PATH,
 }	t_err;
 
 typedef struct s_env
