@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:08:15 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/25 18:19:30 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 13:52:04 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ int	shell_cd(char **args, t_env **shell_envp)
 		return (EXIT_FAILURE);
 	if (array_size(args) != 1)
 		return (error_msg(CD_ERROR));
+	if (access(args[0], F_OK))
+		return (printf("minishell: cd: %s: No such file or directory\n", args[0]));
+	if (access(args[0], X_OK))
+		return (printf("minishell: cd: %s: Permission denied\n", args[0]));
 	old_pwd = getcwd(NULL, 0);
 	if (!old_pwd)
 		return (error_msg(MALLOC_ERROR));
