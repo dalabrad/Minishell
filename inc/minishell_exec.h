@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 14:53:47 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:34:43 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ typedef enum e_err
 {
 	MALLOC_ERROR = 1,
 	CD_ERROR,
-	PIPE_ERROR,
-	UNVALID_PATH,
+	CD_NO_DIR,
+	CD_NO_PERM,
+	CHDIR_ERROR,
 }	t_err;
 
 typedef struct s_env
@@ -47,6 +48,7 @@ typedef struct s_builtin
 
 //	src/error_messages/error_message.c
 int		error_msg(t_err error_code);
+int		error_msg_arg(t_err error_code, char *arg);
 void	error_msg_exit(t_err error_code);
 
 ////////////////////////////////////////////////
