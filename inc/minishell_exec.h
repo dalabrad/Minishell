@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/25 17:37:46 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/03 10:50:01 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,20 @@ typedef enum e_err
 	PIPE_ERROR,
 }	t_err;
 
+typedef struct s_env
+ {
+ 	bool				was_added;
+ 	char				*name;
+ 	char				*value;
+ 	struct s_env		*next;
+ }						t_env;
+
 typedef struct s_builtin
 {
 	char	*builtin_name;
 	int		(*foo)(char **args, t_env **shell_envp);
 }	t_builtin;
+
 
 ////////////////////////////////////////////////
 //------ERROR MESSAGES--------------------------
