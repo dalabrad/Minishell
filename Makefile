@@ -15,7 +15,7 @@ TEST_D = main_test_d.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Iinc -Ilibft/inc -Wall -Wextra -Werror
+CFLAGS = -g3 -Iinc -Ilibft/inc # he quitado las flags -Wall -Wextra -Werror 
 
 GREEN = \033[0;32m
 BLUE = \033[0;34m

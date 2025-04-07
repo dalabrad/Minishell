@@ -1,8 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/07 12:51:18 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/04/07 14:45:17 by vlorenzo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-//  CHECK IF OPEN QUOTES
-static int	is_open(const char *s)
+// LLENAR LISTA POR HEAD/FRONT
+int	ft_lstadd_front2(t_pipes **lst, t_pipes *new)
+{
+	if (!new)
+		return (1);
+	printf("----> ARGS: NEW NODE %s\n", new->str);
+	new->next = *lst;
+	*lst = new;
+	return (0);
+}
+
+// ESTO EN ALGUN MOMENTO SERVIRA
+const char	*skip_space(const char *s)
+{
+	while (*s == ' ' && *s != 0)
+		s++;
+	return (s);
+}
+
+// CHECK-IF OPEN QUOTES
+size_t	is_open(const char *s)
 {
 	int		i;
 	bool	is_single_quote;
@@ -11,8 +42,10 @@ static int	is_open(const char *s)
 	is_single_quote = false; // 0
 	is_double_quote = false; // 0
 	i = 0;
+	printf("-------IS_OPEN---------\n");
 	while (s[i])
 	{
+		printf("\n------>  s[i] <------ de IS_OPEN %c \n", s[i]);
 		if (s[i] == '\'' && s[i - 1] != '\\' && !is_double_quote)
 			is_single_quote = !is_single_quote;
 		else if (s[i] == '\"' && s[i - 1] != '\\' && !is_single_quote)
@@ -20,65 +53,4 @@ static int	is_open(const char *s)
 		i++;
 	}
 	return (is_single_quote || is_double_quote);
-}
-
-// PARSING QUOTES FUNCTION
-bool	in_out_quotes(const char *s, size_t *i, char c)
-{
-	bool	in_quotes;
-	char	quote_char;
-
-	in_quotes = false;
-	quote_char = '\0';
-	while (s[*i] != 0 && (s[*i] != c || in_quotes))
-	{
-		if ((s[*i] == 34 || s[*i] == 39) && !in_quotes)
-		{
-			in_quotes = true;
-			quote_char = s[*i];
-		}
-		else if (s[*i] == quote_char && in_quotes)
-			in_quotes = false;
-		(*i)++;
-	}
-	return (in_quotes);
-}
-
-// COUNT PARAMETERS FUNCTION
-size_t	ft_param_count(const char *s, char c)
-{
-	size_t	i;
-	size_t	count;
-
-	i = 0;
-	count = 0;
-	while (s[i] != 0)
-	{
-		if (!is_open(s))
-			exit(1);
-		while (s[i] == c && s[i] != 0)
-			i++;
-		i = 0;
-		if (s[i] != 0)
-		{
-			count++;
-			in_out_quotes(s, &i, c);
-		}
-		i++;
-	}
-	return (count);
-}
-
-// STRING COPY BETWEEN SEPARTOR
-void	ft_strlcpy_quote(char *dst, const char *src, size_t size)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < size - 1 && src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
 }

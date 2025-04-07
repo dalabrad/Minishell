@@ -1,96 +1,106 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_minisplit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/07 12:51:29 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/04/07 14:47:23 by vlorenzo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-// IGNORE c
-static size_t	skip_c(const char *s, char c, size_t pos)
+// LENGTH OF SPLITTED FOR SUBSTR
+size_t	splitted_len(const char *s, char c)
 {
-	while (s[pos] == c && s[pos] != 0)
-		pos++;
-	return (pos);
+	size_t	len;
+
+	len = 0;
+	while (s[len] != '\0' && s[len] != c)
+		len++;
+	return (len);
 }
 
-// POSITION OF END OF PARAMETER
-static t_parapos	param_end(const char *s, char c, size_t start)
+// SPLIT TO ARRAY (THEN TO RES)
+char	**split2array(const char *s, char c, char **array, size_t w_count)
 {
-	t_parapos	pos;
+	size_t	i;
+	size_t	j;
+	size_t	k;
+	size_t open_ok;
+	char *chop;
 
-	pos.start = start;
-	pos.end = start;
-	pos.in_quotes = false;
-	pos.quote_char = '\0';
-	while (s[pos.end] != 0 && (s[pos.end] != c || pos.in_quotes))
+	i = 0;
+	j = 0;
+	k = 0;
+	while (i < w_count)
 	{
-		if ((s[pos.end] == 34 || s[pos.end] == 39) && !pos.in_quotes)
+		while (s[j] != '\0' && s[j] != c)
+			j++;
+		chop = ft_substr(s, k, (j - k));
+		if ( s[j] != '\0' && s[j + 1] != '\0')
+			j++;           // siguiente a PIPE
+		open_ok = is_open(chop);
+		if (open_ok != 0) // si cualquier valor != 0
 		{
-			pos.in_quotes = true;
-			pos.quote_char = s[pos.end];
+			array = ft_minisplit(s, s[j], &open_ok);
 		}
-		else if (s[pos.end] == pos.quote_char && pos.in_quotes)
-			pos.in_quotes = false;
-		pos.end++;
+		else
+		{
+			write(1, "Syntax error\n", 14);
+			return (NULL);
+		}
+		array[i] = ft_substr(s, k, splitted_len(&s[k], c));
+		if (array[i] == NULL)
+		{
+			array = free_array(array);
+			return (NULL);
+		}
+		k = j;
+		i++;
 	}
-	return (pos);
+	array[i] = NULL;
+	return (array);
 }
 
-// MEMO ALLOC FOR PARAMETER
-bool	allocpy(t_split *param, t_parapos pos, size_t idpara)
+// COUNT SPLITTED PIPES/TOKENS/ARGS
+size_t	count_splitted(const char *s, char c)
 {
-	param->split[idpara] = malloc(sizeof(char) * (pos.end - pos.start + 1));
-	if (!param->split[idpara])
-		return (false);
-	ft_strlcpy_quote(param->split[idpara], param->s + pos.start, pos.end
-		- pos.start + 1);
-	return (true);
-}
-
-// SPLIT WORD COUNT FUNCTION
-size_t	wordcount(t_split *param, size_t limit)
-{
-	t_parapos	pos;
-
-	pos.start = 0;
-	pos.end = 0;
-	pos.in_quotes = false;
-	pos.quote_char = '\0';
-	while (param->split[limit] == NULL)
-	{
-		pos.start = skip_c(param->s, param->c, pos.end);
-		pos = param_end(param->s, param->c, pos.start);
-		if (pos.end == pos.start)
-			break ;
-		if (!allocpy(param, pos, limit))
-			return (0);
-		limit++;
-	}
-	return (limit);
-}
-/* 
-// SPLIT FOR MINISHEL PARAMETERS
-char	**ft_minisplit(const char *s, char c)
-{
-	char	**split;
-	size_t	limit;
-	size_t	word_count;
-	t_split	param;
+	size_t	count;
 	size_t	i;
 
-	limit = 0;
-	i = -1;
-	word_count = ft_param_count(s, c);
-	if (word_count == 0)
+	count = 0;
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] != c)
+		{
+			count++;
+			while (s[i] != '\0' && s[i] != c)
+				i++;
+		}
+		else if (s[i] == c)
+			i++;
+	}
+	return (count);
+}
+
+// FT_SPLIT ADAPTED FOR MINI
+char	**ft_minisplit(const char *s, char c, size_t *n)
+{
+	char	**array;
+
+	if (s == NULL)
 		return (NULL);
-	split = malloc((word_count + 1) * sizeof(char *));
-	if (!split)
+	s = skip_space(s);
+	*n = count_splitted(s, c); // cuenta pipes
+	array = (char **)malloc(sizeof(char *) * (*n + 1));
+	if (array == NULL)
 		return (NULL);
-	while (++i <= word_count)
-		split[i] = NULL;
-	param.split = split;
-	param.s = s;
-	param.c = c;
-	limit = wordcount(&param, limit);
-	if (!limit)
-		return (ft_free(split), NULL);
-	split[limit] = NULL;
-	return (split);
+	array = split2array(s, c, array, *n);
+	return (array);
 }
  */
