@@ -1,46 +1,8 @@
-#include "../libft/inc/libft.h"
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "mvp.h"
 
-#define PROMPT "minishell>>"
-
-// ENUM STRUCT
-typedef enum t_TokenType
+static t_pipes	*init_struct(t_pipes *args)
 {
-	SETTING,
-	COMMAND,
-	OPTION,
-	PIPE,
-	ARG,
-	RED_IN,
-	RED_OUT,
-	HEREDOC,
-	APPEND_OUT,
-	ERRO
-}					t_TokenType;
-
-typedef struct s_words // pipes
-{
-	char *str;
-	int index;
-	struct s_words *next;
-}					t_words;
-
-typedef struct s_tokens
-{
-	int				was_quoted;
-	int				skip;
-	char			*str;
-	t_TokenType		type;
-	struct s_tokens	*next;
-}					t_tokens;
-
-static t_words	*init_struct(t_words *args)
-{
-	args = malloc(sizeof(t_words));
+	args = malloc(sizeof(t_pipes));
 	if (!args)
 		return (NULL);
 	args->index = 0;   // init struct
@@ -49,9 +11,87 @@ static t_words	*init_struct(t_words *args)
 	return (args);
 }
 
-static t_words	*clean_struct(t_words *args)
+/* static t_tokens init_token
 {
-	t_words	*temp;
+	0, 0, NULL, NULL
+} // Inicializamos struct t_tokens */
+bool	quote_parse(const char *s, size_t *i, char separat)
+{
+	bool	in_quotes;
+	char	quote_char;
+
+	in_quotes = false;
+	quote_char = '\0';
+	while (s[*i] != 0 && (s[*i] != separat || in_quotes))
+	{
+		if ((s[*i] == 34 || s[*i] == 39) && !in_quotes)
+		{
+			in_quotes = true;
+			quote_char = s[*i];
+		}
+		else if (s[*i] == quote_char && in_quotes)
+			in_quotes = false;
+		(*i)++;
+	}
+	return (in_quotes);
+}
+
+t_TokenType	clasify_token(const char *str)
+{
+	enum t_TokenType	type;
+	int i;
+
+	i = 0;
+
+/* 	// COMMAND
+	if(i == 0)
+	{
+		
+	} */
+	
+	// REDIRECTIONS
+	if (strcmp(&str[i], "<"))
+	{
+		if(i == 0)
+		{
+			if(strcmp(&str[i + 1], "<") && str[i + 2] != '<')
+				return (printf("HEREDOC %s\n", str));
+			else if(strcmp(&str[i + 1], "<") && str[i + 2] == ' ')
+				return (RED_IN);
+		}
+		else if(i != 0 && str[i - 1] != ' ')
+				return (ERROR);
+		else if(i != 0 && str[i + 1] == '<' && str[i + 2] != '<')
+			return (HEREDOC);
+		else if(i != 0  && strcmp(&str[i + 1], "<") && str[i + 2] == ' ')
+			return (RED_IN);
+	}
+	if (strcmp(&str[i], ">"))
+	{
+		if(i == 0)
+		{
+			if(strcmp(&str[i + 1], ">") && str[i + 2] != '>')
+				return (APPEND_OUT);
+			else if(strcmp(&str[i + 1], ">") && str[i + 2] == ' ')
+				return (RED_OUT);
+		}
+		else if(i != 0 && str[i - 1] != ' ')
+				return (ERROR);
+		else if(i != 0 && str[i + 1] == '>' && str[i + 2] != '>')
+			return (APPEND_OUT);
+		else if(i != 0  && strcmp(&str[i + 1], ">") && str[i + 2] == ' ')
+			return (RED_OUT);
+	}
+	// OPTIONS
+	if (strcmp(&str[i], "-") && (str[i + 1]))
+		return (OPTION);
+	
+	return (type);
+}
+
+static t_pipes	*clean_struct(t_pipes *args)
+{
+	t_pipes	*temp;
 
 	temp = NULL;
 	while (args->next) // LIBERAMOS TODO
@@ -64,7 +104,7 @@ static t_words	*clean_struct(t_words *args)
 	return (temp);
 }
 
-void	ft_lstadd_front2(t_words **lst, t_words *new)
+void	ft_lstadd_front2(t_pipes **lst, t_pipes *new)
 {
 	if (!new)
 		return ;
@@ -103,7 +143,7 @@ static size_t	splitted_len(const char *s, char c)
 	return (len);
 }
 
-char **free_array(char **array)
+char	**free_array(char **array)
 {
 	int	limit;
 
@@ -119,117 +159,186 @@ char **free_array(char **array)
 	return (0);
 }
 
-static size_t	skip_separat(const char *s, char c, size_t pos)
+t_tokens	*check_args(t_pipes *args)
 {
-	while (s[pos] == c && s[pos] != 0)
-		pos++;
-	return (pos);
+	t_pipes			*temp;
+	t_tokens		*token;
+	int				i;
+	int				j;
+	int				i_words;
+	char			**words;
+	
+	i = 0;
+	j = 0;
+	i_words = 0;
+	token = malloc(sizeof(t_tokens));
+	*token = (t_tokens){0, 0, NULL, NULL}; // Inicializamos struct t_tokens
+	temp = args;
+	while (temp && temp->next)
+	{
+		words = ft_minisplit(args[i].str, ' ', &i_words);
+		while (words[j++])
+		{
+			write(1, "---WHILE DE WORDS---", 21);
+			token->str = words[j];
+			clasify_token(token->str);
+			token = token->next;
+		}
+	}
+	return (token);
+}
+
+static const char	*skip_space(const char *s)
+{
+	while (*s == ' ' && *s != 0)
+		s++;
+	return (s);
+}
+
+static int	is_open(const char *s)
+{
+	int		i;
+	bool	is_single_quote;
+	bool	is_double_quote;
+
+	is_single_quote = false; // 0
+	is_double_quote = false; // 0
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'' && s[i - 1] != '\\' && !is_double_quote)
+			is_single_quote = !is_single_quote;
+		else if (s[i] == '\"' && s[i - 1] != '\\' && !is_single_quote)
+			is_double_quote = !is_double_quote; // invierte el valor de entrada
+		i++;
+	}
+	return (is_single_quote || is_double_quote);
 }
 
 static char	**split2array(const char *s, char c, char **array, size_t w_count)
 {
 	size_t	i;
 	size_t	j;
+	size_t	k;
+	char	*chop;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	while (i < w_count)
 	{
-		while (s[j] != '\0' && s[j] == c)
+		while (s[j] != '\0' && s[j] != c)
 			j++;
-		// if balanceo de comillas NO OK --> readline
-		// si OK, entonces guardar en array
-		array[i] = ft_substr(s, j, splitted_len(&s[j], c));
+		chop = ft_substr(s, k, (j - k));
+		if ( s[j] != '\0' && s[j + 1] != '\0')
+			j++;           // siguiente a PIPE
+		if (is_open(chop)) // si cualquier valor != 0
+		{
+			write(1, "Syntax error\n", 14);
+			return (NULL);
+		}
+		array[i] = ft_substr(s, k, splitted_len(&s[k], c));
 		if (array[i] == NULL)
 		{
 			array = free_array(array);
 			return (NULL);
 		}
-		j += splitted_len(&s[j], c);
+		k = j;
 		i++;
 	}
 	array[i] = NULL;
 	return (array);
 }
 
-char	**ft_minisplit(const char *s, char c, int *i_words)
+char	**ft_minisplit(const char *s, char c, int *n)
 {
 	char	**array;
 
 	if (s == NULL)
 		return (NULL);
-	*i_words = count_splitted(s, c); // cuenta pipes
-	array = (char **)malloc(sizeof(char *) * (*i_words + 1));
+	s = skip_space(s);
+	*n = count_splitted(s, c); // cuenta pipes
+	array = (char **)malloc(sizeof(char *) * (*n + 1));
 	if (array == NULL)
 		return (NULL);
-	array = split2array(s, c, array, *i_words);
+	array = split2array(s, c, array, *n);
 	return (array);
 }
 
-int	main(int ac, char **av) // luego usaremos readline + (void)ac,av
+int	main(int argc, char **argv, char **env)
 {
+	/* int l = 0; */
 	int i;
-	int i_words;
-	int j_words;
-	t_words *args;
-	t_words *temp;
-	char **res;
-	char *str_exit = "exit";
+	int		i_pipes;
+	int		j_pipes;
+	int		fd;
+	t_pipes	*args;
+	t_pipes	*temp;
+	t_pipes	*temp2;
+	char	**res;
+	char	*str_exit;
+	t_pipes	*new_node;
 
+	new_node = init_struct(new_node);
+	fd = 0;
+	str_exit = "exit";
 	i = 0;
-	i_words = 0;
-	j_words = 0;
-
+	i_pipes = 0;
+	j_pipes = 0;
+	if (argc != 1)
+		return (printf("Too many arguments or readline failure.\n"), 0);
 	args = init_struct(args);
 	temp = args; // Guardamos HEAD
+	temp2 = new_node;
 	while (1)
 	{
+		fd = dup(STDIN_FILENO);
 		args = temp; // recuperamos HEAD
 		args->str = readline(PROMPT);
-		if (!strcmp(args->str, str_exit))
+		if (!strcmp(args->str, str_exit)) // Salimos con "exit"
 			break ;
 		if (strchr(args->str, '|'))
-			res = ft_minisplit(args->str, '|', &i_words); // i_words por REF
+			res = ft_minisplit(args->str, '|', &i_pipes); // i_pipes por REF
 		else
 		{
+			i_pipes = 0;
 			res = malloc(sizeof(char **)); // Alloc
 			*res = args->str;
 		}
+		j_pipes = i_pipes + 1;        // i-words+1 devuelve tamaño de res**+NULL
 
-		j_words = i_words + 1; // i-words +1 devuelve tamaño de res** +NULL
-		while (--i_words >= 0) // recogemos i_words
+		while (res && --j_pipes >= 0) // recogemos j_pipes
 		{
-			t_words *new_node = malloc(sizeof(t_words));
+			new_node = malloc(sizeof(t_pipes));
 			if (!new_node)
 				return (1);
-			args->next = new_node;
-			new_node->next = NULL;        // init NEXT
-			new_node->str = res[i_words]; // metemos splitted en new_node
-			new_node->index = i_words;    // metemos i_words en new_node
-			if (new_node->next == NULL)
+			new_node->str = res[i];
+			new_node->index = i++;
+			new_node->next = NULL;
+			printf("----> INDEX %d\n", new_node->index);
+			printf("----> NODE[I] %s\n", new_node->str);
+			if (new_node->str == NULL)
 				break ;
 			else
 				ft_lstadd_front2(&new_node, new_node->next); // añadir encima
 		}
-
-		args = temp; // Recuperamos HEAD
-		while (args && args->str)
-		{
-			printf("%s\n", args->str);
-			printf("%d\n", args->index);
-			if (args->next == NULL)
-				break ;
-			else
-				args = args->next;
-		}
-		args = clean_struct(args);
-		res = free_array(res);
+		new_node = temp2;
+		printf("ARGS TRAS 1ER SPLIT %s\n", new_node->str);
+		check_args(args);
 	}
 	args = temp; // Recuperamos HEAD
+	new_node = temp2;
 	args = clean_struct(args);
 	free(args);
 	return (0);
 }
+
+/* i = 0;
+args = temp;
+new_node = temp2;
+printf("ARGS TRAS 1ER SPLIT %s\n", new_node[i].str);
+check_args(args);
+args = clean_struct(args); */
 
 /*
 echo "Lola que ase" >> out.txt | ls .l | wc -l
