@@ -9,7 +9,7 @@ MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 SRCS = $(wildcard src/cmd_execution/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c) $(wildcard src/array_utils/*.c)
 
 MAIN = main.c
-TEST_V = main_test_v.c
+TEST_V = main_test_v.c src/parsing/*.c
 TEST_D = main_test_d.c
 
 OBJS = $(SRCS:.c=.o)
@@ -51,9 +51,9 @@ testd :  $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(TEST)
 	$(CC) $(CFLAGS) -o $(NAME) $(TEST_D) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
 	@echo "$(GREEN)David's ./minishell test executable created successfully.$(RESET)"
 
-testv :  $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(TEST)
+testv :  $(LIBFT) $(TEST)
 	@echo "$(YELLOW)Compiling Vanesa's ./minishell  test executable...$(RESET)"
-	$(CC) $(CFLAGS) -lreadline -o $(NAME) $(TEST_V) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT)
+	$(CC) $(CFLAGS) -lreadline -o $(NAME) $(TEST_V) $(LIBFT)
 	@echo "$(GREEN)Vanesa's ./minishell  test executable created successfully.$(RESET)"
  
 clean:

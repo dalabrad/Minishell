@@ -6,12 +6,12 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:58:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/07 12:58:10 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/08 10:40:31 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
-#include "minishell_parsing.h"
+/* #include "minishell_exec.h" */
+#include "inc/minishell_parsing.h"
 
 int	main(int argc, char **argv, char **envp)
 {

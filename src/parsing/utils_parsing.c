@@ -6,12 +6,12 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:18 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/07 13:18:41 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/08 10:50:53 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
-#include "minishell_parsing.h"
+/* #include "minishell_exec.h" */
+#include "../inc/minishell_parsing.h"
 
 // LLENAR LISTA POR HEAD/FRONT
 int	ft_lstadd_front2(t_pipes **lst, t_pipes *new)
