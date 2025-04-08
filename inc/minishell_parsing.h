@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/07 14:33:57 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/08 10:28:49 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 //////////////////////////////////
 // HEADERS FROM INCLUDED LIBRARIES
 //////////////////////////////////
-# include "../libft/inc/libft.h"
+
+# include "libft.h"
+# include "minishell_exec.h"
 # include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -30,35 +32,43 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <string.h>
+
+//////////////////////////////////
+// MINISHELL PROMTP
+//////////////////////////////////
 
 # define PROMPT "minishell>>"
 
 //////////////////////////////////
-// ARGUMENTS STRUCTURES
+// STRUCTURES
 //////////////////////////////////
 
-// ENUM STRUCT
-typedef enum t_TokenType
-{
-	SETTING,
-	COMMAND,
-	OPTION,
-	PIPE,
-	ARG,
+// ENUM TOKENS STRUCT
+typedef enum t_TokenType {
 	RED_IN,
 	RED_OUT,
 	HEREDOC,
 	APPEND_OUT,
-	ERRO
+	OPTION,
+	COMMAND,
+	SETTING,
+	ARG,
+	ERROR
 }						t_TokenType;
+// PIPES
+typedef struct s_pipes // pipes
+{
+	char *str;
+	size_t index;
+	struct s_pipes *next;
+}						t_pipes;
 // TOKENS
 typedef struct s_tokens
 {
 	int					was_quoted;
 	int					skip;
 	char				*str;
-	t_TokenType			type;
+	/* t_TokenType		type; */
 	struct s_tokens		*next;
 }						t_tokens;
 // ENVIRONMENT
@@ -78,18 +88,15 @@ typedef struct s_commands
 	struct s_commands	*next;
 }						t_commands;
 
-//////////////////////////////////
-// FT_SPLIT
 // MINI-SPLIT STRUCT
-//////////////////////////////////
-
 typedef struct s_split
 {
 	char				**split;
 	const char			*s;
 	char				c;
 }						t_split;
-// PARAMATER POSITION STRUCT
+
+/* // PARAMATER POSITION STRUCT
 typedef struct s_param_pos
 {
 	size_t				start;
@@ -97,14 +104,33 @@ typedef struct s_param_pos
 	bool				in_quotes;
 	char				quote_char;
 }						t_parapos;
+ */
 
+//////////////////////////////////
+// FUNCTIONS
+//////////////////////////////////
+
+// UTILS INIT CLEAN STRUCTS
 char					**ft_free(char **split);
-char					**ft_minisplit(const char *s, char c);
+t_pipes					*init_struct(t_pipes *args);
+t_pipes					*clean_struct(t_pipes *args);
+
+// FT-MINI-SPLIT
+size_t					splitted_len(const char *s, char c);
+char					**split2array(const char *s, char c, char **array,
+							size_t w_count);
+char					**ft_minisplit(const char *s, char c, size_t *n);
+size_t					count_splitted(const char *s, char c);
+
+// UTILS PARSING
 size_t					wordcount(t_split *param, size_t limit);
-bool					allocpy(t_split *param, t_parapos pos, size_t idpara);
-size_t					ft_param_count(const char *s, char c);
-bool					quote_parse(const char *s, size_t *i, char separat);
-void					ft_strlcpy_quote(char *dst, const char *src,
-							size_t size);
+int						ft_lstadd_front2(t_pipes **lst, t_pipes *new);
+const char				*skip_space(const char *s);
+size_t					is_open(const char *s);
+
+// CLASIFY TOKENS
+t_TokenType				clasify_token(const char *str);
+char					*poly_substr(const char *s, size_t *i);
+t_tokens				*check_args(char *pipes, size_t *i_words);
 
 #endif

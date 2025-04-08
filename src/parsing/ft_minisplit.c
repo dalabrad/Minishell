@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:29 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/07 14:47:23 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/07 13:25:37 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,3 @@ char	**ft_minisplit(const char *s, char c, size_t *n)
 	array = split2array(s, c, array, *n);
 	return (array);
 }
- */
