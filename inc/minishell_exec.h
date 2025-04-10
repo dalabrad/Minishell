@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/10 16:38:44 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/10 19:13:54 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,9 @@ int		shell_pwd(char **args, t_env **shell_envp);
 //	src/built-ins/builtin_unset.c
 int		shell_unset(char **args, t_env **shell_envp);
 
-//------------------------------------------
+////////////////////////////////////////////////
+//------COMMAND-EXEC----------------------------
+////////////////////////////////////////////////
 
 //	src/command_exec.c
 int		command_exec(char **args, t_env **shell_envp);
