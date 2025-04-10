@@ -6,12 +6,12 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/07 13:18:14 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:44:39 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
-#include "minishell_parsing.h"
+/* #include "minishell_exec.h" */
+#include "../inc/minishell_parsing.h"
 
 // INIT STRUCT T_PIPES
 t_pipes	*init_struct(t_pipes *args)
@@ -21,7 +21,8 @@ t_pipes	*init_struct(t_pipes *args)
 		return (NULL);
 	args->index = 0;
 	args->str = NULL;
-	args->next = NULL; 
+	args->next = NULL;
+	free(args);
 	return (args);
 }
 
@@ -42,7 +43,7 @@ t_pipes	*clean_struct(t_pipes *args)
 }
 
 // FREE ARRAY DUH
-char	**free_array(char **array)
+void	**free_array2(char **array)
 {
 	int	limit;
 

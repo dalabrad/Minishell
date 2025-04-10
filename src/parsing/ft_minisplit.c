@@ -6,12 +6,12 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:29 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/07 14:47:23 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/09 22:01:07 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
-#include "minishell_parsing.h"
+/* #include "minishell_exec.h" */
+#include "../inc/minishell_parsing.h"
 
 // LENGTH OF SPLITTED FOR SUBSTR
 size_t	splitted_len(const char *s, char c)
@@ -30,8 +30,8 @@ char	**split2array(const char *s, char c, char **array, size_t w_count)
 	size_t	i;
 	size_t	j;
 	size_t	k;
-	size_t open_ok;
-	char *chop;
+	/* size_t open_ok; */
+	/* char *chop; */
 
 	i = 0;
 	j = 0;
@@ -40,52 +40,40 @@ char	**split2array(const char *s, char c, char **array, size_t w_count)
 	{
 		while (s[j] != '\0' && s[j] != c)
 			j++;
-		chop = ft_substr(s, k, (j - k));
-		if ( s[j] != '\0' && s[j + 1] != '\0')
-			j++;           // siguiente a PIPE
-		open_ok = is_open(chop);
-		if (open_ok != 0) // si cualquier valor != 0
+		array[i] = ft_substr(s, k, j - k);
+		if (!array[i])
 		{
-			array = ft_minisplit(s, s[j], &open_ok);
+			free_array2(array);
+			return NULL;
 		}
-		else
+		i++;
+		if (!array[i])
 		{
-			write(1, "Syntax error\n", 14);
-			return (NULL);
+			free_array2(array);
+			return NULL;
 		}
-		array[i] = ft_substr(s, k, splitted_len(&s[k], c));
-		if (array[i] == NULL)
-		{
-			array = free_array(array);
-			return (NULL);
-		}
-		k = j;
 		i++;
 	}
 	array[i] = NULL;
-	return (array);
+	return array;
 }
 
-// COUNT SPLITTED PIPES/TOKENS/ARGS
+// FT_SPLIT ADAPTED FOR MINI
 size_t	count_splitted(const char *s, char c)
 {
-	size_t	count;
-	size_t	i;
+	size_t	count = 0;
+	size_t	i = 0;
 
-	count = 0;
-	i = 0;
-	while (s[i] != '\0')
+	while (s[i])
 	{
-		if (s[i] != c)
-		{
+		while (s[i] == c)
+			i++;
+		if (s[i])
 			count++;
-			while (s[i] != '\0' && s[i] != c)
-				i++;
-		}
-		else if (s[i] == c)
+		while (s[i] && s[i] != c)
 			i++;
 	}
-	return (count);
+	return count;
 }
 
 // FT_SPLIT ADAPTED FOR MINI
@@ -103,4 +91,3 @@ char	**ft_minisplit(const char *s, char c, size_t *n)
 	array = split2array(s, c, array, *n);
 	return (array);
 }
- */
