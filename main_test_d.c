@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 14:42:59 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:37:49 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		pwd_arr[0] = ft_strdup("pwd");
 		pwd_arr[1] = NULL;
-		status += command_exec( pwd_arr, &shell_envp);
+		status += command_exec(pwd_arr, &shell_envp);
 		free_array(pwd_arr);
 	}
 	else

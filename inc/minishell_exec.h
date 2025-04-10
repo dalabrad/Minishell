@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 16:34:43 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:38:44 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef enum e_err
 	CD_NO_DIR,
 	CD_NO_PERM,
 	CHDIR_ERROR,
+	NO_PATH,
+	CMD_NOT_FOUND,
 }	t_err;
 
 typedef struct s_env
@@ -68,6 +70,7 @@ void	print_array(char **array);
 //	src/environment/envp_attribute_getters.c
 char	*get_envp_name(char	*envp);
 char	*get_envp_value(char *envp);
+char	*get_shell_envp_value(t_env *shell_envp, const char *name);
 
 //	src/environment/shell_envp_list_utils_1.c
 t_env	*new_shell_envp(char *envp, bool was_added);
