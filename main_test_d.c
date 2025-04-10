@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/10 18:33:54 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/10 19:21:02 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 1)
 	{
-		printf("Error!!! Use:\n\t./minishell <command> <command_atribute>" \
+		printf("Error!!! Use:\n\t./minishell <command> <command_atribute> " \
 			"<command_atribute>...\n");
 		return (EXIT_FAILURE);
 	}
