@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/08 10:50:58 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:48:38 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,92 +14,144 @@
 #include "../inc/minishell_parsing.h"
 
 // CLASIFY TOKENS
-t_TokenType	clasify_token(const char *str)
+t_TokenType clasify_token(const char *str)
 {
-	enum t_TokenType	type;
-	int					i;
-
-	i = 0;
-	type = 0;
-	// REDIRECTIONS
-	if (ft_strcmp(&str[i], "<"))
-	{
-		if (i == 0)
-		{
-			if (ft_strcmp(&str[i + 1], "<") && str[i + 2] != '<')
-				return (printf("HEREDOC %s\n", str));
-			else if (ft_strcmp(&str[i + 1], "<") && str[i + 2] == ' ')
-				return (RED_IN);
-		}
-		else if (i != 0 && str[i - 1] != ' ')
-			return (ERROR);
-		else if (i != 0 && str[i + 1] == '<' && str[i + 2] != '<')
-			return (HEREDOC);
-		else if (i != 0 && ft_strcmp(&str[i + 1], "<") && str[i + 2] == ' ')
-			return (RED_IN);
-	}
-	if (ft_strcmp(&str[i], ">"))
-	{
-		if (i == 0)
-		{
-			if (ft_strcmp(&str[i + 1], ">") && str[i + 2] != '>')
-				return (APPEND_OUT);
-			else if (ft_strcmp(&str[i + 1], ">") && str[i + 2] == ' ')
-				return (RED_OUT);
-		}
-		else if (i != 0 && str[i - 1] != ' ')
-			return (ERROR);
-		else if (i != 0 && str[i + 1] == '>' && str[i + 2] != '>')
-			return (APPEND_OUT);
-		else if (i != 0 && ft_strcmp(&str[i + 1], ">") && str[i + 2] == ' ')
-			return (RED_OUT);
-	}
-	// OPTIONS/FLAG
-	if (ft_strcmp(&str[i], "-") && (str[i + 1]))
-		return (OPTION);
-	return (type);
+	if (!str)
+		return ERROR;
+	if (!ft_strcmp(str, "<"))
+		return RED_IN;
+	if (!ft_strcmp(str, ">"))
+		return RED_OUT;
+	if (!ft_strcmp(str, "<<"))
+		return HEREDOC;
+	if (!ft_strcmp(str, ">>"))
+		return APPEND_OUT;
+	if (str[0] == '-' && str[1])
+		return OPTION;
+	if (strchr(str, '='))
+		return SETTING;
+	if (!ft_strcmp(str, "|"))
+		return ERROR; // Podés definir PIPE si lo agregás al enum
+	return ARG;
 }
 
-// CHECK-IF TOKEN IN-QUOTES
-char	*poly_substr(const char *s, size_t *i)
+// ENUM TO STRING
+const char *token_type_str(t_TokenType type)
 {
-	int		init_token;
-	bool	is_single;
-	bool	is_double;
-
-	init_token = *i;
-	is_single = false;
-	is_double = false;
-	while (s[*i] != 0)
+	switch (type)
 	{
-		if (s[*i] == '"' && !is_single)
-			is_double = !is_double;
-		if (s[*i] == '\'' && !is_double)
-			is_single = !is_single;
-		if (s[*i] == ' ' && is_single == false && is_double == false) 
-			return (ft_substr(s, init_token, *i)); // NOTE: true!=1; false=0
+		case RED_IN: return "RED_IN";
+		case RED_OUT: return "RED_OUT";
+		case HEREDOC: return "HEREDOC";
+		case APPEND_OUT: return "APPEND_OUT";
+		case OPTION: return "OPTION";
+		case COMMAND: return "COMMAND";
+		case SETTING: return "SETTING";
+		case ARG: return "ARG";
+		case ERROR: return "ERROR";
+		default: return "UNKNOWN";
+	}
+}
+
+// SET COMMAND TYPE
+void set_command_type(t_tokens *tokens)
+{
+	t_tokens *tmp = tokens;
+
+	while (tmp)
+	{
+		// Saltamos redirecciones y sus argumentos
+		if (tmp->type == RED_IN || tmp->type == RED_OUT ||
+			tmp->type == HEREDOC || tmp->type == APPEND_OUT)
+		{
+			tmp = tmp->next;
+			if (tmp) tmp = tmp->next;
+			continue;
+		}
+
+		// Si es ARG u OPTION, y NO está quoted → es un comando
+		if ((tmp->type == ARG || tmp->type == OPTION) && tmp->was_quoted == 0)
+		{
+			tmp->type = COMMAND;
+			break;
+		}
+		tmp = tmp->next;
+	}
+}
+
+
+// SPLIT WORDS: HANDLES QUOTES AND REDIR
+char *poly_substr(const char *s, size_t *i, int *was_quoted)
+{
+	size_t	start = *i;
+	bool	in_single = false;
+	bool	in_double = false;
+	*was_quoted = 0;
+
+	if (s[*i] == '|' || s[*i] == '<' || s[*i] == '>')
+	{
+		if ((s[*i] == '<' || s[*i] == '>') && s[*i + 1] == s[*i])
+			(*i) += 2;
+		else
+			(*i)++;
+		return ft_substr(s, start, *i - start);
+	}
+
+	while (s[*i])
+	{
+		if (s[*i] == '"' && !in_single)
+		{
+			in_double = !in_double;
+			*was_quoted = 1;
+		}
+		else if (s[*i] == '\'' && !in_double)
+		{
+			in_single = !in_single;
+			*was_quoted = 1;
+		}
+		else if ((s[*i] == ' ' || s[*i] == '|' || s[*i] == '<' || s[*i] == '>') &&
+				 !in_single && !in_double)
+		{
+			break;
+		}
 		(*i)++;
 	}
-	return (ft_substr(s, init_token, *i));
+	return ft_substr(s, start, *i - start);
 }
 
-// CHECK ARGS FROM PIPES
-t_tokens	*check_args(char *pipes, size_t *i_words)
+// SEPARAR Y CLASIFICAR TOKENS
+t_tokens *check_args_fixed(const char *input, size_t *i_words)
 {
-	t_tokens	*token;
-	size_t		k;
+	t_tokens	*head = NULL;
+	t_tokens	*curr = NULL;
+	size_t		k = 0;
 
-	k = 0;
-	i_words = 0;
-	token = malloc(sizeof(t_tokens));
-	*token = (t_tokens){0, 0, NULL, NULL}; // Init struct t_tokens
-	printf("\n-----> ENTRO?????????????????\n");
-	while (pipes[k++])
+	printf("-----> Tokenizing: [%s]\n", input);
+	while (input[k])
 	{
-		token->str = poly_substr(pipes, &k);
-		clasify_token(token->str);
-		token = token->next;
-		i_words++;
+		while (input[k] == ' ')
+			k++;
+		if (!input[k])
+			break;
+
+		t_tokens *new_tok = malloc(sizeof(t_tokens));
+		if (!new_tok)
+			break;
+
+		new_tok->str = poly_substr(input, &k, &new_tok->was_quoted);
+		new_tok->type = clasify_token(new_tok->str);
+		new_tok->was_quoted = (new_tok->str[0] == '"' || new_tok->str[0] == '\'');
+		new_tok->skip = 0;
+		new_tok->next = NULL;
+
+		(*i_words)++;
+
+		if (!head)
+			head = new_tok;
+		else
+			curr->next = new_tok;
+		curr = new_tok;
 	}
-	return (token);
+	set_command_type(head);
+	return head;
 }

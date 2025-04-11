@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:58:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/08 10:40:31 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:40:23 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,89 +15,86 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	size_t i;
-	size_t		i_pipes;
-	size_t		j_pipes;
-	size_t		fd;
-	t_pipes	*args;
-	t_pipes	*temp;
-	t_pipes	*temp2;
-	char	**res;
-	char	*str_exit;
-	t_pipes	*new_node;
-	size_t i_words;
+	char	*str_exit = "exit";
+	char	*line;
+	char	**pipe_segments;
+	size_t	i_pipes;
+	size_t	i_words;
+	size_t	i;
+	t_tokens **tokens_by_segment;
+
 	(void)argv;
 	(void)envp;
 
-	new_node = NULL;
-	new_node = init_struct(new_node);
-	fd = 0;
-	str_exit = "exit";
-	i = 0;
-	i_pipes = 0;
-	j_pipes = 0;
-	i_words = 0;
 	if (argc != 1)
+	{
 		return (printf("Too many arguments or readline failure.\n"), 0);
-	args = NULL;
-	args = init_struct(args);
-	temp = args; // Guardamos HEAD
-	temp2 = new_node;
+	}
 	while (1)
 	{
-		i = 0;
-		fd = dup(STDIN_FILENO);
-		args = temp; // recuperamos HEAD
-		args->str = readline(PROMPT);
-		if (!ft_strcmp(args->str, str_exit)) // Salimos con "exit"
-			break ;
-		if (strchr(args->str, '|'))
-			res = ft_minisplit(args->str, '|', &i_pipes); // i_pipes por REF
-		else
+		i_words = 0;
+		line = readline(PROMPT);
+		if (!line)
 		{
-			i_pipes = 0;
-			res = malloc(sizeof(char **)); // Alloc
-			*res = args->str;
-			if(is_open(*res))
-			{
-				write(1, "Syntax error\n", 14);
-				continue;
-			}
+			printf("exit\n");
+			break;
 		}
-		j_pipes = i_pipes + 1;        // i-words+1 devuelve tamaño de res**+NULL
+		if (!ft_strcmp(line, str_exit))
+		{
+			free(line);
+			break;
+		}
 
-		while (res && --j_pipes != 0) // recogemos j_pipes
+		pipe_segments = ft_minisplit(line, '|', &i_pipes);
+		if (!pipe_segments)
 		{
-			new_node = malloc(sizeof(t_pipes));
-			if (!new_node)
-				return (1);
-			new_node->str = res[i];
-			printf(" ----> PRINTEO de I %zu\n", i);
-			printf(" ----> PRINTEO de RES %s\n", res[i]);
-			printf(" ----> PRINTEO de RES a NEW_NODE->STR %s\n", new_node->str);
-			new_node->index = i++;
-			/* new_node->next = NULL; */
-			printf("----> INDEX %zu\n", new_node->index);
-			printf("----> NODE[I] %s\n", new_node->str);
-			if (new_node->str == NULL)
-				break ;
+			free(line);
+			continue;
+		}
+
+		tokens_by_segment = malloc(sizeof(t_tokens *) * (i_pipes + 1));
+		if (!tokens_by_segment)
+		{
+			perror("malloc tokens_by_segment");
+			free_array2(pipe_segments);
+			free(line);
+			continue;
+		}
+
+		printf("\n=========== PIPE SEGMENTS ===========\n");
+		i = 0;
+		while (i < i_pipes)
+		{
+			if (!pipe_segments[i])
+			{
+				fprintf(stderr, "Error: pipe_segments[%zu] is NULL\n", i);
+				tokens_by_segment[i] = NULL;
+				i++;
+				continue;
+			} 
+
+			size_t segment_tokens = 0;
+			tokens_by_segment[i] = check_args_fixed(pipe_segments[i], &segment_tokens);
+			if (!tokens_by_segment[i])
+			{
+				fprintf(stderr, "Warning: could not tokenize segment %zu\n", i);
+			}
 			else
-				if(ft_lstadd_front2(&new_node, new_node)) // añadir encima)
-					break;
+			{
+				// FIRST ARG AS COMMAND
+				set_command_type(tokens_by_segment[i]);
+				print_tokens(tokens_by_segment[i]);
+			}
+			printf("Total tokens checking-process: %zu\n\n", segment_tokens);
+			i++;
 		}
-		new_node = temp2;
-		args = temp;
-		while(args)
-		{
-			check_args(args->str, &i_words);
-			printf("-----> I_WORDS %zu\n", i_words);
-			args = args->next;
-		}
+
+		free_array2(pipe_segments);
+		for (size_t j = 0; j <= i_pipes; j++)
+			free_tokens_list(tokens_by_segment[j]);
+		free(tokens_by_segment);
+		free(line);
 	}
-	args = temp; // Recuperamos HEAD
-	new_node = temp2;
-	args = clean_struct(args);
-	free(args);
 	return (0);
 }
 
