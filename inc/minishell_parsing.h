@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/08 10:53:16 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:20:29 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,10 @@ typedef struct s_tokens
 	int					was_quoted;
 	int					skip;
 	char				*str;
-	/* t_TokenType		type; */
+	t_TokenType			type;
 	struct s_tokens		*next;
 }						t_tokens;
-/* // ENVIRONMENT
-typedef struct s_env
-{
-	bool				was_added;
-	char				*name;
-	char				*value;
-	struct s_env		*next;
-}						t_env; */
+
 // COMMANDS
 typedef struct s_commands
 {
@@ -96,24 +89,15 @@ typedef struct s_split
 	char				c;
 }						t_split;
 
-/* // PARAMATER POSITION STRUCT
-typedef struct s_param_pos
-{
-	size_t				start;
-	size_t				end;
-	bool				in_quotes;
-	char				quote_char;
-}						t_parapos;
- */
-
 //////////////////////////////////
 //-----FUNCTIONS-----------------
 //////////////////////////////////
 
 // UTILS INIT CLEAN STRUCTS
-void **free_array2(char **array);
-t_pipes *init_struct(t_pipes *args);
+void 					**free_array2(char **array);
+t_pipes 				*init_struct(t_pipes *args);
 t_pipes					*clean_struct(t_pipes *args);
+void 					free_tokens_list(t_tokens *head);
 
 // FT-MINI-SPLIT
 size_t					splitted_len(const char *s, char c);
@@ -123,14 +107,16 @@ char					**ft_minisplit(const char *s, char c, size_t *n);
 size_t					count_splitted(const char *s, char c);
 
 // UTILS PARSING
-size_t count_splitted(const char *s, char c);
+void					print_tokens(t_tokens *list);
 int ft_lstadd_front2(t_pipes **lst, t_pipes *new);
 const char				*skip_space(const char *s);
 size_t					is_open(const char *s);
 
-// CLASIFY TOKENS
+// FT_CLASIFY TOKENS
 t_TokenType				clasify_token(const char *str);
-char					*poly_substr(const char *s, size_t *i);
-t_tokens				*check_args(char *pipes, size_t *i_words);
+void 					set_command_type(t_tokens *tokens);
+const 					char *token_type_str(t_TokenType type);
+char *poly_substr(const char *s, size_t *i, int *was_quoted);
+t_tokens				*check_args_fixed(const char *input, size_t *i_words);
 
 #endif

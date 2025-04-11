@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/08 10:53:22 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:17:46 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	**free_array2(char **array)
 	int	limit;
 
 	limit = 0;
-	while (array[limit] != 0)
+	while (array && array[limit])
 	{
 		free(array[limit]);
 		array[limit] = NULL;
@@ -56,4 +56,17 @@ void	**free_array2(char **array)
 	free(array);
 	array = NULL;
 	return (0);
+}
+// FREE TOKENS
+void	free_tokens_list(t_tokens *head)
+{
+	t_tokens *tmp;
+
+	while (head && head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->str);
+		free(tmp);
+	}
 }
