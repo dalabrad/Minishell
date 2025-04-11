@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:18 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 14:49:40 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:23:39 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_lstadd_front2(t_pipes **lst, t_pipes *new)
 	return (0);
 }
 
-// ESTO EN ALGUN MOMENTO SERVIRA
+// IGNORE SPACES
 const char	*skip_space(const char *s)
 {
 	while (*s == ' ' && *s != 0)

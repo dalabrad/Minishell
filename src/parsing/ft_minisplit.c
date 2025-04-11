@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:29 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 10:42:20 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:28:53 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ size_t	count_splitted(const char *s, char c)
 	i = 0;
 	while (s[i] != '\0')
 	{
+		if (s[0] == c)
+		{
+			write(1, "Syntax error\n", 14);
+			return (0);
+		}
 		if (s[i] != c)
 		{
 			count++;
@@ -88,11 +93,22 @@ char	**ft_minisplit(const char *s, char c, size_t *n)
 
 	if (s == NULL)
 		return (NULL);
-	s = skip_space(s);
-	*n = count_splitted(s, c); // cuenta pipes
-	array = (char **)malloc(sizeof(char *) * (*n + 1));
-	if (array == NULL)
+
+	s = skip_space(s); // salta espacios iniciales
+	if (!s || *s == '\0') // si todo son espacios, se considera como un string vacío
+	{
+		*n = 0;
 		return (NULL);
+	}
+
+	*n = count_splitted(s, c);
+	if (*n == 0)
+		return (NULL); // no hay nada que dividir
+
+	array = malloc(sizeof(char *) * (*n + 1));
+	if (!array)
+		return (NULL);
+
 	array = split2array(s, c, array, *n);
 	return (array);
 }

@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 13:58:51 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:29:53 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	free_tokens_list(t_tokens *head)
 {
 	t_tokens *tmp;
 
-	while (head)
+	while (head && head != NULL)
 	{
 		tmp = head;
 		head = head->next;

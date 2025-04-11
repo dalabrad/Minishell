@@ -22,7 +22,7 @@ TEST_D = main_test_d.c
 # ─────────────────────────────────────────────────────────────
 
 CC = gcc
-CFLAGS = -g3 -Iinc -Ilibft/inc
+CFLAGS = -g3 -Iinc -Ilibft/inc -Wall -Werror -Wextra
 LDFLAGS = -lreadline -lncurses
 
 # ─────────────────────────────────────────────────────────────
@@ -44,7 +44,7 @@ $(NAME): $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAIN)
 # TEST: V- VLORENZO & D- DALABRAD
 # ─────────────────────────────────────────────────────────────
 
-testv: $(LIBFT)
+testv: clean all $(LIBFT)
 	@echo "$(YELLOW)Compiling Vanesa's ./minishell test executable...$(RESET)"
 	$(CC) $(CFLAGS) -o $(NAME) $(TEST_V) $(SRC) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)Vanesa's ./minishell test executable created successfully.$(RESET)"
@@ -66,7 +66,7 @@ debugv: testv
 # GDB TESTING
 # ─────────────────────────────────────────────────────────────
 
-gdb: debugv
+gdb: clean all debugv
 	@echo "$(BLUE)Lanzando GDB con ./minishell...$(RESET)"
 	@if [ -f gdbinit_v.gdb ]; then \
 		echo "$(YELLOW)Cargando script de breakpoints: gdbinit_v.gdb$(RESET)"; \

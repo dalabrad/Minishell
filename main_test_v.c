@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:58:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 14:40:23 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:45:14 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	char	**pipe_segments;
 	size_t	i_pipes;
-	size_t	i_words;
 	size_t	i;
 	t_tokens **tokens_by_segment;
 
@@ -32,7 +31,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	while (1)
 	{
-		i_words = 0;
 		line = readline(PROMPT);
 		if (!line)
 		{
@@ -61,6 +59,9 @@ int	main(int argc, char **argv, char **envp)
 			continue;
 		}
 
+		for (size_t i = 0; i < i_pipes; i++)
+			tokens_by_segment[i] = NULL;
+
 		printf("\n=========== PIPE SEGMENTS ===========\n");
 		i = 0;
 		while (i < i_pipes)
@@ -71,7 +72,7 @@ int	main(int argc, char **argv, char **envp)
 				tokens_by_segment[i] = NULL;
 				i++;
 				continue;
-			} 
+			}
 
 			size_t segment_tokens = 0;
 			tokens_by_segment[i] = check_args_fixed(pipe_segments[i], &segment_tokens);
@@ -90,9 +91,13 @@ int	main(int argc, char **argv, char **envp)
 		}
 
 		free_array2(pipe_segments);
-		for (size_t j = 0; j <= i_pipes; j++)
-			free_tokens_list(tokens_by_segment[j]);
-		free(tokens_by_segment);
+		if (tokens_by_segment)
+		{
+			for (size_t j = 0; j < i_pipes; j++)
+				if (tokens_by_segment[j])
+					free_tokens_list(tokens_by_segment[j]);
+			free(tokens_by_segment);
+		}
 		free(line);
 	}
 	return (0);
