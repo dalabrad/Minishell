@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 23:16:31 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 16:36:11 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:25:20 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,17 @@ int	error_msg_arg(t_err error_code, char *arg)
 			ft_putstr_fd(" : No such file or directory\n", STDERR_FILENO);
 		else
 			ft_putstr_fd(" : Permission denied\n", STDERR_FILENO);
+	}
+	if (error_code == NO_PATH)
+	{
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(" : No such file or directory\n", STDERR_FILENO);
+	}
+	if (error_code == CMD_NOT_FOUND)
+	{
+		ft_putstr_fd("command not found: ", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
 	}
 	return (error_code);
 }
