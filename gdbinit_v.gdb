@@ -8,4 +8,4 @@ break split2array
 break check_args_fixed
 
 # Ejecutar con entrada predefinida
-run <<<"echo "Lola que ase" >> out.txt | ls .l | wc -l"
+run <<<'echo "Lola que ase" >> out.txt | ls -l | wc -l'

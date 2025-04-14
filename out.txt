@@ -1,3 +1,2 @@
 Este es un archivo de prueba :)
 Too many arguments or readline failure.
-Too many arguments or readline failure.
