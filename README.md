@@ -103,21 +103,18 @@ free(tokens_by_segment);
 
 ---
 
-## COMMON ERRORS
+## DEBUGGING WITH GDB
 
-- Make sure `check_args_fixed()` detects quotes correctly.
-- Check `pipe_segments[i] != NULL` before using it.
-- If you see `pipe_segments[n] is NULL`, `count_splitted()` is probably miscounting.
+````bash
+make gdb
+````
 
----
-
-## TESTING RECOMMENDATIONS
-
-- Try `"`, `'`, `>`, `>>`, `>>`, `<`, `<<`, `|`.
-- Validate edge cases such as:
+- Test with `"`, `'`, `>`, `>>`, `<`, `<<`, `|`.
+- Validate edge cases like:
   - Unclosed quotes
  - Empty pipes
  - Multiple spaces
+- Try changing the config GDB file to make breakpoints in more functions.
 
 ---
 

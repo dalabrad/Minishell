@@ -105,21 +105,18 @@ free(tokens_by_segment);
 
 ---
 
-## ERRORES COMUNES
+## DEBUGGING CON GDB
 
-- Asegúrate de que `check_args_fixed()` detecta correctamente las comillas.
-- Verifica `pipe_segments[i] != NULL` antes de usarlo.
-- Si ves `pipe_segments[n] is NULL`, probablemente `count_splitted()` esté contando mal.
-
----
-
-## 🧪 RECOMENDACIONES PARA TESTEO
+```bash
+make gdb
+```
 
 - Probar con `"`, `'`, `>`, `>>`, `<`, `<<`, `|`.
 - Validar casos límite como:
   - Comillas no cerradas
   - Pipes vacíos
   - Espacios múltiples
+- Probar a cambiar el archivo config GDB para hacer breakpoints en mas funciones.
 
 ---
 
