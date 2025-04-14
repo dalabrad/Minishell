@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/10 18:58:20 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:56:45 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,22 +78,20 @@ static void	non_builtin_exec(char **args, t_env **shell_envp)
 		return ;
 	}
 	paths_array = get_paths_array(path_str);
+	free(path_str);
 	if (!paths_array)
-	{
-		free(path_str);
 		return ;
-	}
 	cmd_path = get_cmd_path(args[0], paths_array);
 	if (!cmd_path)
 	{
-		free(path_str);
 		free_array(paths_array);
 		return ;
 	}
-	execve(cmd_path, args, NULL);
-	free(path_str);
-	free_array(paths_array);
-	free(cmd_path);
+	if (execve(cmd_path, args, NULL) == -1)
+	{
+		free_array(paths_array);
+		free(cmd_path);
+	}
 }
 
 int	command_exec(char **args, t_env **shell_envp)
