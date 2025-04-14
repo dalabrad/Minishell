@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/08 10:39:06 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:26:23 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int		shell_unset(char **args, t_env **shell_envp);
 //------COMMAND-EXEC----------------------------
 ////////////////////////////////////////////////
 
-//	src/command_exec.c
+//	src/cmd_execution/command_exec.c
 int		command_exec(char **args, t_env **shell_envp);
 
 #endif
