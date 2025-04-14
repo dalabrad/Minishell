@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:29 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 17:28:53 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:16:11 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,7 @@ char	**split2array(const char *s, char c, char **array, size_t w_count)
 		free(chop);
 		array[i] = ft_substr(s, k, splitted_len(&s[k], c));
 		if (array[i] == NULL)
-		{
-			free_array2(array);
-			return (NULL);
-		}
+			return (free_array2(array), NULL);
 		if (s[j] != '\0')
 			j++;
 		k = j;

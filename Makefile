@@ -10,7 +10,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MINISHELL_EXEC_LIB = ./inc/minishell_exec.a
 MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 
-SRC := $(filter-out src/parsing/parser_test.c, $(wildcard src/parsing/*.c))
+SRC := $(wildcard src/parsing/*.c) $(wildcard src/cmd_execution/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c) $(wildcard src/array_utils/*.c)
 OBJS = $(SRC:.c=.o)
 
 MAIN = main.c

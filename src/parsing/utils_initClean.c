@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 17:29:53 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:17:21 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	**free_array2(char **array)
 	array = NULL;
 	return (0);
 }
+
 // FREE TOKENS
 void	free_tokens_list(t_tokens *head)
 {
