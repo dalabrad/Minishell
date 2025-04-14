@@ -85,10 +85,86 @@ Esto es un array de listas enlazadas. Cada posición representa un pipe:
 ```c
 tokens_by_segment[0] → tokens de primer pipe
 tokens_by_segment[1] → tokens de segundo pipe
-...
 ```
 
+
 Desde ahí puedes acceder fácilmente a los tokens para ejecutar comandos.
+
+### ¿Dónde están los tokens listos para ejecutar?
+Después del ft_minisplit(), se llama a:
+
+```c
+tokens_by_segment[i] = check_args_fixed(pipe_segments[i], &segment_tokens);
+```
+
+Entonces:
+
+```c
+// tokens_by_segment[i] contiene la lista enlazada de tokens del PIPE[i]
+```
+
+Cada t_tokens tiene:
+
+str: el string del token
+
+type: tipo de token (COMMAND, ARG, RED_OUT, etc.)
+
+was_quoted: si venía entre comillas
+
+Ejemplo:
+Si quieres ejecutar el primer pipe, podés hacer:
+
+```c
+t_tokens *cmd = tokens_by_segment[0];
+while (cmd)
+{
+    printf("TOKEN: %s | TIPO: %d\n", cmd->str, cmd->type);
+    cmd = cmd->next;
+}
+```
+
+---
+
+### Tipos de token (t_TokenType)
+
+```c
+typedef enum t_TokenType {
+	RED_IN,
+	RED_OUT,
+	HEREDOC,
+	APPEND_OUT,
+	OPTION,
+	COMMAND,
+	SETTING,
+	ARG,
+	ERROR
+} t_TokenType;
+```
+
+---
+
+Siguiente paso: ejecución
+A partir de los tokens de tokens_by_segment[i]:
+
+El primer token con tipo COMMAND es el comando principal.
+
+Los de tipo ARG, OPTION, etc. van a argv[].
+
+Si hay redirecciones (RED_OUT, HEREDOC, etc.), puedes guardar el filename (token->next->str) y aplicar dup2() después.
+
+### Consejo para integración
+Puedes construir estructuras tipo:
+
+```c
+typedef struct s_exec_cmd {
+    char **argv;           // ["echo", "hola", NULL]
+    char *outfile;         // si hay redirección >
+    char *infile;          // si hay redirección <
+    int append;            // si es >>
+} t_exec_cmd;
+```
+
+Y llenar estos valores recorriendo la lista de tokens_by_segment[i].
 
 ---
 
@@ -128,9 +204,9 @@ make gdb
 
 ---
 
-## PARA EL EQUIPO DE EJECUCIÓN
+## PARA PARTE DE EJECUCIÓN
 
-Usar `tokens_by_segment[i]` como entrada para tu executor. Cada nodo `t_tokens` tiene:
+Usar `tokens_by_segment[i]` como entrada para tu ejecutor. Cada nodo `t_tokens` tiene:
 
 ```
 char *str          // contenido
