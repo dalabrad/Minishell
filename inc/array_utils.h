@@ -6,12 +6,12 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 18:25:14 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/15 18:29:16 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:41:08 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ARRAY_UTILS_H
- #define ARRAY_UTILS_H
+# define ARRAY_UTILS_H
 
 # include <stdlib.h>
 # include <unistd.h>
