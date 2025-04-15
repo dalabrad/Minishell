@@ -7,8 +7,12 @@ NAME = minishell
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
+AU_LIB = ./inc/array_utils.a
+AU_SRCS = src/array_utils/array_utils.c
+AU_OBJS = $(AU_SRCS:.c=.o)
+
 MINISHELL_EXEC_LIB = ./inc/minishell_exec.a
-EXEC_SRCS = $(wildcard src/cmd_execution/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c) $(wildcard src/array_utils/*.c) $(wildcard src/minishell_data/*.c)
+EXEC_SRCS = $(wildcard src/cmd_execution/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c) $(wildcard src/minishell_data/*.c)
 EXEC_OBJS = $(EXEC_SRCS:.c=.o)
 
 MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
@@ -38,9 +42,9 @@ all: $(NAME)
 # BUILD EXEC
 # ─────────────────────────────────────────────────────────────
 
-$(NAME): $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAIN)
+$(NAME): $(LIBFT) &(AU_LIB) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAIN)
 	@echo "$(YELLOW)Compiling ./minishell executable...$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME) $(MAIN) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT) $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(MAIN) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)./minishell executable created successfully.$(RESET)"
 
 # ─────────────────────────────────────────────────────────────
@@ -52,9 +56,9 @@ testv: clean all $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(TEST_V) $(SRC) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)Vanesa's ./minishell test executable created successfully.$(RESET)"
 
-testd: $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB)
+testd: $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB)
 	@echo "$(YELLOW)Compiling David's ./minishell test executable...$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME) $(TEST_D) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(LIBFT) $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(TEST_D) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)David's ./minishell test executable created successfully.$(RESET)"
 
 # ─────────────────────────────────────────────────────────────
@@ -88,6 +92,11 @@ gdb: clean all debugv
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
+$(AU_LIB): $(AU_OBJS)
+	@echo "$(YELLOW)Compiling array_utis.a library...$(RESET)"
+	@ar rcs $(AU_LIB) $(AU_OBJS)
+	@echo "$(GREEN)array_utils.a created successfully.$(RESET)"	
+
 $(MINISHELL_PARSING_LIB): $(PARSING_OBJS)
 	@echo "$(YELLOW)Compiling minishell_parsing.a library...$(RESET)"
 	@ar rcs $(MINISHELL_PARSING_LIB) $(PARSING_OBJS)
@@ -100,13 +109,13 @@ $(MINISHELL_EXEC_LIB): $(EXEC_OBJS)
 
 clean:
 	@echo "$(YELLOW)Deleting all the object files...$(RESET)"
-	@$(RM) $(EXEC_OBJS) $(PARSING_OBJS)
+	@$(RM) $(EXEC_OBJS) $(PARSING_OBJS) $(AU_OBJS)
 	@make -C $(LIBFT_DIR) clean
 	@echo "$(GREEN)All the object files deleted successfully.$(RESET)"
 
 fclean: clean
 	@echo "$(YELLOW)Deleting the object files, *.a and executable file...$(RESET)"
-	@$(RM) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(NAME)
+	@$(RM) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(NAME)
 	@make -C $(LIBFT_DIR) fclean
 	@echo "$(GREEN)Everything deleted successfully.$(RESET)"
 

@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/15 13:11:42 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:29:11 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "minishell_parsing.h"
+# include "array_utils.h"
 # include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -71,16 +72,6 @@ typedef struct s_data
 int		error_msg(t_err error_code);
 int		error_msg_arg(t_err error_code, char *arg);
 void	error_msg_exit(t_err error_code);
-
-////////////////////////////////////////////////
-//------ARRAY-UTILS-----------------------------
-////////////////////////////////////////////////
-
-//  src/array_utils/array_utils.c
-
-void	free_array(char **array);
-size_t	array_size(char **array);
-void	print_array(char **array);
 
 ////////////////////////////////////////////////
 //------ENVIRONMENT-----------------------------
