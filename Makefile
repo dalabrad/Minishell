@@ -8,9 +8,14 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 MINISHELL_EXEC_LIB = ./inc/minishell_exec.a
-MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
+EXEC_SRCS = $(wildcard src/cmd_execution/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c) $(wildcard src/array_utils/*.c) $(wildcard src/minishell_data/*.c)
+EXEC_OBJS = $(EXEC_SRCS:.c=.o)
 
-SRC := $(wildcard src/parsing/*.c) $(wildcard src/cmd_execution/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c) $(wildcard src/array_utils/*.c) $(wildcard src/minishell_data/*.c)
+MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
+PARSING_SRCS = $(wildcard src/parsing/*.c) 
+PARSING_OBJS = $(PARSING_SRCS:.c=.o)
+
+SRC :=  
 OBJS = $(SRC:.c=.o)
 
 MAIN = main.c
@@ -85,19 +90,19 @@ gdb: clean all debugv
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
-$(MINISHELL_PARSING_LIB): $(OBJS)
+$(MINISHELL_PARSING_LIB): $(PARSING_OBJS)
 	@echo "$(YELLOW)Compiling minishell_parsing.a library...$(RESET)"
-	@ar rcs $(MINISHELL_PARSING_LIB) $(OBJS)
+	@ar rcs $(MINISHELL_PARSING_LIB) $(PARSING_OBJS)
 	@echo "$(GREEN)minishell_parsing.a created successfully.$(RESET)"
 
-$(MINISHELL_EXEC_LIB): $(OBJS)
+$(MINISHELL_EXEC_LIB): $(EXEC_OBJS)
 	@echo "$(YELLOW)Compiling minishell_exec.a library...$(RESET)"
-	@ar rcs $(MINISHELL_EXEC_LIB) $(OBJS)
+	@ar rcs $(MINISHELL_EXEC_LIB) $(EXEC_OBJS)
 	@echo "$(GREEN)minishell_exec.a created successfully.$(RESET)"
 
 clean:
 	@echo "$(YELLOW)Deleting all the object files...$(RESET)"
-	@$(RM) $(OBJS)
+	@$(RM) $(EXEC_OBJS) $(PARSING_OBJS)
 	@make -C $(LIBFT_DIR) clean
 	@echo "$(GREEN)All the object files deleted successfully.$(RESET)"
 
