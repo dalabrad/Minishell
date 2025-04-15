@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/14 17:26:23 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:11:42 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,16 @@ typedef struct s_env
 
 typedef struct s_builtin
 {
-	char	*builtin_name;
+	char	*name;
 	int		(*foo)(char **args, t_env **shell_envp);
 }	t_builtin;
+
+typedef struct s_data
+{
+	t_env		*shell_envp;
+	//t_tokens	*tokens_by_segment;
+	t_builtin	g_builtin[8];
+}	t_data;
 
 ////////////////////////////////////////////////
 //------ERROR MESSAGES--------------------------
@@ -98,6 +105,14 @@ void	print_shell_envp_list(t_env *shell_envp);
 int		shell_envp_list_create(char **envp, t_env **shell_envp);
 
 ////////////////////////////////////////////////
+//------MINISHELL_DATA--------------------------
+////////////////////////////////////////////////
+
+//	src/minishell_data/minishell_data.c
+int		data_init(t_data *data, char**envp);
+void	free_data(t_data *data);
+
+////////////////////////////////////////////////
 //------BUILT-INS-------------------------------
 ////////////////////////////////////////////////
 
@@ -127,6 +142,6 @@ int		shell_unset(char **args, t_env **shell_envp);
 ////////////////////////////////////////////////
 
 //	src/cmd_execution/command_exec.c
-int		command_exec(char **args, t_env **shell_envp);
+int		command_exec(char **args, t_data data);
 
 #endif
