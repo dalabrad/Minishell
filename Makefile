@@ -15,8 +15,6 @@ MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 PARSING_SRCS = $(wildcard src/parsing/*.c) 
 PARSING_OBJS = $(PARSING_SRCS:.c=.o)
 
-SRC :=  
-OBJS = $(SRC:.c=.o)
 
 MAIN = main.c
 TEST_V = main_test_v.c
