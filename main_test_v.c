@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:58:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/14 15:26:19 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:24:40 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!tokens_by_segment)
 		{
 			perror("malloc tokens_by_segment");
-			free_array2(pipe_segments);
+			free_array(pipe_segments);
 			free(line);
 			continue;
 		}
@@ -92,7 +92,7 @@ int	main(int argc, char **argv, char **envp)
 			i++;
 		}
 
-		free_array2(pipe_segments);
+		free_array(pipe_segments);
 		if (tokens_by_segment)
 		{
 			for (size_t j = 0; j < i_pipes; j++)

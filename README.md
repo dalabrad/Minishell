@@ -156,7 +156,7 @@ If there are redirections (RED_OUT, HEREDOC, etc.), you can save the filename (t
 At the end of the loop, tokens and pipe_segments are successfully freed:
 
 ````c
-free_array2(pipe_segments);
+free_array(pipe_segments);
 for (size_t j = 0; j <= i_pipes; j++)
  free_tokens_list(tokens_by_segment[j]);
 free(tokens_by_segment);
@@ -184,7 +184,7 @@ make gdb
 At the end of the cycle, the tokens and pipe_segments are successfully freed:
 
 ````c
-free_array2(pipe_segments);
+free_array(pipe_segments);
 for (size_t j = 0; j <= i_pipes; j++)
  free_tokens_list(tokens_by_segment[j]);
 free(tokens_by_segment);

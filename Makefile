@@ -42,7 +42,7 @@ all: $(NAME)
 # BUILD EXEC
 # ─────────────────────────────────────────────────────────────
 
-$(NAME): $(LIBFT) &(AU_LIB) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAIN)
+$(NAME): $(LIBFT) $(AU_LIB) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAIN)
 	@echo "$(YELLOW)Compiling ./minishell executable...$(RESET)"
 	$(CC) $(CFLAGS) -o $(NAME) $(MAIN) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)./minishell executable created successfully.$(RESET)"

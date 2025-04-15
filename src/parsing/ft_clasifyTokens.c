@@ -6,12 +6,11 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 18:14:06 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:37:27 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* #include "minishell_exec.h" */
-#include "../inc/minishell_parsing.h"
+#include "minishell_parsing.h"
 
 // CLASIFY TOKENS
 t_TokenType clasify_token(const char *str)

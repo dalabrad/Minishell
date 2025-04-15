@@ -173,7 +173,7 @@ Y llenar estos valores recorriendo la lista de tokens_by_segment[i].
 Al final del ciclo, los tokens y pipe_segments se liberan correctamente:
 
 ```c
-free_array2(pipe_segments);
+free_array(pipe_segments);
 for (size_t j = 0; j <= i_pipes; j++)
     free_tokens_list(tokens_by_segment[j]);
 free(tokens_by_segment);

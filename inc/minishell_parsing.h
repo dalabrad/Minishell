@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/14 17:25:58 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:35:40 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # include "libft.h"
 # include "minishell_exec.h"
+# include "array_utils.h"
 # include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -96,11 +97,18 @@ typedef struct s_split
 //-----FUNCTIONS-----------------
 //////////////////////////////////
 
-// UTILS INIT CLEAN STRUCTS
-void 					**free_array2(char **array);
+// UTILS INIT & HANDLE
+int						handle_token_alloc_fail(char **segments, char *line);
 t_pipes 				*init_struct(t_pipes *args);
+int						init_pipe_segments(char *line, char ***segments, size_t *n);
+t_tokens 				**init_tokens_by_segment(size_t count);
+
+// UTILS CLEAN STRUCTS
+
 t_pipes					*clean_struct(t_pipes *args);
 void 					free_tokens_list(t_tokens *head);
+int						is_exit_command(char *line);
+void 					cleanup(char *line, char **segments, t_tokens **tokens, size_t n);
 
 // FT-MINI-SPLIT
 size_t					splitted_len(const char *s, char c);
@@ -119,10 +127,11 @@ size_t					is_open(const char *s);
 t_TokenType				clasify_token(const char *str);
 void 					set_command_type(t_tokens *tokens);
 const 					char *token_type_str(t_TokenType type);
-char *poly_substr(const char *s, size_t *i, int *was_quoted);
+char 					*poly_substr(const char *s, size_t *i, int *was_quoted);
 t_tokens				*check_args_fixed(const char *input, size_t *i_words);
 
-//	src/cmd_execution/tokens_to_args.c
-char	**tokens_to_args(t_tokens *token_list);
+// PROCESS BY SEGMENT OR PIPE
+void process_single_segment(char *segment, t_tokens **token_ptr, size_t index);
+void process_segments(char **segments, t_tokens **tokens, size_t n);
 
 #endif
