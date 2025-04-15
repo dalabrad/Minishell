@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:15:03 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 15:03:38 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:28:04 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	print_array(char **array)
 	i = 0;
 	while (array[i])
 	{
-		printf("[%zu] : %s\n", i, array[i]);
+		printf("Array [%zu] : %s\n", i, array[i]);
 		i++;
 	}
 }

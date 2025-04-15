@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/08 10:39:06 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:26:23 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef enum e_err
 	CD_NO_DIR,
 	CD_NO_PERM,
 	CHDIR_ERROR,
+	NO_PATH,
+	CMD_NOT_FOUND,
 }	t_err;
 
 typedef struct s_env
@@ -80,6 +82,7 @@ void	print_array(char **array);
 //	src/environment/envp_attribute_getters.c
 char	*get_envp_name(char	*envp);
 char	*get_envp_value(char *envp);
+char	*get_shell_envp_value(t_env *shell_envp, const char *name);
 
 //	src/environment/shell_envp_list_utils_1.c
 t_env	*new_shell_envp(char *envp, bool was_added);
@@ -119,9 +122,11 @@ int		shell_pwd(char **args, t_env **shell_envp);
 //	src/built-ins/builtin_unset.c
 int		shell_unset(char **args, t_env **shell_envp);
 
-//------------------------------------------
+////////////////////////////////////////////////
+//------COMMAND-EXEC----------------------------
+////////////////////////////////////////////////
 
-//	src/command_exec.c
+//	src/cmd_execution/command_exec.c
 int		command_exec(char **args, t_env **shell_envp);
 
 #endif

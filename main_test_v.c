@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:58:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 18:20:58 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:26:19 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline(PROMPT);
+		// fd, open, dup
+		// fd = dup(STDIN_FILENO);
 		if (!line)
 		{
 			printf("exit\n");
@@ -40,7 +42,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!ft_strcmp(line, str_exit))
 		{
 			free(line);
-			break;
+			break; 
 		}
 
 		pipe_segments = ft_minisplit(line, '|', &i_pipes);
@@ -99,6 +101,7 @@ int	main(int argc, char **argv, char **envp)
 			free(tokens_by_segment);
 		}
 		free(line);
+		// close fd
 	}
 	return (0);
 }
@@ -108,5 +111,5 @@ int	main(int argc, char **argv, char **envp)
 >
 > make testv
 > ./minishell + ENTER
-> minishell>> echo "Lola que ase" >> out.txt | ls .l | wc -l
+> minishell>> echo "Lola que ase" > out.txt | ls -l | wc -l
 */

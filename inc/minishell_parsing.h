@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/11 18:20:29 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:25:58 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,19 @@ typedef struct s_pipes // pipes
 	char *str;
 	size_t index;
 	struct s_pipes *next;
-}						t_pipes;
+}	t_pipes;
+
 // TOKENS
-typedef struct s_tokens
+typedef struct s_tokens	t_tokens;
+
+struct s_tokens
 {
 	int					was_quoted;
 	int					skip;
 	char				*str;
 	t_TokenType			type;
-	struct s_tokens		*next;
-}						t_tokens;
+	t_tokens			*next;
+};
 
 // COMMANDS
 typedef struct s_commands
@@ -118,5 +121,8 @@ void 					set_command_type(t_tokens *tokens);
 const 					char *token_type_str(t_TokenType type);
 char *poly_substr(const char *s, size_t *i, int *was_quoted);
 t_tokens				*check_args_fixed(const char *input, size_t *i_words);
+
+//	src/cmd_execution/tokens_to_args.c
+char	**tokens_to_args(t_tokens *token_list);
 
 #endif
