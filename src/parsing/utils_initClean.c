@@ -57,6 +57,7 @@ void	**free_array2(char **array)
 	array = NULL;
 	return (0);
 }
+
 // FREE TOKENS
 void	free_tokens_list(t_tokens *head)
 {
