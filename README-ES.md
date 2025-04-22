@@ -1,217 +1,177 @@
-# MINI-SHELL PARSER: GUÍA PARA COMPILAR, TESTEAR Y USAR TOKENS
+# Minishell
 
-Este documento describe cómo compilar, testear y utilizar el sistema de parsing de comandos de MiniShell. Está pensado para que cualquier miembro del equipo pueda probar el parser y utilizar los tokens generados para la fase de ejecución.
-
----
-
-## ESTRUCTURA PRINCIPAL
-
-- `main_test_v.c` — Función principal de testeo.
-- `ft_minisplit.c` — Separa el input por pipes.
-- `ft_clasifyTokens.c` — Clasifica cada palabra/token.
-- `utils_parsing.c` — Funciones auxiliares (comprobación de comillas, espacios, etc).
-- `utils_initClean.c` — Manejo de memoria.
+Implementación básica de un shell en C conforme al proyecto de 42 School. Soporta ejecución de comandos, redirecciones, pipes, parsing de argumentos, etc.
 
 ---
 
-## CÓMO COMPILAR
+## Requisitos
 
-```bash
-make testv
-```
-
-Este comando compilará tu Minishell con la función `main_test_v.c` para realizar pruebas.
+- Linux
+- `gcc`
+- `make`
+- Biblioteca `readline`
 
 ---
 
-## CÓMO EJECUTAR
+## Reglas de Make
+
+Puedes compilar el proyecto con las siguientes reglas:
+
+| Comando            | Descripción                                                 |
+|--------------------|-------------------------------------------------------------|
+| `make`             | Compila el proyecto y genera el ejecutable `minishell`.     |
+| `make gdb`         | Compila el proyecto con símbolos de depuración (`-g3`).     |
+| `make valgrind`    | Compila con `-g3` y flags útiles para ejecutar con Valgrind.|
+| `make clean`       | Elimina los archivos `.o`.                                  |
+| `make fclean`      | Elimina ejecutables y archivos `.o`.                        |
+| `make re`          | Equivalente a `fclean` seguido de `make`.                   |
+| `make main_test_d` | Compila una versión que incluye EJECUCION (`main_test_d`).  |
+|--------------------|-------------------------------------------------------------|
+---
+
+## Ejecución
+
+Una vez compilado, puedes iniciar la minishell con:
 
 ```bash
 ./minishell
 ```
 
-Y luego puedes introducir comandos como:
+Ejemplo de uso:
 
 ```bash
-echo "hola mundo" > out.txt | ls -l | wc -l
+minishell>> echo "Hola Mundo" > out.txt | cat out.txt
 ```
 
----
-
-## QUÉ HACE
-
-1. Separa la entrada por `|`.
-2. Tokeniza cada segmento de pipe.
-3. Clasifica tokens como `COMMAND`, `ARG`, `RED_OUT`, etc.
-4. Muestra información de cada token (incluyendo si estaba entre comillas).
-5. Aplica reglas para decidir cuál token es el comando en cada pipe.
-
----
-
-## SALIDA DE EJEMPLO
+Para salir:
 
 ```bash
-=========== PIPE SEGMENTS ===========
------> Tokenizing: [echo "hola mundo" > out.txt]
-→ Token: echo            | Type: COMMAND      | Quoted: no
-→ Token: "hola mundo"    | Type: ARG          | Quoted: yes
-→ Token: >               | Type: RED_OUT      | Quoted: no
-→ Token: out.txt         | Type: ARG          | Quoted: no
-Total tokens: 4
-
------> Tokenizing: [ ls -l ]
-→ Token: ls              | Type: COMMAND      | Quoted: no
-→ Token: -l              | Type: OPTION       | Quoted: no
-Total tokens: 2
-
------> Tokenizing: [ wc -l]
-→ Token: wc              | Type: COMMAND      | Quoted: no
-→ Token: -l              | Type: OPTION       | Quoted: no
-Total tokens: 2
+minishell>> exit
 ```
 
 ---
 
-## ACCESO A TOKENS
+## Testing
 
-En la función `main_test_v.c`, cada grupo de tokens está guardado así:
+Los script incluye pruebas automáticas para:
+- `testing_all.sh`         → Script testeo automatizado GENERAL
+- `testing_meta_error.sh`  → Script testeo automatizado METACARACTERES
+- `testing_path_quotes.sh` → Script testeo automatizado PATH&BALANCEO
+- `testing_redir_error.sh` → Script testeo automatizado ERROR
 
-```c
-t_tokens **tokens_by_segment;
+### Comprobaciones, sujetas a mejoras futuras
+- Comprobación de comillas balanceadas
+- Clasificación de tipos de token (comandos, paths, opciones, redirecciones)
+- Manejo de errores de sintaxis
+
+### Cómo usar el testing
+
+Haz ejecutable el script y ejecútelo:
+
+```bash
+chmod +x testing.sh
+./testing.sh
 ```
 
-Esto es un array de listas enlazadas. Cada posición representa un pipe:
-
-```c
-tokens_by_segment[0] → tokens de primer pipe
-tokens_by_segment[1] → tokens de segundo pipe
-```
-
-
-Desde ahí puedes acceder fácilmente a los tokens para ejecutar comandos.
-
-### ¿Dónde están los tokens listos para ejecutar?
-Después del ft_minisplit(), se llama a:
-
-```c
-tokens_by_segment[i] = check_args_fixed(pipe_segments[i], &segment_tokens);
-```
-
-Entonces:
-
-```c
-// tokens_by_segment[i] contiene la lista enlazada de tokens del PIPE[i]
-```
-
-Cada t_tokens tiene:
-
-str: el string del token
-
-type: tipo de token (COMMAND, ARG, RED_OUT, etc.)
-
-was_quoted: si venía entre comillas
-
-Ejemplo:
-Si quieres ejecutar el primer pipe, podés hacer:
-
-```c
-t_tokens *cmd = tokens_by_segment[0];
-while (cmd)
-{
-    printf("TOKEN: %s | TIPO: %d\n", cmd->str, cmd->type);
-    cmd = cmd->next;
-}
-```
+Resumen final de `PASS` y `FAIL` al final de la ejecución.
 
 ---
 
-### Tipos de token (t_TokenType)
+## Debugging y Valgrind
 
-```c
-typedef enum t_TokenType {
-	RED_IN,
-	RED_OUT,
-	HEREDOC,
-	APPEND_OUT,
-	OPTION,
-	COMMAND,
-	SETTING,
-	ARG,
-	ERROR
-} t_TokenType;
-```
-
----
-
-Siguiente paso: ejecución
-A partir de los tokens de tokens_by_segment[i]:
-
-El primer token con tipo COMMAND es el comando principal.
-
-Los de tipo ARG, OPTION, etc. van a argv[].
-
-Si hay redirecciones (RED_OUT, HEREDOC, etc.), puedes guardar el filename (token->next->str) y aplicar dup2() después.
-
-### Consejo para integración
-Puedes construir estructuras tipo:
-
-```c
-typedef struct s_exec_cmd {
-    char **argv;           // ["echo", "hola", NULL]
-    char *outfile;         // si hay redirección >
-    char *infile;          // si hay redirección <
-    int append;            // si es >>
-} t_exec_cmd;
-```
-
-Y llenar estos valores recorriendo la lista de tokens_by_segment[i].
-
----
-
-## LIMPIEZA DE MEMORIA
-
-Al final del ciclo, los tokens y pipe_segments se liberan correctamente:
-
-```c
-free_array(pipe_segments);
-for (size_t j = 0; j <= i_pipes; j++)
-    free_tokens_list(tokens_by_segment[j]);
-free(tokens_by_segment);
-```
-
----
-
-## DEBUGGING CON GDB
+### Ejecutar con GDB:
 
 ```bash
 make gdb
+gdb ./minishell
 ```
+Referencia a archivo gdbinit_v.gdb, con breapoints:
+```bash
+break main
+break ft_minisplit
+break count_splitted
+break split2array
+break check_args_fixed
+```
+Editar en funcion de necesidad.
 
-- Probar con `"`, `'`, `>`, `>>`, `<`, `<<`, `|`.
-- Validar casos límite como:
-  - Comillas no cerradas
-  - Pipes vacíos
-  - Espacios múltiples
-- Probar a cambiar el archivo config GDB para hacer breakpoints en mas funciones.
+### Ejecutar con Valgrind:
+
+```bash
+make valgrind
+valgrind --leak-check=full ./minishell
+```
 
 ---
 
-## EXTRA: FUNCIONES ÚTILES
+## Versión de testing Dalabrad: `main_test_d`
 
-- `poly_substr()` — Separa palabras manejando comillas.
-- `set_command_type()` — Decide qué token es el comando principal.
-- `token_type_str()` — Devuelve string representativo del tipo de token.
+Puedes compilar una versión especial de minishell enfocada en ejecucion:
+
+```bash
+make main_test_d
+./main_test_d
+```
+
+Esto activa salidas especiales para verificación y ejecucion de tokens.
 
 ---
 
-## PARA PARTE DE EJECUCIÓN
+## Estructura del Proyecto
+### Main
+- `main.c` → Loop principal llamada a READLINE
+### Parsing
+- `ft_clasifyTokens.c` → Clasificación de tokens
+- `ft_process_segments.c` → Parsing por segmentos
+- `utils_*.c` → Funciones auxiliares (init, clean, print)
+### Array Utils
+- `array_utils.c`
+### Built-ins
+- `built-in_cd.c`
+- `built-in_echo.c`
+- `built-in_env.c`
+- `built-in_exit.c`
+- `built-in_export.c`
+- `built-in_pwd.c`
+- `built-in_unset.c`
+### Command Execution
+- `tokens_to_args.c`
+- `command_exec.c`
+### Environment
+- `envp_attribute_getters.c`
+- `shell_envp_list_create.c`
+- `shell_envp_list_utils_1.c`
+- `shell_envp_list_utils_2.c`
+### Error Messages
+### Minishell Data
+- `minishell_data.c`
 
-Usar `tokens_by_segment[i]` como entrada para tu ejecutor. Cada nodo `t_tokens` tiene:
+### Testing
+- `testing_all.sh`         → Script testeo automatizado GENERAL
+- `testing_meta_error.sh`  → Script testeo automatizado METACARACTERES
+- `testing_path_quotes.sh` → Script testeo automatizado PATH&BALANCEO
+- `testing_redir_error.sh` → Script testeo automatizado ERROR
 
+---
+
+## Limpieza
+
+Para limpiar archivos temporales:
+
+```bash
+make clean
 ```
-char *str          // contenido
-t_TokenType type   // tipo de token
-int was_quoted     // entrecomillado
+
+Para limpiar todo:
+
+```bash
+make fclean
 ```
+
+---
+
+## Estado
+
+El proyecto está en desarrollo, cubre los fundamentos básicos de un shell. Está listo para pruebas más complejas y mejoras futuras.
 
 ---
