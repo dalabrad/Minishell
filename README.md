@@ -17,7 +17,7 @@ Basic implementation of a C shell according to the 42 School project. Supports c
 
 You can compile the project with the following rules:
 
-| Command---------|---------Description---------------------------------------------------|
+| Command         | Description                                                           |
 |-----------------|-----------------------------------------------------------------------|
 | `make`          | Compiles the project and generates the `minishell` executable.        |
 | `make gdb`      | Compile the project with debugging symbols (`-g3`).                   |
@@ -26,8 +26,6 @@ You can compile the project with the following rules:
 | `make fclean`   | Remove executables and `.o` files.                                    |
 | `make re`       | Equivalent to `fclean` followed by `make`.                            |
 | `make testd`    | Compile a version that includes EXECUTE (`main_test_d`).              |
-|-----------------|-----------------------------------------------------------------------|
-
 ---
 
 ## Execution
@@ -59,4 +57,4 @@ The script includes automated testing for:
 - testing_meta_error.sh` → automated testing script METACARACTERES
 - `testing_p
 
-Translated with DeepL.com (free version)
+---
