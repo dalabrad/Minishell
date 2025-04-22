@@ -6,11 +6,11 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:15:03 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/14 17:28:04 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:28:22 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
+#include "array_utils.h"
 
 void	free_array(char **array)
 {

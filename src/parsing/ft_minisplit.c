@@ -6,12 +6,11 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:29 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/11 18:16:53 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:37:34 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* #include "minishell_exec.h" */
-#include "../inc/minishell_parsing.h"
+#include "minishell_parsing.h"
 
 // LENGTH OF SPLITTED FOR SUBSTR
 size_t	splitted_len(const char *s, char c)
@@ -46,7 +45,7 @@ char	**split2array(const char *s, char c, char **array, size_t w_count)
 		free(chop);
 		array[i] = ft_substr(s, k, splitted_len(&s[k], c));
 		if (array[i] == NULL)
-			return (free_array2(array), NULL);
+			return (free_array(array), NULL);
 		if (s[j] != '\0')
 			j++;
 		k = j;

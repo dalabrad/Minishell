@@ -6,23 +6,23 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/14 11:56:45 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:05:30 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell_exec.h"
-#include "../inc/minishell_parsing.h"
+#include "minishell_exec.h"
+#include "minishell_parsing.h"
 
-t_builtin	g_builtin[] = {
-{.builtin_name = "exit", .foo = shell_exit},
-{.builtin_name = "env", .foo = shell_env},
-{.builtin_name = "echo", .foo = shell_echo},
-{.builtin_name = "pwd", .foo = shell_pwd},
-{.builtin_name = "cd", .foo = shell_cd},
-{.builtin_name = "export", .foo = shell_export},
-{.builtin_name = "unset", .foo = shell_unset},
-{.builtin_name = NULL},
-};
+/* t_builtin	g_builtin[] = {
+{.name = "exit", .foo = shell_exit},
+{.name = "env", .foo = shell_env},
+{.name = "echo", .foo = shell_echo},
+{.name = "pwd", .foo = shell_pwd},
+{.name = "cd", .foo = shell_cd},
+{.name = "export", .foo = shell_export},
+{.name = "unset", .foo = shell_unset},
+{.name = NULL},
+}; */
 
 static char	**get_paths_array(char *path_str)
 {
@@ -94,19 +94,21 @@ static void	non_builtin_exec(char **args, t_env **shell_envp)
 	}
 }
 
-int	command_exec(char **args, t_env **shell_envp)
+int	command_exec(char **args, t_data data)
 {
 	int			i;
 	const char	*current;
+	t_env		**shell_envp;
 
+	shell_envp = &(data.shell_envp);
 	i = 0;
-	while (g_builtin[i].builtin_name)
+	while (data.g_builtin[i].name)
 	{
-		current = g_builtin[i].builtin_name;
+		current = data.g_builtin[i].name;
 		if (!ft_strncmp(current, args[0], ft_strlen(args[0])))
 		{
 			printf("Executing built-in %s\n", args[0]);
-			return (g_builtin[i].foo(args + 1, shell_envp));
+			return (data.g_builtin[i].foo(args + 1, shell_envp));
 		}
 		i++;
 	}
