@@ -112,6 +112,7 @@ for input in "${!misc_tests[@]}"; do
     fi
 done
 
+echo -e "\n========== SUMMARY =========="
 echo -e "\n\033[1mResumen final:\033[0m"
 echo -e "\033[32mPASS:\033[0m $pass"
 echo -e "\033[31mFAIL:\033[0m $fail"
@@ -119,7 +120,8 @@ echo -e "\033[31mFAIL:\033[0m $fail"
 if [ "$fail" -eq 0 ]; then
     echo -e "\n\033[1;32mTodos los tests pasaron con éxito\033[0m"
 else
-    echo -e "\n\033[1;31mAlgunos tests fallaron. Revisá la salida arriba.\033[0m"
+    echo -e "\n\033[1;31mAlgunos tests fallaron. Revisa la salida arriba.\033[0m"
 fi
 
 rm -f "$TMP"
+echo "============================="
