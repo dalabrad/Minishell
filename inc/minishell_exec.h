@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/15 18:29:11 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:47:35 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include <unistd.h>
 
 # define MAX_ENV 100
+# define R_PIPE 0
+# define W_PIPE 1
 
 typedef enum e_err
 {
@@ -41,6 +43,7 @@ typedef enum e_err
 	CHDIR_ERROR,
 	NO_PATH,
 	CMD_NOT_FOUND,
+	PIPE_ERROR,
 }	t_err;
 
 typedef struct s_env
@@ -57,11 +60,25 @@ typedef struct s_builtin
 	int		(*foo)(char **args, t_env **shell_envp);
 }	t_builtin;
 
+typedef struct s_cmd	t_cmd;
+
+struct s_cmd
+{
+	char	**args;
+	char	*file_in;
+	char	*file_out;
+	pid_t	pid;
+	t_cmd	*next;
+};
+
 typedef struct s_data
 {
 	t_env		*shell_envp;
 	//t_tokens	*tokens_by_segment;
 	t_builtin	g_builtin[8];
+	int			pipes[2][2];
+	t_cmd		*first_cmd;
+	size_t		nbr_cmds;
 }	t_data;
 
 ////////////////////////////////////////////////
@@ -101,6 +118,7 @@ int		shell_envp_list_create(char **envp, t_env **shell_envp);
 
 //	src/minishell_data/minishell_data.c
 int		data_init(t_data *data, char**envp);
+void	close_pipes(t_data *data);
 void	free_data(t_data *data);
 
 ////////////////////////////////////////////////
@@ -129,10 +147,17 @@ int		shell_pwd(char **args, t_env **shell_envp);
 int		shell_unset(char **args, t_env **shell_envp);
 
 ////////////////////////////////////////////////
-//------COMMAND-EXEC----------------------------
+//------COMMAND-EXECUTION-----------------------
 ////////////////////////////////////////////////
 
 //	src/cmd_execution/command_exec.c
-int		command_exec(char **args, t_data data);
+int		command_exec(char **args, t_data *data);
+
+// src/cmd_execution/execute_pipeline.c
+void	execute_pipeline(t_data *data);
+
+//	src/cmd_execution/cmd_type_utils.c
+size_t	number_of_cmds(t_cmd *first_cmd);
+void	free_cmd_list(t_cmd *cmd);
 
 #endif

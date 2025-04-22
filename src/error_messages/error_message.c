@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 23:16:31 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/10 17:25:20 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:45:38 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	error_msg(t_err error_code)
 	if (error_code == CD_ERROR)
 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
 	if (error_code == CHDIR_ERROR)
-		ft_putstr("chdir : unable to change process working directory\n");
+		ft_putstr_fd("chdir : unable to change process working directory\n", 2);
+	if (error_code == PIPE_ERROR)
+		ft_putstr_fd("pipe: unable to create pipes\n", 2);
 	return (error_code);
 }
 

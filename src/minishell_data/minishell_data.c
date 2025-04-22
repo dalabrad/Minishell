@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/15 13:11:08 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/22 21:02:19 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	data_init(t_data *data, char**envp)
 	data->g_builtin[5] = (t_builtin){.name = "export", .foo = shell_export};
 	data->g_builtin[6] = (t_builtin){.name = "unset", .foo = shell_unset};
 	data->g_builtin[7] = (t_builtin){.name = NULL, .foo = NULL};
+	data->shell_envp = NULL;
 	if (shell_envp_list_create(envp, &(data->shell_envp)))
 	{
 		data->shell_envp = NULL;
@@ -31,7 +32,16 @@ int	data_init(t_data *data, char**envp)
 	return (EXIT_SUCCESS);
 }
 
+void	close_pipes(t_data *data)
+{
+	close(data->pipes[0][R_PIPE]);
+	close(data->pipes[0][W_PIPE]);
+	close(data->pipes[1][R_PIPE]);
+	close(data->pipes[1][W_PIPE]);
+}
+
 void	free_data(t_data *data)
 {
 	free_shell_envp_list(&(data->shell_envp));
+	close_pipes(data);
 }
