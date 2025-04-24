@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/22 20:47:35 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:32:04 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef enum e_err
 	NO_PATH,
 	CMD_NOT_FOUND,
 	PIPE_ERROR,
+	FORK_ERROR,
 }	t_err;
 
 typedef struct s_env
@@ -159,5 +160,6 @@ void	execute_pipeline(t_data *data);
 //	src/cmd_execution/cmd_type_utils.c
 size_t	number_of_cmds(t_cmd *first_cmd);
 void	free_cmd_list(t_cmd *cmd);
+t_cmd	*last_cmd(t_cmd *cmd);
 
 #endif

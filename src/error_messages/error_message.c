@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 23:16:31 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/22 17:45:38 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:33:54 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	error_msg(t_err error_code)
 		ft_putstr_fd("chdir : unable to change process working directory\n", 2);
 	if (error_code == PIPE_ERROR)
 		ft_putstr_fd("pipe: unable to create pipes\n", 2);
+	if (error_code == FORK_ERROR)
+		ft_putstr_fd("fork: unable to create child process\n", STDERR_FILENO);
 	return (error_code);
 }
 

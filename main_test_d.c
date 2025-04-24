@@ -6,94 +6,63 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:39:42 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/22 20:59:42 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:18:13 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-static int	create_cmds(t_data *data)
+static int	create_cmds(t_data *data, int argc, char **argv)
 {
-	t_cmd	*ls = (t_cmd *)malloc(sizeof(t_cmd));
-	t_cmd	*grep = (t_cmd *)malloc(sizeof(t_cmd));
-	t_cmd	*wc= (t_cmd *)malloc(sizeof(t_cmd));
+	int	i = 0;
 
-	if (!ls || !grep || !wc)
+	while (i < argc)
 	{
-		fprintf(stderr, "malloc error!\n");
-		return (EXIT_FAILURE);
+		t_cmd	*cmd = (t_cmd *)malloc(sizeof(t_cmd));
+
+		if (!cmd)
+		{
+			//free_cmd_list(data->first_cmd);
+			error_msg(MALLOC_ERROR);
+			return (EXIT_FAILURE);
+		}
+		cmd->args = ft_split(argv[i], ' ');
+		if (!cmd->args)
+		{
+			//free_cmd_list(data->first_cmd);
+			error_msg(MALLOC_ERROR);
+			return (EXIT_FAILURE);
+		}
+		cmd->file_in = NULL;
+		cmd->file_out = NULL;
+		cmd->next = NULL;
+		if (i == 0)
+			data->first_cmd = cmd;
+		else
+		{
+			t_cmd *last = last_cmd(data->first_cmd);
+
+			last->next = cmd;
+		}
+		i++;
 	}
-	data->first_cmd = ls;
-	ls->next = grep;
-	grep->next = wc;
-	wc->next = NULL;
-	ls->args = ft_split("ls -la", ' ');
-	if (!ls->args)
-	{
-		fprintf(stderr, "malloc error!\n");
-		return (EXIT_FAILURE);
-	}
-	grep->args = ft_split("grep m", ' ');
-	if (!grep->args)
-	{
-		fprintf(stderr, "malloc error!\n");
-		return (EXIT_FAILURE);
-	}
-	wc->args = ft_split("wc -l", ' ');
-	if (!wc->args)
-	{
-		fprintf(stderr, "malloc error!\n");
-		return (EXIT_FAILURE);
-	}
-	ls->file_in = NULL;
-	ls->file_out = NULL;
-	grep->file_in = NULL;
-	grep->file_out = NULL;
-	wc->file_in = NULL;
-	wc->file_out = NULL;
 	data->nbr_cmds = number_of_cmds(data->first_cmd);
-	printf ("Number of commands = %lu\n", data->nbr_cmds);
 	return (EXIT_SUCCESS);
 }
-
-/* static int	create_cmds(t_data *data)
-{
-	t_cmd	*cmd = (t_cmd *)malloc(sizeof(t_cmd));
-
-	if (!cmd)
-	{
-		fprintf(stderr, "malloc error!\n");
-		return (EXIT_FAILURE);
-	}
-	data->first_cmd = cmd;
-	cmd->next = NULL;
-	cmd->args = ft_split("env", ' ');
-	if (!cmd->args)
-	{
-		fprintf(stderr, "malloc error!\n");
-		return (EXIT_FAILURE);
-	}
-	cmd->file_in = NULL;
-	cmd->file_out = NULL;
-	data->nbr_cmds = number_of_cmds(data->first_cmd);
-	printf ("Number of commands = %lu\n", data->nbr_cmds);
-	return (EXIT_SUCCESS);
-} */
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
 
-	if (argc != 1)
+	if (argc == 1)
 	{
-		printf("Error!!! Use:\n\t./minishell\n");
+		printf("Error!!! Use:\n\t./minishell <cmd_1> <cmd_2> ... <cmd_n>\n");
 		return (EXIT_FAILURE);
 	}
-	(void)argv;
 	if (data_init(&data, envp))
 		return (EXIT_FAILURE);
-	if (create_cmds(&data))
+	if (create_cmds(&data, argc - 1, argv + 1))
 		return (EXIT_FAILURE);
 	execute_pipeline(&data);
 	free_cmd_list(data.first_cmd);
