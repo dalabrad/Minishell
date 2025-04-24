@@ -119,6 +119,14 @@ fclean: clean
 	@make -C $(LIBFT_DIR) fclean
 	@echo "$(GREEN)Everything deleted successfully.$(RESET)"
 
-re: fclean all
+# ─────────────────────────────────────────────────────────────
+# VALGRIND TESTING
+# ─────────────────────────────────────────────────────────────
 
-.PHONY: all clean fclean re testv testd debugv gdbv
+VALGRIND_FLAGS = -s --leak-check=full --show-leak-kinds=all --track-fds=yes
+
+valgrind: all
+	@echo "$(BLUE)Ejecutando Valgrind con ./minishell...$(RESET)"
+	valgrind $(VALGRIND_FLAGS) ./minishell
+
+.PHONY: all clean fclean re testv testd debugv gdbv valgrind

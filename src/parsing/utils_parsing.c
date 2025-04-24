@@ -6,11 +6,33 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:18 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/15 19:37:21 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:07:34 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
+
+// CLASIFY PATH, IF STRING LOOKS ALIKE
+int is_path(const char *str)
+{
+	if (!str || ft_strlen(str) < 2)
+		return 0;
+
+	// absolut
+	if (str[0] == '/')
+		return 1;
+
+	// relative
+	if (ft_strncmp(str, "./", 2) == 0 || ft_strncmp(str, "../", 3) == 0)
+		return 1;
+
+	// contains '/'
+	if (ft_strchr(str, '/'))
+		return 1;
+
+	return 0;
+}
+
 
 // PRINT TOKENS
 void	print_tokens(t_tokens *list)

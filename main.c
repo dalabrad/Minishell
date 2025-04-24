@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/15 19:24:40 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/22 12:36:05 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ static void main_loop(void)
 	{
 		line = readline(PROMPT);
 		if (is_exit_command(line))
+		{
+			rl_clear_history(); // limpia el historial de readline
 			break;
+		}
 		if (!init_pipe_segments(line, &pipe_segments, &i_pipes))
 			continue;
 		tokens_by_segment = init_tokens_by_segment(i_pipes);
@@ -48,3 +51,17 @@ int main(int argc, char **argv, char **envp)
 	main_loop();
 	return (0);
 }
+
+/*
+//PARA PROBAR MINISHELL//
+> escribir por Terminal:
+> make 
+> ./minishell + ENTER
+> minishell>> echo "Lola que ase" > out.txt | ls -l | wc -l
+>
+//PARA PORBAR VALGRIND//
+> escribir por Terminal:
+> make valgrind
+> ./ minishell + ENTER
+> minishell>> cat /var/log/.log | grep -i "error" | wc -l | sort -n | head -n 10
+*/
