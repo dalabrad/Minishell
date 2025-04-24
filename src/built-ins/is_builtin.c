@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*   is_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/20 12:13:03 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 14:56:09 by dalabrad         ###   ########.fr       */
+/*   Created: 2025/04/24 14:02:44 by dalabrad          #+#    #+#             */
+/*   Updated: 2025/04/24 15:00:24 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-int	shell_env(char **args, t_data *data)
+bool	is_builtin(char *cmd_name, t_data *data)
 {
-	t_env **shell_envp;
+	char	*current;
+	int		i;
 
-	shell_envp = &(data->shell_envp);
-	(void)args;
-	if (!shell_envp || !(*shell_envp))
-		return (EXIT_FAILURE);
-	print_shell_envp_list(*shell_envp);
-	return (EXIT_SUCCESS);
+	if (!data || !cmd_name)
+		return (false);
+	current = NULL;
+	i = 0;
+	while (data->g_builtin[i].name)
+	{
+		current = data->g_builtin[i].name;
+		if (!ft_strncmp(current, cmd_name, ft_strlen(cmd_name)))
+			return (true);
+		i++;
+	}
+	return (false);
 }
