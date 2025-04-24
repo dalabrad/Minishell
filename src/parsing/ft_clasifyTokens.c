@@ -6,17 +6,18 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/15 19:37:27 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:09:37 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 
-// CLASIFY TOKENS
+//	CLASIFY TOKENS
 t_TokenType clasify_token(const char *str)
 {
 	if (!str)
 		return ERROR;
+
 	if (!ft_strcmp(str, "<"))
 		return RED_IN;
 	if (!ft_strcmp(str, ">"))
@@ -25,14 +26,23 @@ t_TokenType clasify_token(const char *str)
 		return HEREDOC;
 	if (!ft_strcmp(str, ">>"))
 		return APPEND_OUT;
+
 	if (str[0] == '-' && str[1])
 		return OPTION;
+
 	if (strchr(str, '='))
 		return SETTING;
+
 	if (!ft_strcmp(str, "|"))
-		return ERROR; // Podés definir PIPE si lo agregás al enum
+		return ERROR;
+
+	if (is_path(str))
+		return PATH;
+
 	return ARG;
 }
+
+
 
 // ENUM TO STRING
 const char *token_type_str(t_TokenType type)
@@ -46,6 +56,7 @@ const char *token_type_str(t_TokenType type)
 		case OPTION: return "OPTION";
 		case COMMAND: return "COMMAND";
 		case SETTING: return "SETTING";
+		case PATH: return "PATH";
 		case ARG: return "ARG";
 		case ERROR: return "ERROR";
 		default: return "UNKNOWN";
@@ -72,6 +83,12 @@ void set_command_type(t_tokens *tokens)
 		if ((tmp->type == ARG || tmp->type == OPTION) && tmp->was_quoted == 0)
 		{
 			tmp->type = COMMAND;
+			break;
+		}
+		// Si es PATH
+		if (tmp->type == PATH && tmp->was_quoted == 0)
+		{
+			// Mantenemos PATH como está, pero lo consideramos el ejecutable
 			break;
 		}
 		tmp = tmp->next;
@@ -138,8 +155,7 @@ t_tokens *check_args_fixed(const char *input, size_t *i_words)
 			break;
 
 		new_tok->str = poly_substr(input, &k, &new_tok->was_quoted);
-		new_tok->type = clasify_token(new_tok->str);
-		new_tok->was_quoted = (new_tok->str[0] == '"' || new_tok->str[0] == '\'');
+		new_tok->type = clasify_token(new_tok->str); // defines new_tok->was_quoted
 		new_tok->skip = 0;
 		new_tok->next = NULL;
 
