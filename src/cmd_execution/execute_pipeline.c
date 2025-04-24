@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:23:11 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 13:53:20 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:07:23 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static void	one_cmd_pipeline(t_data *data)
 	cmd = data->first_cmd;
 	if (!cmd)
 		return ;
+	if (is_builtin(cmd->args[0], data))
+		command_exec(cmd->args, data);
 	cmd->pid = fork();
 	if (cmd->pid == -1)
 	{
@@ -37,6 +39,8 @@ static void	one_cmd_pipeline(t_data *data)
 		if (cmd->file_out)
 			printf("here should redirect output to file\n"); //TO DO!!!
 		command_exec(cmd->args, data);
+		free_cmd_list(data->first_cmd);
+		free_data(data);
 		exit(0);
 	}
 }

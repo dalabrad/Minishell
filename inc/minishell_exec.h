@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 12:32:04 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:06:37 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,9 @@ void	free_data(t_data *data);
 ////////////////////////////////////////////////
 //------BUILT-INS-------------------------------
 ////////////////////////////////////////////////
+
+//	src/built-ins/is_builtin.c
+bool	is_builtin(char *cmd_name, t_data *data);
 
 //	src/built-ins/builtin_cd.c
 int		shell_cd(char **args, t_env **shell_envp);
