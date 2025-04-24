@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 14:06:37 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:01:43 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_data	t_data;
+
 typedef struct s_builtin
 {
 	char	*name;
-	int		(*foo)(char **args, t_env **shell_envp);
+	int		(*foo)(char **args, t_data *data);
 }	t_builtin;
 
 typedef struct s_cmd	t_cmd;
@@ -72,7 +74,7 @@ struct s_cmd
 	t_cmd	*next;
 };
 
-typedef struct s_data
+struct s_data
 {
 	t_env		*shell_envp;
 	//t_tokens	*tokens_by_segment;
@@ -80,7 +82,7 @@ typedef struct s_data
 	int			pipes[2][2];
 	t_cmd		*first_cmd;
 	size_t		nbr_cmds;
-}	t_data;
+};
 
 ////////////////////////////////////////////////
 //------ERROR MESSAGES--------------------------
@@ -130,25 +132,25 @@ void	free_data(t_data *data);
 bool	is_builtin(char *cmd_name, t_data *data);
 
 //	src/built-ins/builtin_cd.c
-int		shell_cd(char **args, t_env **shell_envp);
+int		shell_cd(char **args, t_data *data);
 
 //	src/built-ins/builtin_echo.c
-int		shell_echo(char **args, t_env **shell_envp);
+int		shell_echo(char **args, t_data *data);
 
 //	src/built-ins/builtin_env.c
-int		shell_env(char **args, t_env **shell_envp);
+int		shell_env(char **args, t_data *data);
 
 //	src/built-ins/builtin_exit.c
-int		shell_exit(char	**args, t_env **shell_envp);
+int		shell_exit(char	**args, t_data *data);
 
 //	src/built-ins/builtin_export.c
-int		shell_export(char **args, t_env **shell_envp);
+int		shell_export(char **args, t_data *data);
 
 //	src/built-ins/builtin_pwd.c
-int		shell_pwd(char **args, t_env **shell_envp);
+int		shell_pwd(char **args, t_data *data);
 
 //	src/built-ins/builtin_unset.c
-int		shell_unset(char **args, t_env **shell_envp);
+int		shell_unset(char **args, t_data *data);
 
 ////////////////////////////////////////////////
 //------COMMAND-EXECUTION-----------------------

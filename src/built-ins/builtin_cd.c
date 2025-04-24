@@ -6,14 +6,14 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:08:15 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 17:12:00 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:04:17 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-static int	export_pwd(t_env **shell_envp, char *pwd_path, char *pwd_type)
+static int	export_pwd(t_data *data, char *pwd_path, char *pwd_type)
 {
 	char	**tmp;
 
@@ -27,7 +27,7 @@ static int	export_pwd(t_env **shell_envp, char *pwd_path, char *pwd_type)
 		return (error_msg(MALLOC_ERROR));
 	}
 	tmp[1] = NULL;
-	shell_export(tmp, shell_envp);
+	shell_export(tmp, data);
 	free_array(tmp);
 	return (EXIT_SUCCESS);
 }
@@ -43,7 +43,7 @@ static int	cd_check_args(char **args)
 	return (0);
 }
 
-int	shell_cd(char **args, t_env **shell_envp)
+int	shell_cd(char **args, t_data *data)
 {
 	char	*old_pwd;
 	char	*pwd;
@@ -57,12 +57,12 @@ int	shell_cd(char **args, t_env **shell_envp)
 		return (error_msg(MALLOC_ERROR));
 	if (chdir(args[0]))
 		return (free(old_pwd), error_msg(CHDIR_ERROR));
-	export_pwd(shell_envp, old_pwd, "OLDPWD=");
+	export_pwd(data, old_pwd, "OLDPWD=");
 	free(old_pwd);
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (error_msg(MALLOC_ERROR));
-	export_pwd(shell_envp, pwd, "PWD=");
+	export_pwd(data, pwd, "PWD=");
 	free(pwd);
 	return (EXIT_SUCCESS);
 }

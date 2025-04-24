@@ -6,19 +6,20 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:18:50 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 16:46:45 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:09:45 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-int	shell_exit(char	**args, t_env **shell_envp)
+int	shell_exit(char	**args, t_data *data)
 {
 	(void)args;
-	printf("Exiting ./minishell, freeing all allocated data...\n\n");
-	free_shell_envp_list(shell_envp);
-	printf("Minishell: All data freed. Goodbye!!\n");
+	if (data->nbr_cmds == 1)
+		printf("exit\n");
+	free_data(data);
+	free_cmd_list(data->first_cmd);
 	exit(EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }
