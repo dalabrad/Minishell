@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:23:11 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 12:34:29 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/04/24 13:53:20 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	one_cmd_pipeline(t_data *data)
 		if (cmd->file_out)
 			printf("here should redirect output to file\n"); //TO DO!!!
 		command_exec(cmd->args, data);
-		exit(1);
+		exit(0);
 	}
 }
 
@@ -91,7 +91,9 @@ void	execute_pipeline(t_data *data)
 				close(data->pipes[0][W_PIPE]);
 			}
 			command_exec(cmd->args, data);
-			exit(1);
+			free_cmd_list(data->first_cmd);
+			free_data(data);
+			exit(0);
 		}
 		i++;
 		cmd = cmd->next;
