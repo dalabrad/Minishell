@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/22 14:09:37 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:30:16 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ void set_command_type(t_tokens *tokens)
 }
 
 
-// SPLIT WORDS: HANDLES QUOTES AND REDIR
+// SPLIT WORDS + QUOTES
 char *poly_substr(const char *s, size_t *i, int *was_quoted)
 {
-	size_t	start = *i;
-	bool	in_single = false;
-	bool	in_double = false;
+	size_t start = *i;
+	bool in_single = false;
+	bool in_double = false;
 	*was_quoted = 0;
 
 	if (s[*i] == '|' || s[*i] == '<' || s[*i] == '>')
@@ -126,41 +126,39 @@ char *poly_substr(const char *s, size_t *i, int *was_quoted)
 			*was_quoted = 1;
 		}
 		else if ((s[*i] == ' ' || s[*i] == '|' || s[*i] == '<' || s[*i] == '>') &&
-				 !in_single && !in_double)
-		{
+			 !in_single && !in_double)
 			break;
-		}
 		(*i)++;
 	}
 	return ft_substr(s, start, *i - start);
 }
 
-// SEPARAR Y CLASIFICAR TOKENS
-t_tokens *check_args_fixed(const char *input, size_t *i_words)
+// MAIN TOKENIZER + EXPAND
+t_tokens *check_args_fixed(const char *input, size_t *i_words, char **envp)
 {
-	t_tokens	*head = NULL;
-	t_tokens	*curr = NULL;
-	size_t		k = 0;
+	t_tokens *head = NULL;
+	t_tokens *curr = NULL;
+	size_t k = 0;
 
 	printf("-----> Tokenizing: [%s]\n", input);
 	while (input[k])
 	{
 		while (input[k] == ' ')
 			k++;
-		if (!input[k])
-			break;
+		if (!input[k]) break;
 
 		t_tokens *new_tok = malloc(sizeof(t_tokens));
-		if (!new_tok)
-			break;
+		if (!new_tok) break;
 
 		new_tok->str = poly_substr(input, &k, &new_tok->was_quoted);
-		new_tok->type = clasify_token(new_tok->str); // defines new_tok->was_quoted
+		if (new_tok->was_quoted == 0 || new_tok->str[0] == '"')
+			new_tok->str = expand_variables(new_tok->str, envp);
+
+		new_tok->type = clasify_token(new_tok->str);
 		new_tok->skip = 0;
 		new_tok->next = NULL;
 
 		(*i_words)++;
-
 		if (!head)
 			head = new_tok;
 		else
