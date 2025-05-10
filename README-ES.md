@@ -1,6 +1,7 @@
 # Minishell
 
 Implementación básica de un shell en C conforme al proyecto de 42 School. Soporta ejecución de comandos, redirecciones, pipes, parsing de argumentos, etc.
+#### Guia de acceso a Tokens en Minishell para Ejecutar Comandos
 
 ---
 
@@ -172,6 +173,119 @@ make fclean
 
 ## Estado
 
-El proyecto está en desarrollo, cubre los fundamentos básicos de un shell. Está listo para pruebas más complejas y mejoras futuras.
+El proyecto está en desarrollo por David Labrador Garcia y Vanessa Lorenzo Toquero, cubre los fundamentos básicos de un shell. Está listo para pruebas más complejas y mejoras futuras.
 
 ---
+
+# Acceso a Tokens en Minishell para Ejecutar Comandos
+
+Este documento explica cómo acceder y usar los tokens generados por el parser en `minishell` para ejecutar comandos correctamente.
+
+---
+
+## Objetivo
+
+Recorrer los **tokens** de cada `pipe_segment` y construir `argv[]` para ejecutar comandos usando `execve` o `execvp`.
+
+---
+
+## 🔍 Cómo acceder a los tokens
+
+Cada entrada de `tokens_by_segment[i]` es la cabeza de una lista enlazada de `t_tokens`:
+
+```c
+t_tokens **tokens_by_segment;  // arreglo de listas enlazadas
+size_t i_pipes;                // número de pipes
+```
+
+Recorre los tokens usando `while`:
+
+```c
+size_t i = 0;
+
+while (i < i_pipes)
+{
+	t_tokens *current = tokens_by_segment[i];
+	
+	while (current)
+	{
+		printf("Token string: %s\n", current->str);
+		printf("Token type  : %d\n", current->type);  // Puedes usar token_type_str()
+		current = current->next;
+	}
+	i++;
+}
+```
+
+---
+
+## Qué hacer con cada token
+
+- El primer token tipo `COMMAND` es el comando.
+- Tokens tipo `ARG` y `OPTION` son los argumentos.
+
+Puedes construir un `char *argv[]` para pasarlo a `execve`:
+
+---
+
+## 📦 Ejemplo: construir `argv[]`
+
+```c
+char **build_argv(t_tokens *tokens)
+{
+	size_t count = 0;
+	t_tokens *tmp = tokens;
+
+	// contar argumentos
+	while (tmp)
+	{
+		if (tmp->type == COMMAND || tmp->type == ARG || tmp->type == OPTION)
+			count++;
+		tmp = tmp->next;
+	}
+
+	char **argv = malloc(sizeof(char *) * (count + 1));
+	if (!argv)
+		return NULL;
+
+	tmp = tokens;
+	size_t i = 0;
+	while (tmp)
+	{
+		if (tmp->type == COMMAND || tmp->type == ARG || tmp->type == OPTION)
+		{
+			argv[i] = tmp->str;  // o strdup(tmp->str)
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	argv[i] = NULL;
+	return argv;
+}
+```
+
+---
+
+## ⚖️ Ejecutar comando
+
+```c
+char **argv = build_argv(tokens_by_segment[i]);
+
+if (argv && argv[0])
+	execvp(argv[0], argv);  // o execve()
+
+// libera argv si hiciste strdup()
+```
+
+---
+
+## ✅ Conclusión
+
+- Usa `tokens_by_segment[i]` para acceder a los tokens.
+- Usa `while` para recorrer la lista enlazada.
+- Construye `argv[]` con `COMMAND`, `ARG` y `OPTION`.
+- Ejecuta con `execvp` o `execve`.
+
+---
+
+¡Ahora estás listo para conectar el parser con la ejecución!
