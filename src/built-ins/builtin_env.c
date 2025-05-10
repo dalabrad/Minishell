@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:13:03 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 14:56:09 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/10 11:33:55 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	shell_env(char **args, t_data *data)
 {
-	t_env **shell_envp;
+	t_env	**shell_envp;
 
 	shell_envp = &(data->shell_envp);
 	(void)args;
