@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 15:01:43 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/10 12:28:32 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,9 @@ int		shell_unset(char **args, t_data *data);
 
 //	src/cmd_execution/command_exec.c
 int		command_exec(char **args, t_data *data);
+
+// src/cmd_execution/one_command_pipeline.c
+void	one_cmd_pipeline(t_data *data);
 
 // src/cmd_execution/execute_pipeline.c
 void	execute_pipeline(t_data *data);
