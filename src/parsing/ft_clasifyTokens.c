@@ -6,7 +6,11 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/10 11:41:11 by vlorenzo         ###   ########.fr       */
+=======
+/*   Updated: 2025/04/22 14:09:37 by vlorenzo         ###   ########.fr       */
+>>>>>>> 16548874b2eafe0096e0bd6b1e43a87279e9e2f0
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,10 +155,14 @@ t_tokens *check_args_fixed(const char *input, size_t *i_words, char **envp)
 		if (!new_tok) break;
 
 		new_tok->str = poly_substr(input, &k, &new_tok->was_quoted);
+<<<<<<< HEAD
 		if (new_tok->was_quoted == 0 || new_tok->str[0] == '"')
 			new_tok->str = expand_variables(envp);
 
 		new_tok->type = clasify_token(new_tok->str);
+=======
+		new_tok->type = clasify_token(new_tok->str); // defines new_tok->was_quoted
+>>>>>>> 16548874b2eafe0096e0bd6b1e43a87279e9e2f0
 		new_tok->skip = 0;
 		new_tok->next = NULL;
 

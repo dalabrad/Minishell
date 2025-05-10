@@ -119,8 +119,6 @@ fclean: clean
 	@make -C $(LIBFT_DIR) fclean
 	@echo "$(GREEN)Everything deleted successfully.$(RESET)"
 
-re: fclean all
-
 # ─────────────────────────────────────────────────────────────
 # VALGRIND TESTING
 # ─────────────────────────────────────────────────────────────

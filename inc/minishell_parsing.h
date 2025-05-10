@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 12:15:00 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/10 15:49:11 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef enum t_TokenType {
 	OPTION,
 	COMMAND,
 	SETTING,
+	PATH,
 	PATH,
 	ARG,
 	ERROR
@@ -121,7 +122,9 @@ size_t					count_splitted(const char *s, char c);
 
 // UTILS PARSING
 int 					is_path(const char *str);
+int 					is_path(const char *str);
 void					print_tokens(t_tokens *list);
+int 					ft_lstadd_front2(t_pipes **lst, t_pipes *new);
 int 					ft_lstadd_front2(t_pipes **lst, t_pipes *new);
 const char				*skip_space(const char *s);
 size_t					is_open(const char *s);
