@@ -50,15 +50,36 @@ minishell>> exit
 
 ---
 
+## Visualization
+
+Result on screen:
+
+```bash
+=========== PIPE SEGMENTS ===========
+PIPE[0]: echo "hola" > out.txt 
+→ Token: echo            | Type: COMMAND     
+→ Token: "hola"          | Type: ARG         
+→ Token: >               | Type: RED_OUT     
+→ Token: out.txt         | Type: ARG
+
+PIPE[1]: ls -l
+→ Token: ls              | Type: COMMAND
+→ Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
+
+PIPE[2]: wc -l
+→ Token: wc              | Type: COMMAND
+→ Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
+```
+---
+
 ## Testing
 
-The script includes automated testing for:
-- `testing_all.sh` → GENERAL
+Tesing script tests:
+- `testing_all.sh`         → GENERAL
+- `testing_meta_error.sh`  → METACHARS
+- `testing_path_quotes.sh` → PATH/BALANCING
+- `testing_redir_error.sh` → ERROR
 - `testing_expansion.sh` → EXPANSIONS
-- `testing_meta_error.sh` → METACARACTERES
-- `testing_path_quotes.sh` → PATH QUOTES
-- `testing_redir_error.sh` → REDIR ERROR
-
 
 Command: bash `yourtest.sh`
 ---
