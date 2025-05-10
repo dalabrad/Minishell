@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 15:49:11 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:27:27 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "libft.h"
 # include "minishell_exec.h"
 # include "array_utils.h"
+# include <stddef.h>
 # include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -54,7 +55,6 @@ typedef enum t_TokenType {
 	OPTION,
 	COMMAND,
 	SETTING,
-	PATH,
 	PATH,
 	ARG,
 	ERROR
@@ -134,11 +134,11 @@ t_TokenType				clasify_token(const char *str);
 void 					set_command_type(t_tokens *tokens);
 const 					char *token_type_str(t_TokenType type);
 char 					*poly_substr(const char *s, size_t *i, int *was_quoted);
-t_tokens				*check_args_fixed(const char *input, size_t *i_words, char ** envp);
+t_tokens				*check_args_fixed(const char *input, size_t *i_words);
 
 // PROCESS BY SEGMENT OR PIPE
-void process_single_segment(char *segment, t_tokens **token_ptr, size_t index, char **envp);
-void process_segments(char **segments, t_tokens **tokens, size_t n, char ** envp);
+void process_single_segment(char *segment, t_tokens **token_ptr, size_t index);
+void process_segments(char **segments, t_tokens **tokens, size_t n);
 
 // EXPAND & FOR EXEC
 char	**tokens_to_args(t_tokens *tokens);

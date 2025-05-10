@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 15:53:22 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:30:29 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void main_loop(char **envp, int fd, char *line)
 	size_t i_pipes;
 	t_tokens **tokens_by_segment;
 
+	(void)envp;
 	while (1)
 	{
 		dup2(fd, STDIN_FILENO);
@@ -38,7 +39,7 @@ static void main_loop(char **envp, int fd, char *line)
 			free(line);
 			continue;
 		}
-		process_segments(pipe_segments, tokens_by_segment, i_pipes, envp);
+		process_segments(pipe_segments, tokens_by_segment, i_pipes);
 		cleanup(line, pipe_segments, tokens_by_segment, i_pipes);
 	}
 }
@@ -47,7 +48,7 @@ static void main_loop(char **envp, int fd, char *line)
 int main(int argc, char **argv, char **envp)
 {
 	(void)argv;
-	t_data	data;
+	//t_data	data;
 	int fd;
 	char *line;
 
