@@ -32,19 +32,19 @@ You can compile the project with the following rules:
 
 Once compiled, you can start the minishell with:
 
-````bash
+```bash
 ./minishell
 ```
 
 Example usage:
 
-````bash
+```bash
 minishell>> echo ‘Hello World’ > out.txt | cat out.txt
 ```
 
 To exit:
 
-````bash
+```bash
 minishell>> exit
 ```
 
@@ -54,7 +54,7 @@ minishell>> exit
 
 Result on screen:
 
-```bash
+```c
 =========== PIPE SEGMENTS ===========
 PIPE[0]: echo "hola" > out.txt 
 → Token: echo            | Type: COMMAND     
@@ -100,14 +100,14 @@ Traverse the **tokens** of each `pipe_segment` and build `argv[]` to execute com
 
 Each entry in `tokens_by_segment[i]` is the head of a linked list of `t_tokens`:
 
-````c
+```c
 t_tokens **tokens_by_segment; // linked list array
 size_t i_pipes; // number of pipes
-````.
+````
 
 Cycles through tokens using `while`:
 
-````c
+```c
 size_t i = 0;
 
 while (i < i_pipes)
@@ -122,7 +122,7 @@ current = current->next;
 }
 i++;
 }
-`````
+```
 
 ---
 
