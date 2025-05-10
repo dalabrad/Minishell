@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 16:30:29 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:49:10 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void main_loop(char **envp, int fd, char *line)
 	{
 		dup2(fd, STDIN_FILENO);
 		line = readline(PROMPT);
-		if (is_exit_command(line))
+		if (is_exit_command(line)) // esto va FUERA, por builtins
 		{
 			rl_clear_history(); // limpia el historial de readline
 			break;
@@ -48,18 +48,16 @@ static void main_loop(char **envp, int fd, char *line)
 int main(int argc, char **argv, char **envp)
 {
 	(void)argv;
-	//t_data	data;
-	int fd;
+	t_data	data;
 	char *line;
 
 	// CHECK SIGNALS un dia de estos
 	if (argc != 1)
 		return (printf("Too many arguments or readline failure.\n"), 0);
 	line = NULL;
-	fd = dup(STDIN_FILENO);
-/* 	if (data_init(&data, envp))
-		return (EXIT_FAILURE); */
-	main_loop(envp, fd, line);
+	if (data_init(&data, envp))
+		return (EXIT_FAILURE);
+	main_loop(envp, data.stdin_copy_fd, line);
 	return (0);
 }
 
