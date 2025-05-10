@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:23:11 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 14:07:23 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/10 11:30:01 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	one_cmd_pipeline(t_data *data)
 	cmd->pid = fork();
 	if (cmd->pid == -1)
 	{
-		printf("minishel: could not fork process\n");
+		error_msg(FORK_ERROR);
 		return ;
 	}
 	else if (cmd->pid)
