@@ -54,6 +54,8 @@ minishell>> exit
 ## Visualizacion
 
 Resultado por pantalla:
+
+```bash
 =========== PIPE SEGMENTS ===========
 PIPE[0]: echo "hola" > out.txt 
 → Token: echo            | Type: COMMAND     
@@ -68,6 +70,7 @@ PIPE[1]: ls -l
 PIPE[2]: wc -l
 → Token: wc              | Type: COMMAND
 → Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
+```
 ---
 
 ## Testing
