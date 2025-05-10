@@ -54,7 +54,7 @@ minishell>> exit
 
 Result on screen:
 
-```c
+```bash
 =========== PIPE SEGMENTS ===========
 PIPE[0]: echo "hola" > out.txt 
 → Token: echo            | Type: COMMAND     
