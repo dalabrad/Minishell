@@ -121,4 +121,14 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re testv testd debugv gdbv
+# ─────────────────────────────────────────────────────────────
+# VALGRIND TESTING
+# ─────────────────────────────────────────────────────────────
+
+VALGRIND_FLAGS = -s --leak-check=full --show-leak-kinds=all --track-fds=yes
+
+valgrind: all
+	@echo "$(BLUE)Ejecutando Valgrind con ./minishell...$(RESET)"
+	valgrind $(VALGRIND_FLAGS) ./minishell
+
+.PHONY: all clean fclean re testv testd debugv gdbv valgrind

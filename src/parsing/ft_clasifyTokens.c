@@ -6,17 +6,18 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/15 19:37:27 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/10 11:41:11 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 
-// CLASIFY TOKENS
+//	CLASIFY TOKENS
 t_TokenType clasify_token(const char *str)
 {
 	if (!str)
 		return ERROR;
+
 	if (!ft_strcmp(str, "<"))
 		return RED_IN;
 	if (!ft_strcmp(str, ">"))
@@ -25,14 +26,23 @@ t_TokenType clasify_token(const char *str)
 		return HEREDOC;
 	if (!ft_strcmp(str, ">>"))
 		return APPEND_OUT;
+
 	if (str[0] == '-' && str[1])
 		return OPTION;
+
 	if (strchr(str, '='))
 		return SETTING;
+
 	if (!ft_strcmp(str, "|"))
-		return ERROR; // Podés definir PIPE si lo agregás al enum
+		return ERROR;
+
+	if (is_path(str))
+		return PATH;
+
 	return ARG;
 }
+
+
 
 // ENUM TO STRING
 const char *token_type_str(t_TokenType type)
@@ -46,6 +56,7 @@ const char *token_type_str(t_TokenType type)
 		case OPTION: return "OPTION";
 		case COMMAND: return "COMMAND";
 		case SETTING: return "SETTING";
+		case PATH: return "PATH";
 		case ARG: return "ARG";
 		case ERROR: return "ERROR";
 		default: return "UNKNOWN";
@@ -74,17 +85,23 @@ void set_command_type(t_tokens *tokens)
 			tmp->type = COMMAND;
 			break;
 		}
+		// Si es PATH
+		if (tmp->type == PATH && tmp->was_quoted == 0)
+		{
+			// Mantenemos PATH como está, pero lo consideramos el ejecutable
+			break;
+		}
 		tmp = tmp->next;
 	}
 }
 
 
-// SPLIT WORDS: HANDLES QUOTES AND REDIR
+// SPLIT WORDS + QUOTES
 char *poly_substr(const char *s, size_t *i, int *was_quoted)
 {
-	size_t	start = *i;
-	bool	in_single = false;
-	bool	in_double = false;
+	size_t start = *i;
+	bool in_single = false;
+	bool in_double = false;
 	*was_quoted = 0;
 
 	if (s[*i] == '|' || s[*i] == '<' || s[*i] == '>')
@@ -109,42 +126,39 @@ char *poly_substr(const char *s, size_t *i, int *was_quoted)
 			*was_quoted = 1;
 		}
 		else if ((s[*i] == ' ' || s[*i] == '|' || s[*i] == '<' || s[*i] == '>') &&
-				 !in_single && !in_double)
-		{
+			 !in_single && !in_double)
 			break;
-		}
 		(*i)++;
 	}
 	return ft_substr(s, start, *i - start);
 }
 
-// SEPARAR Y CLASIFICAR TOKENS
-t_tokens *check_args_fixed(const char *input, size_t *i_words)
+// MAIN TOKENIZER + EXPAND
+t_tokens *check_args_fixed(const char *input, size_t *i_words, char **envp)
 {
-	t_tokens	*head = NULL;
-	t_tokens	*curr = NULL;
-	size_t		k = 0;
+	t_tokens *head = NULL;
+	t_tokens *curr = NULL;
+	size_t k = 0;
 
 	printf("-----> Tokenizing: [%s]\n", input);
 	while (input[k])
 	{
 		while (input[k] == ' ')
 			k++;
-		if (!input[k])
-			break;
+		if (!input[k]) break;
 
 		t_tokens *new_tok = malloc(sizeof(t_tokens));
-		if (!new_tok)
-			break;
+		if (!new_tok) break;
 
 		new_tok->str = poly_substr(input, &k, &new_tok->was_quoted);
+		if (new_tok->was_quoted == 0 || new_tok->str[0] == '"')
+			new_tok->str = expand_variables(envp);
+
 		new_tok->type = clasify_token(new_tok->str);
-		new_tok->was_quoted = (new_tok->str[0] == '"' || new_tok->str[0] == '\'');
 		new_tok->skip = 0;
 		new_tok->next = NULL;
 
 		(*i_words)++;
-
 		if (!head)
 			head = new_tok;
 		else

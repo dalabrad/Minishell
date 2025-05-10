@@ -1,228 +1,175 @@
-# MINI-SHELL PARSER: GUIDE TO COMPILING, TESTING AND USING TOKENS
+# Minishell
+
+Basic implementation of a C shell according to the 42 School project. Supports command execution, redirects, pipes, argument parsing, etc.
 
 ---
 
-## MAIN STRUCTURE
+## Requirements
 
-- `main_test_v.c` - Main testing function.
-- `ft_minisplit.c` - Separate input by pipes.
-- `ft_clasifyTokens.c` - Classify each word/token.
-- `utils_parsing.c` - Auxiliary functions (checking for quotes, spaces, etc).
-- `utils_initClean.c` - Memory management.
-
----
-
-## HOW TO COMPILE
-
-````bash
-make testv
-````
-
-This command will compile your Minishell with the `main_test_v.c` function for testing.
+- Linux
+- `gcc`
+- `make`
+- Library `readline`
 
 ---
 
-## HOW TO RUN
+## Make rules
+
+You can compile the project with the following rules:
+
+| Command         | Description                                                           |
+|-----------------|-----------------------------------------------------------------------|
+| `make`          | Compiles the project and generates the `minishell` executable.        |
+| `make gdb`      | Compile the project with debugging symbols (`-g3`).                   |
+| `make valgrind` | Compile with `-g3` and flags useful for executing with Valgrind.      |
+| `make clean`    | Remove `.o` files.                                                    |
+| `make fclean`   | Remove executables and `.o` files.                                    |
+| `make re`       | Equivalent to `fclean` followed by `make`.                            |
+| `make testd`    | Compile a version that includes EXECUTE (`main_test_d`).              |
+---
+
+## Execution
+
+Once compiled, you can start the minishell with:
 
 ````bash
 ./minishell
-````
+```
 
-And then you can enter commands like:
-
-````bash
-echo "hello world" > out.txt | ls -l | wc -l
-````
-
----
-
-## WHAT IT DOES
-
-1. Separates the input by `|`.
-2. Tokenize each pipe segment.
-3. Classify tokens as `COMMAND`, `ARG`, `RED_OUT`, etc.
-4. Displays information for each token (including whether it was enclosed in quotes).
-5. Apply rules to decide which token is the command in each pipe.
-
----
-
-## EXAMPLE OUTPUT
+Example usage:
 
 ````bash
-=========== PIPE SEGMENTS ===========
- -----> Tokenizing: [echo "hello world" > out.txt]
-→ Token: echo | Type: COMMAND | Quoted: no
-→ Token: "hello world" | Type: ARG | Quoted: yes
-→ Token: &gt; | Type: RED_OUT | Quoted: no
-→ Token: out. txt | Type: ARG | Quoted: no
-Total tokens: 4
+minishell>> echo ‘Hello World’ > out.txt | cat out.txt
+```
 
------> Tokenizing: [ ls -l ]
-→ Token: ls | Type: COMMAND | Quoted: no
-→ Token: -l | Type: OPTION | Quoted: no
-Total tokens: 2
+To exit:
 
------> Tokenizing: [ wc -l ]
-→ Token: wc | Type: COMMAND | Quoted: no
-→ Token: -l | Type: OPTION | Quoted: no
-Total tokens: 2
-````
+````bash
+minishell>> exit
+```
 
 ---
 
-## ACCESS TO TOKENS
+## Testing
 
-In the `main_test_v.c` function, each group of tokens is stored like this:
-
-````c
-t_tokens **tokens_by_segment;
-````
-
-This is an array of linked lists. Each position represents a pipe:
-
-````c
-tokens_by_segment[0] → first pipe tokens
-tokens_by_segment[1] → second pipe tokens
-````
+The script includes automated testing for:
+- `testing_all.sh` → GENERAL
+- `testing_expansion.sh` → EXPANSIONS
+- `testing_meta_error.sh` → METACARACTERES
+- `testing_path_quotes.sh` → PATH QUOTES
+- `testing_redir_error.sh` → REDIR ERROR
 
 
-From there you can easily access the tokens to execute commands.
+Command: bash `yourtest.sh`
+---
 
-### Where are the tokens ready to execute?
-After ft_minisplit(), you call:
+# Accessing Tokens in Minishell to Execute Commands
 
-````c
-tokens_by_segment[i] = check_args_fixed(pipe_segments[i], &segment_tokens);
-````
+This document explains how to access and use parser-generated tokens in `minishell` to execute commands correctly.
 
-Then:
+---
 
-````c
-// tokens_by_segment[i] contains the linked list of tokens from PIPE[i]
-````
+## Objective
 
-Each t_tokens has:
+Traverse the **tokens** of each `pipe_segment` and build `argv[]` to execute commands using `execve` or `execvp`.
 
-str: the string of the token
+---
 
-type: type of token (COMMAND, ARG, RED_OUT, etc. )
+## How to access tokens
 
-was_quoted: if it came in quotes
-
-Example:
-If you want to execute the first pipe, you can do:
+Each entry in `tokens_by_segment[i]` is the head of a linked list of `t_tokens`:
 
 ````c
-t_tokens *cmd = tokens_by_segment[0];
-while (cmd)
+t_tokens **tokens_by_segment; // linked list array
+size_t i_pipes; // number of pipes
+````.
+
+Cycles through tokens using `while`:
+
+````c
+size_t i = 0;
+
+while (i < i_pipes)
 {
- printf("TOKEN: %s | TYPE: %d\n", cmd->str, cmd->type);
- cmd = cmd->next;
+t_tokens *current = tokens_by_segment[i];
+	
+	while (current)
+{
+printf("Token string: %s\n", current->str);
+printf("Token type : %d\n", current->type); // You can use token_type_str()
+current = current->next;
 }
-````
+i++;
+}
+`````
 
 ---
 
-### Token types (t_TokenType)
+## What to do with each token
 
-````c
-typedef enum t_TokenType {
-RED_IN,
-RED_OUT,
-HEREDOC,
-APPEND_OUT,
-OPTION,
-COMMAND,
-SETTING,
-ARG,
-ERROR
-} t_TokenType;
-````
+- The first token type `COMMAND` is the command.
+- Tokens of type `ARG` and `OPTION` are the arguments.
+
+You can construct a `char *argv[]` to pass to `execve`:
 
 ---
 
-Next step: execution
-Starting from the tokens of tokens_by_segment[i]:
-
-The first token with type COMMAND is the main command.
-
-The ones with type ARG, OPTION, etc. go to argv[].
-
-If there are redirections (RED_OUT, HEREDOC, etc.), you can save the filename (token-&gt;next-&gt;str) and apply dup2() afterwards.
-
-
-## MEMORY CLEANUP
-
-At the end of the loop, tokens and pipe_segments are successfully freed:
-
-````c
-free_array(pipe_segments);
-for (size_t j = 0; j <= i_pipes; j++)
- free_tokens_list(tokens_by_segment[j]);
-free(tokens_by_segment);
-````
-
----
-
-## DEBUGGING WITH GDB
-
-````bash
-make gdb
-````
-
-- Test with `"`, `'`, `>`, `>`, `>>`, `<`, `<<`, `|`.
-- Validate edge cases like:
-  - Unclosed quotes
- - Empty pipes
- - Multiple spaces
-- Try changing the config GDB file to make breakpoints in more functions.
-
----
-
-## MEMORY CLEARING
-
-At the end of the cycle, the tokens and pipe_segments are successfully freed:
-
-````c
-free_array(pipe_segments);
-for (size_t j = 0; j <= i_pipes; j++)
- free_tokens_list(tokens_by_segment[j]);
-free(tokens_by_segment);
-````
-
----
-
-## DEBUGGING WITH GDB
-
-````bash
-make gdb
-````
-
-- Test with `"`, `'`, `>`, `>>`, `<`, `<<`, `|`.
-- Validate edge cases like:
-  - Unclosed quotes
- - Empty pipes
- - Multiple spaces
-- Try changing the config GDB file to make breakpoints in more functions.
-
----
-
-## EXTRA: USEFUL FUNCTIONS
-
-- `poly_substr()` - Separate words by handling quotes.
-- `set_command_type()` - Decide which token is the primary command.
-- `token_type_str()` - Returns string representative of token type.
-
----
-
-## FOR RUN TEAM
-
-Use `tokens_by_segment[i]` as input to your executor. Each `t_tokens` node has:
+## Example: construct `argv[]`.
 
 ```c
-char *str // content
-t_TokenType type // token type
-int was_quoted // quote
+char **build_argv(t_tokens *tokens)
+{
+	size_t count = 0;
+	t_tokens *tmp = tokens;
+
+	// contar argumentos
+	while (tmp)
+	{
+		if (tmp->type == COMMAND || tmp->type == ARG || tmp->type == OPTION)
+			count++;
+		tmp = tmp->next;
+	}
+
+	char **argv = malloc(sizeof(char *) * (count + 1));
+	if (!argv)
+		return NULL;
+
+	tmp = tokens;
+	size_t i = 0;
+	while (tmp)
+	{
+		if (tmp->type == COMMAND || tmp->type == ARG || tmp->type == OPTION)
+		{
+			argv[i] = tmp->str;  // o strdup(tmp->str)
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	argv[i] = NULL;
+	return argv;
+}
+```
+
+---
+
+## Execute command
+
+```c
+char **argv = build_argv(tokens_by_segment[i]);
+
+if (argv && argv[0])
+execvp(argv[0], argv); // or execve()
+
+// free argv if you did strdup()
 ````
+
+---
+
+## Conclusion
+
+- Use `tokens_by_segment[i]` to access tokens.
+- Use `while` to traverse the linked list.
+- Build `argv[]` with `COMMAND`, `ARG` and `OPTION`.
+- Execute with `execvp` or `execve`.
 
 ---

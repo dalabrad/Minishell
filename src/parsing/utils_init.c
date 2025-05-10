@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/15 19:37:16 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/10 11:45:01 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,3 +58,4 @@ t_tokens **init_tokens_by_segment(size_t count)
 		arr[i++] = NULL;
 	return (arr);
 }
+

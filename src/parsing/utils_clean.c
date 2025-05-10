@@ -6,9 +6,10 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/04/15 19:32:42 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/10 11:44:38 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell_parsing.h"
 
