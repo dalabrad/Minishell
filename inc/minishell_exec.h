@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 12:28:32 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/10 13:16:21 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,9 @@ int		shell_unset(char **args, t_data *data);
 ////////////////////////////////////////////////
 //------COMMAND-EXECUTION-----------------------
 ////////////////////////////////////////////////
+
+//	src/cmd_execution/find_path.c
+char	*find_path(char **args, t_env **shell_envp);
 
 //	src/cmd_execution/command_exec.c
 int		command_exec(char **args, t_data *data);
