@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 13:16:21 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:47:32 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ struct s_cmd
 struct s_data
 {
 	t_env		*shell_envp;
+	int			stdin_copy_fd;
 	//t_tokens	*tokens_by_segment;
 	t_builtin	g_builtin[8];
 	int			pipes[2][2];
