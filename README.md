@@ -29,11 +29,6 @@ You can compile the project with the following rules:
 ---
 
 ## Execution
-<<<<<<< HEAD
-=======
-
-Once compiled, you can start the minishell with:
->>>>>>> 16548874b2eafe0096e0bd6b1e43a87279e9e2f0
 
 Once compiled, you can start the minishell with:
 
@@ -43,7 +38,6 @@ Once compiled, you can start the minishell with:
 
 Example usage:
 
-<<<<<<< HEAD
 ```bash
 minishell>> echo ‘Hello World’ > out.txt | cat out.txt
 ```
@@ -110,26 +104,6 @@ Each entry in `tokens_by_segment[i]` is the head of a linked list of `t_tokens`:
 t_tokens **tokens_by_segment; // linked list array
 size_t i_pipes; // number of pipes
 ````
-=======
-````bash
-minishell>> echo ‘Hello World’ > out.txt | cat out.txt
-```
-
-To exit:
-
-````bash
-minishell>> exit
-```
-
----
-
-## Testing
-
-The script includes automated testing for:
-- `testing_all.sh` → Automated testing script GENERAL
-- testing_meta_error.sh` → automated testing script METACARACTERES
-- `testing_p
->>>>>>> 16548874b2eafe0096e0bd6b1e43a87279e9e2f0
 
 Cycles through tokens using `while`:
 
