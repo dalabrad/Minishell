@@ -3,98 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_segments.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:36:10 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/10 17:59:23 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:55:27 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
-
-void process_single_segment(char *segment, t_tokens **token_ptr, size_t index)
-{
-	size_t segment_tokens = 0;
-	token_ptr[index] = check_args_fixed(segment, &segment_tokens);
-	if (!token_ptr[index])
-		fprintf(stderr, "Warning: could not tokenize segment %zu\n", index);
-	else
-	{
-		set_command_type(token_ptr[index]);
-		print_tokens(token_ptr[index]);
-	}
-	// Pronto: pasar los TOKENS por segmento a EXEC
-	/* 		
-	if (create_cmds(&data, argc - 1, argv + 1))
-		return (EXIT_FAILURE); 
-		execute_pipeline(&data);
-		free_cmd_list(data.first_cmd);
-		free_data(&data);
-	*/
-	printf("Total tokens checking-process: %zu\n\n", segment_tokens);
-}
-
-void process_segments(char **segments, t_tokens **tokens, size_t n)
-{
-	size_t i = 0;
-	printf("\n=========== PIPE SEGMENTS ===========\n");
-	while (i < n)
-	{
-		if (!segments[i])
-		{
-			fprintf(stderr, "Error: pipe_segments[%zu] is NULL\n", i);
-			i++;
-			continue;
-		}
-		process_single_segment(segments[i], tokens, i);
-		i++;
-	}
-}
-
-
-/* #include "minishell_parsing.h"
 #include "minishell_exec.h"
 
-t_cmd token_to_cmd()
+// PROCESS TOKENS BY PIPE AND CALL TOK_TO_CMD
+void process_single_segment(char *segment, t_tokens **token_ptr, t_cmd **cmd_ptr, size_t index)
 {
-	t_cmd *tok_cmd;
+    size_t words = 0;
 
-	tok_cmd = malloc(sizeof t_cmd);
-	noseque = process_single_segment();
+    token_ptr[index] = check_args_fixed(segment, &words);
+    if (!token_ptr[index])
+    {
+        printf("Error tokenizing segment.\n");
+        return;
+    }
+
+    printf("PIPE[%zu]: %s\n", index, segment);
+    print_tokens(token_ptr[index]);
+
+    cmd_ptr[index] = tokens_to_cmd(token_ptr[index]);
+    if (!cmd_ptr[index])
+        printf("Error converting tokens to cmd.\n");
 }
 
-t_tokens *process_single_segment(char *segment, t_tokens **token_ptr, size_t index)
+// PROCESS ALL PIPES
+#include "minishell_parsing.h"
+#include "minishell_exec.h"
+
+void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data)
 {
-	size_t segment_tokens = 0;
-	token_ptr[index] = check_args_fixed(segment, &segment_tokens);
-	if (!token_ptr[index])
-		fprintf(stderr, "Warning: could not tokenize segment %zu\n", index);
-	else
-	{
-		set_command_type(token_ptr[index]);
-		print_tokens(token_ptr[index]);
-	}
-	printf("Total tokens checking-process: %zu\n\n", segment_tokens);
-	return(token_ptr[index]);
+    size_t i = 0;
+    t_cmd *current_cmd;
+    t_cmd *last;
+
+    data->first_cmd = NULL;
+    while (i < n)
+    {
+        size_t word_count = 0;
+        tokens[i] = check_args_fixed(segments[i], &word_count);
+        if (!tokens[i])
+        {
+            i++;
+            continue;
+        }
+        current_cmd = tokens_to_cmd(tokens[i]);
+        if (!current_cmd)
+        {
+            free_tokens_list(tokens[i]);
+            i++;
+            continue;
+        }
+        if (!data->first_cmd)
+            data->first_cmd = current_cmd;
+        else
+        {
+            last = last_cmd(data->first_cmd);
+            last->next = current_cmd;
+        }
+        i++;
+    }
+    data->nbr_cmds = number_of_cmds(data->first_cmd);
 }
 
-void process_segments(char **segments, t_tokens **tokens, size_t n)
-{
-	t_cmd *tok_cmd;
-
-	tok_cmd = malloc(sizeof t_cmd);
-	size_t i = 0;
-	printf("\n=========== PIPE SEGMENTS ===========\n");
-	while (i < n)
-	{
-		if (!segments[i])
-		{
-			fprintf(stderr, "Error: pipe_segments[%zu] is NULL\n", i);
-			i++;
-			continue;
-		}
-		process_single_segment(segments[i], tokens, i);
-		tokens.str = 
-		i++;
-	}
-} */

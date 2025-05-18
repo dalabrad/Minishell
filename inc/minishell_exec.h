@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 13:16:21 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:34:38 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef enum e_err
 	CMD_NOT_FOUND,
 	PIPE_ERROR,
 	FORK_ERROR,
+	DUP2_ERROR,     // esto es nuevo
 }	t_err;
 
 typedef struct s_env
@@ -70,9 +71,11 @@ struct s_cmd
 	char	**args;
 	char	*file_in;
 	char	*file_out;
+	bool	append_out;   // esto es nuevo
 	pid_t	pid;
 	t_cmd	*next;
 };
+
 
 struct s_data
 {
@@ -168,7 +171,8 @@ void	one_cmd_pipeline(t_data *data);
 // src/cmd_execution/execute_pipeline.c
 void	execute_pipeline(t_data *data);
 
-//	src/cmd_execution/cmd_type_utils.c
+// src/cmd_execution/cmd_type_utils.c
+t_cmd	*new_cmd(void);
 size_t	number_of_cmds(t_cmd *first_cmd);
 void	free_cmd_list(t_cmd *cmd);
 t_cmd	*last_cmd(t_cmd *cmd);

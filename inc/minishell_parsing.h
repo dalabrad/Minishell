@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 16:27:27 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:38:09 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 // HEADERS FROM INCLUDED LIBRARIES
 //////////////////////////////////
 
-# include "libft.h"
 # include "minishell_exec.h"
 # include "array_utils.h"
+# include "libft.h"
 # include <stddef.h>
 # include <dirent.h>
 # include <fcntl.h>
@@ -46,6 +46,10 @@
 //-----STRUCTURES----------------
 //////////////////////////////////
 
+typedef struct s_cmd t_cmd;
+typedef struct s_data t_data;
+typedef struct s_tokens t_tokens;
+
 // ENUM TOKENS STRUCT
 typedef enum t_TokenType {
 	RED_IN,
@@ -68,7 +72,6 @@ typedef struct s_pipes // pipes
 }	t_pipes;
 
 // TOKENS
-typedef struct s_tokens	t_tokens;
 
 struct s_tokens
 {
@@ -137,12 +140,14 @@ char 					*poly_substr(const char *s, size_t *i, int *was_quoted);
 t_tokens				*check_args_fixed(const char *input, size_t *i_words);
 
 // PROCESS BY SEGMENT OR PIPE
-void process_single_segment(char *segment, t_tokens **token_ptr, size_t index);
-void process_segments(char **segments, t_tokens **tokens, size_t n);
+void process_single_segment(char *segment, t_tokens **token_ptr, t_cmd **cmd_ptr, size_t index);
+void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data);
+
+// TOK_TO_CMD
+t_cmd	*tokens_to_cmd(t_tokens *tokens);
 
 // EXPAND & FOR EXEC
 char	**tokens_to_args(t_tokens *tokens);
-int		handle_redirections(t_tokens *tokens);
 char 	*expand_variables(char *str);
 
 #endif

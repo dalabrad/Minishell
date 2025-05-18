@@ -6,11 +6,12 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/10 12:14:39 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:10:18 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
+#include "minishell_exec.h"
 
 // EXPAND VARIABLES
 char *expand_variables(char *str)

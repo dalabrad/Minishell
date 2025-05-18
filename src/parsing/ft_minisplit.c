@@ -6,11 +6,12 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:29 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/10 11:42:46 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:09:50 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
+#include "minishell_exec.h"
 
 // LENGTH OF SPLITTED FOR SUBSTR
 size_t	splitted_len(const char *s, char c)

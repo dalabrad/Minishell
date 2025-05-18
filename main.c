@@ -3,64 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 16:30:29 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:54:51 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-// MAIN LOOP PASING ENVP VARIABLES FOR LATER EXPANSION
-static void main_loop(char **envp, int fd, char *line)
+// MAIN LOOP CALLING SEGMENTS/PIPES FOR TOKENIZATION AND CONVERSION TO CMD FOR EXEC
+static void main_loop(t_data *data)
 {
-	char **pipe_segments;
-	size_t i_pipes;
-	t_tokens **tokens_by_segment;
+    char *line;
+    char **pipe_segments;
+    size_t num_pipes;
+    t_tokens **tokens_by_segment;
 
-	(void)envp;
-	while (1)
-	{
-		dup2(fd, STDIN_FILENO);
-		line = readline(PROMPT);
-		if (is_exit_command(line))
-		{
-			rl_clear_history(); // limpia el historial de readline
-			break;
-		}
-		if (!init_pipe_segments(line, &pipe_segments, &i_pipes))
-			continue;
-		tokens_by_segment = init_tokens_by_segment(i_pipes);
-		if (!tokens_by_segment)
-		{
-			free_array(pipe_segments);
-			free(line);
-			continue;
-		}
-		process_segments(pipe_segments, tokens_by_segment, i_pipes);
-		cleanup(line, pipe_segments, tokens_by_segment, i_pipes);
-	}
+    while (1)
+    {
+        line = readline(PROMPT);
+        if (is_exit_command(line))
+            break;
+        if (!init_pipe_segments(line, &pipe_segments, &num_pipes))
+            continue;
+        tokens_by_segment = init_tokens_by_segment(num_pipes);
+        if (!tokens_by_segment)
+        {
+            handle_token_alloc_fail(pipe_segments, line);
+            continue;
+        }
+        process_segments(pipe_segments, tokens_by_segment, num_pipes, data);
+        execute_pipeline(data);
+        free_cmd_list(data->first_cmd);
+        data->first_cmd = NULL;
+        cleanup(line, pipe_segments, tokens_by_segment, num_pipes);
+    }
 }
 
-// MAIN FUNCTION
+
+// MAIN PARSING ENVP VARIABLES FOR LATER EXPANSION
 int main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	//t_data	data;
-	int fd;
-	char *line;
+    (void)argv;
+	t_data data;
 
-	// CHECK SIGNALS un dia de estos
-	if (argc != 1)
-		return (printf("Too many arguments or readline failure.\n"), 0);
-	line = NULL;
-	fd = dup(STDIN_FILENO);
-/* 	if (data_init(&data, envp))
-		return (EXIT_FAILURE); */
-	main_loop(envp, fd, line);
-	return (0);
+    if (argc != 1)
+    {
+        printf("Too many arguments.\n");
+        return (EXIT_FAILURE);
+    }
+    if (data_init(&data, envp)) // Pasamos envp a t_data
+    {
+        printf("Failed to initialize data\n");
+        return (EXIT_FAILURE);
+    }
+    main_loop(&data);
+    free_data(&data);
+    return (EXIT_SUCCESS);
 }
 
 /*

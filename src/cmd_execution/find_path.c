@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 13:14:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 13:31:00 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:52:20 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
-#include "minishell_parsing.h"
 
 static char	**get_paths_array(char *path_str)
 {
