@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/18 16:34:38 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:02:07 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,18 @@ struct s_cmd
 	t_cmd	*next;
 };
 
-
+typedef struct s_tokens t_tokens;
 struct s_data
 {
 	t_env		*shell_envp;
-	//t_tokens	*tokens_by_segment;
 	t_builtin	g_builtin[8];
 	int			pipes[2][2];
 	t_cmd		*first_cmd;
 	size_t		nbr_cmds;
+	t_tokens	**tokens_by_segment;
+	char		*line;
+	char 		**pipe_segments;
+	size_t 		num_pipes;
 };
 
 ////////////////////////////////////////////////

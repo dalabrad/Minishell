@@ -6,11 +6,12 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 14:48:44 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:54:41 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
+#include "minishell_parsing.h"
 
 /*FALTA DE INCLUIR: data->tokens_by_segment = NULL; */
 int	data_init(t_data *data, char**envp)
@@ -25,6 +26,10 @@ int	data_init(t_data *data, char**envp)
 	data->g_builtin[7] = (t_builtin){.name = NULL, .foo = NULL};
 	data->shell_envp = NULL;
 	data->first_cmd = NULL;
+	data->tokens_by_segment = NULL;
+	data->line = NULL;
+	data->pipe_segments = NULL;
+	data->num_pipes = 0;
 	if (shell_envp_list_create(envp, &(data->shell_envp)))
 	{
 		data->shell_envp = NULL;

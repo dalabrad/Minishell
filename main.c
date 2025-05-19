@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/18 16:54:51 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:57:17 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@
 // MAIN LOOP CALLING SEGMENTS/PIPES FOR TOKENIZATION AND CONVERSION TO CMD FOR EXEC
 static void main_loop(t_data *data)
 {
-    char *line;
-    char **pipe_segments;
-    size_t num_pipes;
-    t_tokens **tokens_by_segment;
+    char *line = data->line;
+    char **pipe_segments = data->pipe_segments;
+    size_t num_pipes = data->num_pipes;
+    t_tokens **tokens_by_segment = data->tokens_by_segment;
 
     while (1)
     {
         line = readline(PROMPT);
-        if (is_exit_command(line))
-            break;
+/*         if (is_exit_command(line))
+            break; */
         if (!init_pipe_segments(line, &pipe_segments, &num_pipes))
             continue;
         tokens_by_segment = init_tokens_by_segment(num_pipes);
