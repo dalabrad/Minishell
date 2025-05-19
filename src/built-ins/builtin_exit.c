@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:18:50 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/19 12:29:06 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:32:07 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	shell_exit(char	**args, t_data *data)
 {
 	(void)args;
 	if (data->nbr_cmds == 1)
-		printf("exit\n");
+		printf("minishell: exit\n");
 	free_data(data);
 	free_cmd_list(data->first_cmd);
 	cleanup(data->line, data->pipe_segments, data->tokens_by_segment,
