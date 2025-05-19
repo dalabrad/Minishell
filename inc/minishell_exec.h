@@ -80,6 +80,7 @@ typedef struct s_tokens t_tokens;
 struct s_data
 {
 	t_env		*shell_envp;
+	int			stdin_copy_fd;
 	t_builtin	g_builtin[8];
 	int			pipes[2][2];
 	t_cmd		*first_cmd;
