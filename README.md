@@ -1,6 +1,28 @@
 # Minishell
 
-Basic implementation of a C shell according to the 42 School project. Supports command execution, redirects, pipes, argument parsing, etc.
+Minishell is a simplified UNIX shell implementation written in C as part of the 42 curriculum. It replicates the basic behavior of a shell: command parsing, pipes, redirection, environment variable expansion, and built-in command execution.
+
+---
+
+## Development
+
+- Written in C using POSIX system calls
+- Uses `readline` for user input
+- Modules for parsing, execution, and environment
+
+---
+
+## Features
+
+- Command execution with `PATH` resolution
+- Built-in commands: `cd`, `pwd`, `echo`, `export`, `unset`, `env`, `exit`
+- Input/output redirections: `>`, `>>`, `<`
+- Pipes `|` to connect commands
+- Environment variable expansion with `$VAR`
+- Single and double quote handling
+- Syntax error detection
+- Exit code propagation
+- Command history (via readline)
 
 ---
 
@@ -9,37 +31,40 @@ Basic implementation of a C shell according to the 42 School project. Supports c
 - Linux
 - `gcc`
 - `make`
-- Library `readline`
+- `readline` library
 
 ---
 
-## Make rules
+# Installation
 
-You can compile the project with the following rules:
+## Compilation: Make rules
 
-| Command         | Description                                                           |
-|-----------------|-----------------------------------------------------------------------|
-| `make`          | Compiles the project and generates the `minishell` executable.        |
-| `make gdb`      | Compile the project with debugging symbols (`-g3`).                   |
-| `make valgrind` | Compile with `-g3` and flags useful for executing with Valgrind.      |
-| `make clean`    | Remove `.o` files.                                                    |
-| `make fclean`   | Remove executables and `.o` files.                                    |
-| `make re`       | Equivalent to `fclean` followed by `make`.                            |
-| `make testd`    | Compile a version that includes EXECUTE (`main_test_d`).              |
+Compile the project by running `make` from your terminal. Available rules:
+
+| Command        | Description                                                    |
+|----------------|----------------------------------------------------------------|
+| `make`         | Compiles the project and creates the `minishell` executable.   |
+| `make gdb`     | Compiles the project with debug symbols (`-g3`).               |
+| `make valgrind`| Compiles with `-g3` and useful flags for Valgrind testing.     |
+| `make clean`   | Removes `.o` object files.                                     |
+| `make fclean`  | Removes all executables and object files.                      |
+| `make re`      | Equivalent to `fclean` followed by `make`.                     |
+| `make testd`   | Compiles an execution-enabled version (`main_test_d`).         |
+|----------------|----------------------------------------------------------------|
 ---
 
-## Execution
+## Execution: Using the shell
 
-Once compiled, you can start the minishell with:
+Once compiled, run the shell with:
 
 ```bash
 ./minishell
 ```
 
-Example usage:
+Example:
 
 ```bash
-minishell>> echo ‘Hello World’ > out.txt | cat out.txt
+minishell>> echo "Hello World" > out.txt | cat out.txt
 ```
 
 To exit:
@@ -50,147 +75,133 @@ minishell>> exit
 
 ---
 
-## Visualization
+## Project Structure
 
-Result on screen:
+minishell/
+├── src/
+│   ├── parsing/
+│   ├── cmd_execution/
+│   ├── built-ins/
+│   ├── environment/
+│   ├── error_messages/
+│   └── minishell_data/
+├── inc/
+├── libft/
+└── main.c
+
+---
+
+## Temporary Visual Output
+
+Used during development to visualize parsed tokens:
 
 ```bash
 =========== PIPE SEGMENTS ===========
-PIPE[0]: echo "hola" > out.txt 
+PIPE[0]: echo "hello" > out.txt 
 → Token: echo            | Type: COMMAND     
-→ Token: "hola"          | Type: ARG         
+→ Token: "hello"         | Type: ARG         
 → Token: >               | Type: RED_OUT     
 → Token: out.txt         | Type: ARG
 
 PIPE[1]: ls -l
 → Token: ls              | Type: COMMAND
-→ Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
+→ Token: -l              | Type: COMMAND
 
 PIPE[2]: wc -l
 → Token: wc              | Type: COMMAND
-→ Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
+→ Token: -l              | Type: COMMAND
 ```
+
 ---
 
 ## Testing
 
-Tesing script tests:
+Scripts include automatic tests for:
+
 - `testing_all.sh`         → GENERAL
-- `testing_meta_error.sh`  → METACHARS
-- `testing_path_quotes.sh` → PATH/BALANCING
-- `testing_redir_error.sh` → ERROR
-- `testing_expansion.sh` → EXPANSIONS
+- `testing_meta_error.sh`  → METACHARACTERS
+- `testing_path_quotes.sh` → PATH & QUOTES
+- `testing_redir_error.sh` → REDIRECTION ERRORS
+- `testing_expansion.sh`   → VARIABLE EXPANSIONS
 
-Command: bash `yourtest.sh`
----
+### Running Tests
 
-# Accessing Tokens in Minishell to Execute Commands
+Make script executable and run it:
 
-This document explains how to access and use parser-generated tokens in `minishell` to execute commands correctly.
+```bash
+chmod +x testing.sh
+./testing.sh
+```
 
----
-
-## Objective
-
-Traverse the **tokens** of each `pipe_segment` and build `argv[]` to execute commands using `execve` or `execvp`.
+A final summary of `PASS` and `FAIL` is displayed at the end.
 
 ---
 
-## How to access tokens
+### Internal Checks (ongoing improvements)
 
-Each entry in `tokens_by_segment[i]` is the head of a linked list of `t_tokens`:
+- Balanced quotes verification
+- Token type classification (commands, paths, options, redirections)
+- Syntax error handling
 
-```c
-t_tokens **tokens_by_segment; // linked list array
-size_t i_pipes; // number of pipes
-````
+---
 
-Cycles through tokens using `while`:
+## Debugging and Valgrind
 
-```c
-size_t i = 0;
+### Running with GDB:
 
-while (i < i_pipes)
-{
-t_tokens *current = tokens_by_segment[i];
-	
-	while (current)
-{
-printf("Token string: %s\n", current->str);
-printf("Token type : %d\n", current->type); // You can use token_type_str()
-current = current->next;
-}
-i++;
-}
+```bash
+make gdb
+gdb ./minishell
+```
+
+Example `gdbinit_v.gdb` script:
+
+```bash
+break main
+break ft_minisplit
+break count_splitted
+break split2array
+break check_args_fixed
+etc ...
+```
+
+Modify as needed.
+
+### Running with Valgrind:
+
+```bash
+make valgrind
+valgrind --leak-check=full ./minishell
 ```
 
 ---
 
-## What to do with each token
+## Cleanup
 
-- The first token type `COMMAND` is the command.
-- Tokens of type `ARG` and `OPTION` are the arguments.
+To remove temporary files:
 
-You can construct a `char *argv[]` to pass to `execve`:
+```bash
+make clean
+```
 
----
+To remove everything:
 
-## Example: construct `argv[]`.
-
-```c
-char **build_argv(t_tokens *tokens)
-{
-	size_t count = 0;
-	t_tokens *tmp = tokens;
-
-	// contar argumentos
-	while (tmp)
-	{
-		if (tmp->type == COMMAND || tmp->type == ARG || tmp->type == OPTION)
-			count++;
-		tmp = tmp->next;
-	}
-
-	char **argv = malloc(sizeof(char *) * (count + 1));
-	if (!argv)
-		return NULL;
-
-	tmp = tokens;
-	size_t i = 0;
-	while (tmp)
-	{
-		if (tmp->type == COMMAND || tmp->type == ARG || tmp->type == OPTION)
-		{
-			argv[i] = tmp->str;  // o strdup(tmp->str)
-			i++;
-		}
-		tmp = tmp->next;
-	}
-	argv[i] = NULL;
-	return argv;
-}
+```bash
+make fclean
 ```
 
 ---
 
-## Execute command
+## License
 
-```c
-char **argv = build_argv(tokens_by_segment[i]);
+This project is part of 42 School curriculum, developed by:
 
-if (argv && argv[0])
-execvp(argv[0], argv); // or execve()
-
-// free argv if you did strdup()
-````
+    Vlorenzo and Dalabrad
+    - https://github.com/Vlorenzolana
+    - https://github.com/dalabrad
 
 ---
 
-## Conclusion
+## Status
 
-- Use `tokens_by_segment[i]` to access tokens.
-- Use `while` to traverse the linked list.
-- Build `argv[]` with `COMMAND`, `ARG` and `OPTION`.
-- Execute with `execvp` or `execve`.
-
----
+The project is under development, covering the essential shell features. Ready for advanced testing and future improvements.
