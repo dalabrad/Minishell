@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_message.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 23:16:31 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 12:33:54 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:41:13 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ int	error_msg(t_err error_code)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (error_code == MALLOC_ERROR)
 		ft_putstr_fd("malloc: unable to allocate memory\n", 2);
-	if (error_code == CD_ERROR)
+	else if (error_code == DUP2_ERROR)
+		ft_putstr_fd("dup2: error redirecting file descriptor\n", 2);
+	else if (error_code == CD_ERROR)
 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
-	if (error_code == CHDIR_ERROR)
+	else if (error_code == CHDIR_ERROR)
 		ft_putstr_fd("chdir : unable to change process working directory\n", 2);
-	if (error_code == PIPE_ERROR)
+	else if (error_code == PIPE_ERROR)
 		ft_putstr_fd("pipe: unable to create pipes\n", 2);
-	if (error_code == FORK_ERROR)
+	else if (error_code == FORK_ERROR)
 		ft_putstr_fd("fork: unable to create child process\n", STDERR_FILENO);
 	return (error_code);
 }

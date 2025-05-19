@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_clasifyTokens.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/10 16:25:56 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:10:24 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
+#include "minishell_exec.h"
 
 //	CLASIFY TOKENS
 t_TokenType clasify_token(const char *str)

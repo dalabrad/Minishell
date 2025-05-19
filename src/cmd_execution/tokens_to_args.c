@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_to_args.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:33:07 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/14 17:51:06 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:50:54 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_parsing.h"
 #include "minishell_exec.h"
 
 static size_t	args_size(t_tokens *token_list)

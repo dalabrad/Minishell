@@ -6,12 +6,13 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/10 11:44:38 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:09:57 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell_parsing.h"
+#include "minishell_exec.h"
 
 // EXIT COMMAND
 int is_exit_command(char *line)

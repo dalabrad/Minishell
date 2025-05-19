@@ -48,13 +48,8 @@ $(NAME): $(LIBFT) $(AU_LIB) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAI
 	@echo "$(GREEN)./minishell executable created successfully.$(RESET)"
 
 # ─────────────────────────────────────────────────────────────
-# TEST: V- VLORENZO & D- DALABRAD
+# TEST: D- DALABRAD
 # ─────────────────────────────────────────────────────────────
-
-testv: clean all $(LIBFT)
-	@echo "$(YELLOW)Compiling Vanesa's ./minishell test executable...$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME) $(TEST_V) $(SRC) $(LIBFT) $(LDFLAGS)
-	@echo "$(GREEN)Vanesa's ./minishell test executable created successfully.$(RESET)"
 
 testd: $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB)
 	@echo "$(YELLOW)Compiling David's ./minishell test executable...$(RESET)"
@@ -62,12 +57,12 @@ testd: $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB)
 	@echo "$(GREEN)David's ./minishell test executable created successfully.$(RESET)"
 
 # ─────────────────────────────────────────────────────────────
-# GDB DEBUGGING
+# GDB DEBUGGING V VLORENZO
 # ─────────────────────────────────────────────────────────────
 
 debugv: CFLAGS += -DDEBUG
-debugv: testv
-	@echo "$(BLUE)Binary compiled for GDB debugging (Vanesa's test).$(RESET)"
+debugv: all
+	@echo "$(BLUE)Binary compiled for GDB debugging (Main test).$(RESET)"
 
 # ─────────────────────────────────────────────────────────────
 # GDB TESTING

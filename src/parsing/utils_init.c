@@ -6,11 +6,12 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/10 11:45:01 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:10:00 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
+#include "minishell_exec.h"
 
 // HANDLE TOKEN ALLOC FAILURE
 int handle_token_alloc_fail(char **segments, char *line)
