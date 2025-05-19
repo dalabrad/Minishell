@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/19 12:34:16 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:44:18 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef enum e_err
 	PIPE_ERROR,
 	FORK_ERROR,
 	DUP2_ERROR,
+	EXPORT_ERROR
 }	t_err;
 
 typedef struct s_env

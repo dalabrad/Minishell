@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_message.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 23:16:31 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/18 14:41:13 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:46:49 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,22 @@ int	error_msg(t_err error_code)
 		ft_putstr_fd("fork: unable to create child process\n", STDERR_FILENO);
 	return (error_code);
 }
+static int	error_msg_arg_2(t_err error_code, char *arg)
+{
+	if (error_code == CMD_NOT_FOUND)
+	{
+		ft_putstr_fd("command not found: ", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+	}
+	else if (error_code == EXPORT_ERROR)
+	{
+		ft_putstr_fd("export: '", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+	}
+	return (error_code);
+}
 
 int	error_msg_arg(t_err error_code, char *arg)
 {
@@ -45,17 +61,13 @@ int	error_msg_arg(t_err error_code, char *arg)
 		else
 			ft_putstr_fd(" : Permission denied\n", STDERR_FILENO);
 	}
-	if (error_code == NO_PATH)
+	else if (error_code == NO_PATH)
 	{
 		ft_putstr_fd(arg, STDERR_FILENO);
 		ft_putstr_fd(" : No such file or directory\n", STDERR_FILENO);
 	}
-	if (error_code == CMD_NOT_FOUND)
-	{
-		ft_putstr_fd("command not found: ", STDERR_FILENO);
-		ft_putstr_fd(arg, STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-	}
+	else
+		return (error_msg_arg_2(error_code, arg));
 	return (error_code);
 }
 
