@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 23:16:31 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/19 17:46:49 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:02:39 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	error_msg(t_err error_code)
 		ft_putstr_fd("fork: unable to create child process\n", STDERR_FILENO);
 	return (error_code);
 }
+
 static int	error_msg_arg_2(t_err error_code, char *arg)
 {
 	if (error_code == CMD_NOT_FOUND)
