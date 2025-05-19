@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/19 10:57:17 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 18:40:16 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void main_loop(t_data *data)
             continue;
         }
         process_segments(pipe_segments, tokens_by_segment, num_pipes, data);
+        print_cmds(data->first_cmd); //BORRAR
         execute_pipeline(data);
         free_cmd_list(data->first_cmd);
         data->first_cmd = NULL;

@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:46:09 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/19 11:55:04 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:04:31 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,22 @@ t_cmd	*last_cmd(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 	return (NULL);
+}
+
+void	print_cmds(t_cmd *first_cmd)
+{
+	size_t	i;
+	t_cmd	*tmp;
+
+	if (!first_cmd)
+		return ;
+	i = 1;
+	tmp = first_cmd;
+	while (tmp)
+	{
+		printf("command %lu :\n", i++);
+		print_array(tmp->args);
+		printf("\n");
+		tmp = tmp->next;
+	}
 }
