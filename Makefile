@@ -19,9 +19,11 @@ MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
 PARSING_SRCS = $(wildcard src/parsing/*.c) 
 PARSING_OBJS = $(PARSING_SRCS:.c=.o)
 
+MINISHELL_SIGNALS_LIB = ./inc/minishell_signals.a
+PARSING_SRCS = $(wildcard src/signals/*.c) 
+PARSING_OBJS = $(SIGNALS_SRCS:.c=.o)
 
-MAIN = main.c
-TEST_V = main_test_v.c
+MAIN = main.c main_utils.c
 TEST_D = main_test_d.c
 
 # ─────────────────────────────────────────────────────────────
@@ -42,16 +44,16 @@ all: $(NAME)
 # BUILD EXEC
 # ─────────────────────────────────────────────────────────────
 
-$(NAME): $(LIBFT) $(AU_LIB) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MAIN)
+$(NAME): $(LIBFT) $(AU_LIB) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MINISHELL_SIGNALS_LIB) $(MAIN)
 	@echo "$(YELLOW)Compiling ./minishell executable...$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME) $(MAIN) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(LIBFT) $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(MAIN) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(MINISHELL_SIGNALS_LIB) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)./minishell executable created successfully.$(RESET)"
 
 # ─────────────────────────────────────────────────────────────
 # TEST: D- DALABRAD
 # ─────────────────────────────────────────────────────────────
 
-testd: $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB)
+testd: $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MINISHELL_SIGNALS_LIB) $(AU_LIB)
 	@echo "$(YELLOW)Compiling David's ./minishell test executable...$(RESET)"
 	$(CC) $(CFLAGS) -o $(NAME) $(TEST_D) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)David's ./minishell test executable created successfully.$(RESET)"

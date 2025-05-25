@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   array_utils.h                                      :+:      :+:    :+:   */
+/*   minishell_signals.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 18:25:14 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/26 00:11:23 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/05/26 00:02:44 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/05/26 00:42:00 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ARRAY_UTILS_H
-# define ARRAY_UTILS_H
+#ifndef MINISHELL_SIGNALS_H
+# define MINISHELL_SIGNALS_H
 
-# include "minishell_signals.h"
-# include <stdlib.h>
-# include <unistd.h>
+# include <signal.h>
+# include <readline/readline.h>
 # include <stdio.h>
+# include <unistd.h>
+# include "minishell_exec.h"
+# include "minishell_parsing.h"
 
-////////////////////////////////////////////////
-//------ARRAY-UTILS-----------------------------
-////////////////////////////////////////////////
+typedef struct s_data t_data;
+typedef struct s_tokens t_tokens;
 
-//  src/array_utils/array_utils.c
-
-void	free_array(char **array);
-size_t	array_size(char **array);
-void	print_array(char **array);
+void	setup_signal_handlers(void);
+void	restore_stdio(int in, int out);
+void	reset_cmd_state(t_data *data, char *line, char **segments, t_tokens **tokens);
 
 #endif

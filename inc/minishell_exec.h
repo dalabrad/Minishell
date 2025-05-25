@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/18 16:34:38 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/26 00:11:29 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "minishell_parsing.h"
+# include "minishell_signals.h"
 # include "array_utils.h"
 # include <dirent.h>
 # include <fcntl.h>
