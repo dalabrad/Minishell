@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/25 23:30:41 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:00:56 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_pipes	*init_struct(t_pipes *args)
 }
 
 // INIT PIPE SEGMENTS FOR TOKENIZING
-int ini_pipe(char *line, char ***segments, size_t *n)
+int init_pipe_segments(char *line, char ***segments, size_t *n)
 {
 	*segments = ft_minisplit(line, '|', n);
 	if (!*segments)
@@ -46,7 +46,7 @@ int ini_pipe(char *line, char ***segments, size_t *n)
 }
 
 // ARRAY OF TOKENS BY SEGMENT READY FOR SENDING TO EXEC
-t_tokens **ini_tokens(size_t count)
+t_tokens **init_tokens_by_segment(size_t count)
 {
 	t_tokens **arr = malloc(sizeof(t_tokens *) * (count + 1));
 	if (!arr)

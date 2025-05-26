@@ -20,10 +20,10 @@ PARSING_SRCS = $(wildcard src/parsing/*.c)
 PARSING_OBJS = $(PARSING_SRCS:.c=.o)
 
 MINISHELL_SIGNALS_LIB = ./inc/minishell_signals.a
-PARSING_SRCS = $(wildcard src/signals/*.c) 
-PARSING_OBJS = $(SIGNALS_SRCS:.c=.o)
+SIGNALS_SRCS = $(wildcard src/signals/*.c) 
+SIGNALS_OBJS = $(SIGNALS_SRCS:.c=.o)
 
-MAIN = main.c main_utils.c
+MAIN = main.c
 TEST_D = main_test_d.c
 
 # ─────────────────────────────────────────────────────────────
@@ -80,7 +80,7 @@ gdb: clean all debugv
 	fi
 
 # ─────────────────────────────────────────────────────────────
-# CLEAN
+# COMPILING OBJECTs AND LIBRARIES
 # ─────────────────────────────────────────────────────────────
 
 %.o: %.c
@@ -104,18 +104,26 @@ $(MINISHELL_EXEC_LIB): $(EXEC_OBJS)
 	@ar rcs $(MINISHELL_EXEC_LIB) $(EXEC_OBJS)
 	@echo "$(GREEN)minishell_exec.a created successfully.$(RESET)"
 
+$(MINISHELL_SIGNALS_LIB): $(SIGNALS_OBJS)
+	@echo "$(YELLOW)Compiling minishell_signals.a library...$(RESET)"
+	@ar rcs $(MINISHELL_SIGNALS_LIB) $(SIGNALS_OBJS)
+	@echo "$(GREEN)minishell_signals.a created successfully.$(RESET)"
+
+# ─────────────────────────────────────────────────────────────
+# CLEAN
+# ─────────────────────────────────────────────────────────────
+
 clean:
 	@echo "$(YELLOW)Deleting all the object files...$(RESET)"
-	@$(RM) $(EXEC_OBJS) $(PARSING_OBJS) $(AU_OBJS)
+	@$(RM) $(EXEC_OBJS) $(PARSING_OBJS) $(SIGNALS_OBJS) $(AU_OBJS)
 	@make -C $(LIBFT_DIR) clean
 	@echo "$(GREEN)All the object files deleted successfully.$(RESET)"
 
 fclean: clean
 	@echo "$(YELLOW)Deleting the object files, *.a and executable file...$(RESET)"
-	@$(RM) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(NAME)
+	@$(RM) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MINISHELL_SIGNALS_LIB) $(AU_LIB) $(NAME)
 	@make -C $(LIBFT_DIR) fclean
 	@echo "$(GREEN)Everything deleted successfully.$(RESET)"
-
 # ─────────────────────────────────────────────────────────────
 # RE
 # ─────────────────────────────────────────────────────────────

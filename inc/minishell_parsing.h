@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/26 00:11:33 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:00:56 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ typedef struct s_split
 // UTILS INIT & HANDLE
 int						handle_token_alloc_fail(char **segments, char *line);
 t_pipes 				*init_struct(t_pipes *args);
-int						ini_pipe(char *line, char ***segments, size_t *n);
-t_tokens 				**ini_tokens(size_t count);
+int						init_pipe_segments(char *line, char ***segments, size_t *n);
+t_tokens 				**init_tokens_by_segment(size_t count);
 
 // UTILS CLEAN STRUCTS
 

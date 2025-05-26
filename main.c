@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/26 00:18:00 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:02:01 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include "minishell_signals.h"
 
 // MAIN LOOP CALLING SEGMENTS/PIPES FOR TOKENIZATION AND CONVERSION TO CMD FOR EXEC
-static void restore_stdio(int in, int out)
+void restore_stdio(int in, int out)
 {
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
 }
 
-static void reset_cmd_state(t_data *data, char *line,
+void reset_cmd_state(t_data *data, char *line,
 	char **segments, t_tokens **tokens)
 {
 	free_cmd_list(data->first_cmd);
@@ -48,7 +48,7 @@ static void main_loop(t_data *data)
 		line = readline(PROMPT);
 		if (is_exit_command(line))
 			break;
-		if (!ini_pipe(line, &pipe_seg, &n_pipe) || !(tokens = ini_tokens(n_pipe)))
+		if (!init_pipe_segments(line, &pipe_seg, &n_pipe) || !(tokens = init_tokens_by_segment(n_pipe)))
 			continue;
 		process_segments(pipe_seg, tokens, n_pipe, data);
 		execute_pipeline(data);
