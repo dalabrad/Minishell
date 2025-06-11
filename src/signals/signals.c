@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 23:50:50 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/26 00:16:37 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:46:44 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,8 @@ static void	sigint_handler(int signum)
 	rl_redisplay();
 }
 
-static void	sigquit_handler(int signum)
-{
-	(void)signum;
-	write(STDOUT_FILENO, "\b\b  \b\b", 6);
-}
-
 void	setup_signal_handlers(void)
 {
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
+	signal(SIGQUIT, SIG_IGN); // Ignorar completamente Ctrl-"\"
 }
