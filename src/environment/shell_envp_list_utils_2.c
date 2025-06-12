@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:30:57 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/24 18:31:55 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:29:29 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,19 @@ void	delete_shell_envp_node(t_env **shell_envp, char *VAR_NAME)
 		prev_tmp = tmp;
 		tmp = tmp->next;
 	}
+}
+
+size_t	shell_envp_size(t_env *shell_envp_node)
+{
+	size_t	size;
+
+	size = 0;
+	if (!shell_envp_node)
+		return (0);
+	while (shell_envp_node)
+	{
+		size++;
+		shell_envp_node = shell_envp_node->next;
+	}
+	return (size);
 }
