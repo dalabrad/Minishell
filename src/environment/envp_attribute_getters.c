@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_attribute_getters.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 15:14:01 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/03 17:47:51 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:39:14 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,40 @@
  * memory for it, so it needs to be freed in case you want to destroy a node
  * of shell envp list.
 */
-char	*get_envp_name(char	*envp)
+// Devuelve strdup de la parte izquierda de "VAR=valor"
+char	*get_envp_name(char *envp_str)
 {
-	int	len;
+	size_t	len;
+	char	*equal;
+	char	*name;
 
-	len = 0;
-	while (envp[len] && envp[len] != '=')
-		len++;
-	return (ft_substr(envp, 0, len));
+	if (!envp_str)
+		return (NULL);
+	equal = ft_strchr(envp_str, '=');
+	if (!equal)
+		return (NULL);
+	len = equal - envp_str;
+	name = (char *)malloc(len + 1);
+	if (!name)
+		return (NULL);
+	ft_strlcpy(name, envp_str, len + 1);
+	return (name);
 }
+
 
 /*
  * This function returns the string of the value of the given envp. Allocates 
  * the memory for it, so it needs to be freed in case you want to destroy a 
  * node of shell envp list.
 */
-char	*get_envp_value(char *envp)
+char *get_envp_value(char *envp_str)
 {
-	int	i;
+	char *equals;
 
-	i = 0;
-	while (envp[i])
-	{
-		if (envp[i] == '=')
-			return (ft_substr(envp, i + 1, ft_strlen(envp + i + 1)));
-		i++;
-	}
-	return (NULL);
+	equals = ft_strchr(envp_str, '=');
+	if (!equals)
+		return (ft_strdup(""));
+	return ft_strdup(equals + 1);
 }
 
 /*

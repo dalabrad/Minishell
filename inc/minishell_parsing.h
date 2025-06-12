@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 13:33:19 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:01:05 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,5 +159,6 @@ t_cmd					*tokens_to_cmd(t_tokens *tokens);
 char					**tokens_to_args(t_tokens *tokens);
 char					*expand_variables(char *str, t_env *env);
 void 					expand_tokens(t_tokens *tokens, t_env *env);
+char					*extract_env_value(char *envp_str);
 
 #endif

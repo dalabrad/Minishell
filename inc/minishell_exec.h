@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 12:53:42 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:52:46 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ struct					s_cmd
 	char				**args;
 	char				*file_in;
 	char				*file_out;
+	//bool heredoc
 	bool append_out; // esto es nuevo
 	pid_t				pid;
 	t_cmd				*next;

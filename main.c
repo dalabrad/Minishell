@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 12:53:56 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:35:03 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	main(int argc, char **argv, char **envp)
 		printf("Failed to initialize data\n");
 		return (EXIT_FAILURE);
 	}
+	//print_shell_envp_list(data.shell_envp);
 	main_loop(&data);
 	free_data(&data);
 	return (EXIT_SUCCESS);

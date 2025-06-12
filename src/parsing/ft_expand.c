@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/12 13:27:59 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:04:55 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,16 @@ char	*ft_strjoin_char_free(char *s1, char c)
 	return (ft_strjoin_free(s1, str));
 }
 
-static char	*get_env_value(const char *var, t_env *env)
+// Devuelve valor de una variable en t_env, o "" si no está definida
+char	*get_env_value(char *name, t_env *env)
 {
 	while (env)
 	{
-		if (!ft_strcmp(env->name, var))
-			return (env->value);
+		if (ft_strcmp(env->name, name) == 0)
+			return (ft_strdup(env->value));
 		env = env->next;
 	}
-	return (""); // Si no encuentra variable devuelve ""
+	return (ft_strdup(""));
 }
 
 char	*expand_variables(char *str, t_env *env)
@@ -62,6 +63,7 @@ char	*expand_variables(char *str, t_env *env)
 				var_name[i++] = *str++;
 			var_name[i] = '\0';
 			var_value = get_env_value(var_name, env);
+			printf("-> Expandiendo $%s = '%s'\n", var_name, var_value);
 			expanded = ft_strjoin_free(expanded, var_value);
 		}
 		else

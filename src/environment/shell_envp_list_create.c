@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_envp_list_create.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 22:54:26 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/03/23 23:28:54 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:37:51 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	shell_envp_list_create(char **envp, t_env **shell_envp)
 
 	if (!envp || !envp[0])
 		return (EXIT_FAILURE);
+	*shell_envp = NULL;
 	i = 0;
 	while (envp[i])
 	{
@@ -47,10 +48,10 @@ int	shell_envp_list_create(char **envp, t_env **shell_envp)
 		{
 			free_shell_envp_list(shell_envp);
 			printf("Minishell: Malloc Error: unable to allocate memory.");
-			error_msg(MALLOC_ERROR);
-			return (MALLOC_ERROR);
+			return (error_msg(MALLOC_ERROR), EXIT_FAILURE);
 		}
 		add_shell_envp(shell_envp, tmp);
+		//printf("////////////Añadido: %s=%s\n", tmp->name, tmp->value);  // <--- DEBUG
 		i++;
 	}
 	return (EXIT_SUCCESS);
