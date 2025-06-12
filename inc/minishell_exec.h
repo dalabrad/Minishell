@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 12:28:22 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:38:29 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef enum e_err
 	CMD_NOT_FOUND,
 	PIPE_ERROR,
 	FORK_ERROR,
-	DUP2_ERROR,     // esto es nuevo
+	DUP2_ERROR,
 }	t_err;
 
 typedef struct s_env
@@ -72,11 +72,10 @@ struct s_cmd
 	char	**args;
 	char	*file_in;
 	char	*file_out;
-	bool	append_out;   // esto es nuevo
+	bool	append_out;
 	pid_t	pid;
 	t_cmd	*next;
 };
-
 
 struct s_data
 {
