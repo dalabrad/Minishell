@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 15:14:01 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 13:05:36 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:29:13 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*get_shell_envp_str(t_env *shell_envp)
 	size_t	name_len;
 	size_t	value_len;
 	size_t	total_len;
-	
+
 	if (!shell_envp)
 		return (NULL);
 	name_len = ft_strlen(shell_envp->name);
