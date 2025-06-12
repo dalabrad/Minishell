@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/26 00:11:29 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:28:22 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	error_msg_exit(t_err error_code);
 char	*get_envp_name(char	*envp);
 char	*get_envp_value(char *envp);
 char	*get_shell_envp_value(t_env *shell_envp, const char *name);
+char	*get_shell_envp_str(t_env *shell_envp);
 
 //	src/environment/shell_envp_list_utils_1.c
 t_env	*new_shell_envp(char *envp, bool was_added);
@@ -118,6 +119,10 @@ void	delete_shell_envp_node(t_env **shell_envp, char *VAR_NAME);
 //	src/environment/shell_envp_list_create.c
 void	print_shell_envp_list(t_env *shell_envp);
 int		shell_envp_list_create(char **envp, t_env **shell_envp);
+size_t	shell_envp_size(t_env *shell_envp_node);
+
+//	src/environment/shell_envp_array_create.c
+char	**shell_envp_array_create(t_env *shell_envp);
 
 ////////////////////////////////////////////////
 //------MINISHELL_DATA--------------------------
