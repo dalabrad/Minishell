@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:36:10 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/18 16:55:27 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:30:16 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,14 @@ void process_single_segment(char *segment, t_tokens **token_ptr, t_cmd **cmd_ptr
 }
 
 // PROCESS ALL PIPES
-#include "minishell_parsing.h"
-#include "minishell_exec.h"
-
 void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data)
 {
-    size_t i = 0;
+    size_t i;
     t_cmd *current_cmd;
     t_cmd *last;
 
     data->first_cmd = NULL;
+    i = 0;
     while (i < n)
     {
         size_t word_count = 0;
@@ -53,6 +51,7 @@ void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data
             i++;
             continue;
         }
+        expand_tokens(tokens[i], data->shell_envp);
         current_cmd = tokens_to_cmd(tokens[i]);
         if (!current_cmd)
         {
