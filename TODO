@@ -1,6 +1,6 @@
-flag export y conectar con data para el builtin
-diferencia entre meter y exportar
-controlar que salga con Ctrl+D y no con exit: checkear:
+✅flag export y conectar con data para el builtin
+✅diferencia entre meter y exportar
+❌controlar que salga con Ctrl+D y no con exit: checkear:
 int is_exit_command(char *line)
 {
 	if (!line)
@@ -15,7 +15,7 @@ int is_exit_command(char *line)
 	}
 	return (0);
 }
-y checkear:
+✅ y checkear:
 static void	sigint_handler(int signum)
 {
 	(void)signum;
@@ -27,4 +27,3 @@ static void	sigint_handler(int signum)
 // llamar a la builtin EXIT aqui arriba
 ~ esto va a carpeta home
 historial
-

@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/21 16:50:52 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:50:09 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ char					*get_shell_envp_value(t_env *shell_envp,
 //	src/environment/shell_envp_list_utils_1.c
 t_env					*new_shell_envp(char *envp, bool was_added);
 t_env					*last_shell_envp(t_env *shell_envp);
-void					add_shell_envp(t_env **shell_envp,
-							t_env *new_shell_envp);
+void					add_shell_envp(t_env **list, t_env *new);
+char					*get_env_value_from_list(const char *name, t_env *env);
 
 //	src/environment/shell_envp_list_utils_2.c
 void					free_shell_envp_list(t_env **shell_envp);
@@ -139,29 +139,14 @@ void					free_data(t_data *data);
 //------BUILT-INS-------------------------------
 ////////////////////////////////////////////////
 
-//	src/built-ins/is_builtin.c
-bool					is_builtin(char *cmd_name, t_data *data);
-
-//	src/built-ins/builtin_cd.c
-int						shell_cd(char **args, t_data *data);
-
-//	src/built-ins/builtin_echo.c
-int						shell_echo(char **args, t_data *data);
-
-//	src/built-ins/builtin_env.c
-int						shell_env(char **args, t_data *data);
-
-//	src/built-ins/builtin_exit.c
-int						shell_exit(char **args, t_data *data);
-
-//	src/built-ins/builtin_export.c
+bool					is_builtin(char *cmd, t_data *data);
 int						shell_export(char **args, t_data *data);
-
-//	src/built-ins/builtin_pwd.c
-int						shell_pwd(char **args, t_data *data);
-
-//	src/built-ins/builtin_unset.c
 int						shell_unset(char **args, t_data *data);
+int						shell_env(char **args, t_data *data);
+int						shell_echo(char **args, t_data *data);
+int						shell_cd(char **args, t_data *data);
+int						shell_pwd(char **args, t_data *data);
+int						shell_exit(char **args, t_data *data);
 
 ////////////////////////////////////////////////
 //------COMMAND-EXECUTION-----------------------

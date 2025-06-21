@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/21 16:47:37 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 18:53:47 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,43 +33,51 @@ char	*ft_strjoin_char_free(char *s1, char c)
 	return (ft_strjoin_free(s1, str));
 }
 
-// Devuelve valor de una variable en t_env, o "" si no está definida
-char	*get_env_value(char *name, t_env *env)
+// Devuelve el valor de una variable en shell_envp (o NULL)
+char	*get_env_value_from_list(const char *name, t_env *env)
 {
 	while (env)
 	{
 		if (ft_strcmp(env->name, name) == 0)
-			return (ft_strdup(env->value));
+			return (env->value);
 		env = env->next;
 	}
-	return (ft_strdup(""));
+	return (NULL);
 }
 
-char	*expand_variables(char *str, t_env *env)
+// Procesa y reemplaza todas las ocurrencias de $VAR por su valor en shell_envp
+char	*expand_variables(const char *str, t_env *env, int was_quoted)
 {
-	char	*expanded;
-	char	var_name[256];
-	char	*var_value;
-	int		i;
+	char	*result = ft_strdup("");
+	size_t	i = 0;
 
-	expanded = ft_strdup("");
-	while (*str)
+	while (str[i])
 	{
-		if (*str == '$' && ft_isalpha(*(str + 1)))
+		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 		{
-			str++;
-			i = 0;
-			while (ft_isalnum(*str) || *str == '_')
-				var_name[i++] = *str++;
-			var_name[i] = '\0';
-			var_value = get_env_value(var_name, env);
-			printf("-> Expandiendo $%s = '%s'\n", var_name, var_value);
-			expanded = ft_strjoin_free(expanded, var_value);
+			size_t	start = ++i;
+			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+				i++;
+			char *var = ft_substr(str, start, i - start);
+			char *value = get_env_value_from_list(var, env);
+			if (!value)
+				value = "";
+			char *tmp = result;
+			result = ft_strjoin(tmp, value);
+			free(tmp);
+			free(var);
 		}
 		else
-			expanded = ft_strjoin_char_free(expanded, *str++);
+		{
+			char buffer[2] = {str[i++], 0};
+			char *tmp = result;
+			result = ft_strjoin(tmp, buffer);
+			free(tmp);
+		}
 	}
-	return (expanded);
+	if (was_quoted == 2) // comillas simples
+		return (ft_strdup(str));
+	return (result);
 }
 
 void	expand_tokens(t_tokens *tokens, t_env *env)
@@ -82,7 +90,7 @@ void	expand_tokens(t_tokens *tokens, t_env *env)
 	{
 		if (tmp->str && tmp->type != ERROR)
 		{
-			expanded = expand_variables(tmp->str, env);
+			expanded = expand_variables(tmp->str, env, tmp->was_quoted);
 			free(tmp->str);
 			tmp->str = expanded;
 		}
