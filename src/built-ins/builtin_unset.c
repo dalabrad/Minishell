@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:54:49 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 15:00:17 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:48:19 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	shell_unset(char **args, t_data *data)
 {
-	t_env	**shell_envp;
+	t_env **shell_envp;
 
 	if (!args || !args[0])
 		return (EXIT_FAILURE);

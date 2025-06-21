@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 15:14:01 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 17:39:14 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:50:01 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include "minishell_parsing.h"
 
 /*
- * This function returns the string of the name of the given envp. Allocates the 
+ * This function returns the string of the name of the given envp. Allocates the
  * memory for it, so it needs to be freed in case you want to destroy a node
  * of shell envp list.
-*/
+ */
 // Devuelve strdup de la parte izquierda de "VAR=valor"
 char	*get_envp_name(char *envp_str)
 {
@@ -38,27 +38,26 @@ char	*get_envp_name(char *envp_str)
 	return (name);
 }
 
-
 /*
- * This function returns the string of the value of the given envp. Allocates 
- * the memory for it, so it needs to be freed in case you want to destroy a 
+ * This function returns the string of the value of the given envp. Allocates
+ * the memory for it, so it needs to be freed in case you want to destroy a
  * node of shell envp list.
-*/
-char *get_envp_value(char *envp_str)
+ */
+char	*get_envp_value(char *envp_str)
 {
-	char *equals;
+	char	*equals;
 
 	equals = ft_strchr(envp_str, '=');
 	if (!equals)
 		return (ft_strdup(""));
-	return ft_strdup(equals + 1);
+	return (ft_strdup(equals + 1));
 }
 
 /*
- * This function checks in the envp list of minishell for name parameter 
- * and returns the value string if exists. If parameter dosen`t exist or malloc 
+ * This function checks in the envp list of minishell for name parameter
+ * and returns the value string if exists. If parameter dosen`t exist or malloc
  * error occurs NULL is returned.
-*/
+ */
 char	*get_shell_envp_value(t_env *shell_envp, const char *name)
 {
 	char	*value;

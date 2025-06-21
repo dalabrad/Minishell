@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 18:01:05 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:50:59 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@
 typedef struct s_cmd	t_cmd;
 typedef struct s_data	t_data;
 typedef struct s_tokens	t_tokens;
-typedef struct s_env t_env;
-
+typedef struct s_env	t_env;
 
 // ENUM TOKENS STRUCT
 typedef enum t_TokenType
@@ -147,7 +146,7 @@ t_tokens				*check_args_fixed(const char *input, size_t *i_words);
 
 // PROCESS BY SEGMENT OR PIPE
 void					process_single_segment(char *segment,
-						t_tokens **token_ptr, t_cmd **cmd_ptr,
+							t_tokens **token_ptr, t_cmd **cmd_ptr,
 							size_t index);
 void					process_segments(char **segments, t_tokens **tokens,
 							size_t n, t_data *data);
@@ -158,7 +157,7 @@ t_cmd					*tokens_to_cmd(t_tokens *tokens);
 // EXPAND & FOR EXEC
 char					**tokens_to_args(t_tokens *tokens);
 char					*expand_variables(char *str, t_env *env);
-void 					expand_tokens(t_tokens *tokens, t_env *env);
+void					expand_tokens(t_tokens *tokens, t_env *env);
 char					*extract_env_value(char *envp_str);
 
 #endif

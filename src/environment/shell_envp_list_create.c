@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 22:54:26 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 16:37:51 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:49:57 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*
  * This function prints all the shell_envp list in the same format that
  * env shell command uses.
-*/
+ */
 void	print_shell_envp_list(t_env *shell_envp)
 {
 	while (shell_envp)
@@ -31,7 +31,7 @@ void	print_shell_envp_list(t_env *shell_envp)
  * Returns an int:
  * 		~ 0 : if list is created successfully.
  * 		~ MALLOC_ERROR: if there is a problem creating the list.
-*/
+ */
 int	shell_envp_list_create(char **envp, t_env **shell_envp)
 {
 	t_env	*tmp;
@@ -51,7 +51,8 @@ int	shell_envp_list_create(char **envp, t_env **shell_envp)
 			return (error_msg(MALLOC_ERROR), EXIT_FAILURE);
 		}
 		add_shell_envp(shell_envp, tmp);
-		//printf("////////////Añadido: %s=%s\n", tmp->name, tmp->value);  // <--- DEBUG
+		// printf("////////////Añadido: %s=%s\n", tmp->name, tmp->value);
+		// <--- DEBUG
 		i++;
 	}
 	return (EXIT_SUCCESS);

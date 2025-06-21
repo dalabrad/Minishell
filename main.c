@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 16:35:03 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:49:25 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	main_loop(t_data *data)
 	size_t		n_pipe;
 	int			in;
 	int			out;
+	char		*clean;
 
 	char *line, **pipe_seg;
 	in = dup(STDIN_FILENO);
@@ -45,6 +46,10 @@ static void	main_loop(t_data *data)
 	{
 		setup_signal_handlers();
 		line = readline(PROMPT);
+		// Limpio \n salto
+		clean = ft_strtrim(line, "\n");
+		free(line);
+		line = clean;
 		if (is_exit_command(line))
 			break ;
 		if (!init_pipe_segments(line, &pipe_seg, &n_pipe)
@@ -75,7 +80,7 @@ int	main(int argc, char **argv, char **envp)
 		printf("Failed to initialize data\n");
 		return (EXIT_FAILURE);
 	}
-	//print_shell_envp_list(data.shell_envp);
+	// print_shell_envp_list(data.shell_envp);
 	main_loop(&data);
 	free_data(&data);
 	return (EXIT_SUCCESS);

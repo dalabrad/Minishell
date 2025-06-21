@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/12 12:55:30 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:34:22 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ t_tokens	*check_args_fixed(const char *input, size_t *i_words)
 	t_tokens	*curr;
 	size_t		k;
 	t_tokens	*new_tok;
+	t_tokens	*tmp;
 
 	head = NULL;
 	curr = NULL;
@@ -172,5 +173,11 @@ t_tokens	*check_args_fixed(const char *input, size_t *i_words)
 		curr = new_tok;
 	}
 	set_command_type(head);
+	tmp = head;
+	while (tmp)
+	{
+		printf("TOKEN: [%s] | type: %s\n", tmp->str, token_type_str(tmp->type));
+		tmp = tmp->next;
+	}
 	return (head);
 }

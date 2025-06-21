@@ -6,12 +6,9 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:13:03 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 16:43:21 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:50:11 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "minishell_exec.h"
-#include "minishell_parsing.h"
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
@@ -30,7 +27,6 @@ int	shell_env(char **args, t_data *data)
 	}
 	return (EXIT_SUCCESS);
 }
-
 
 /* int	shell_env(char **args, t_data *data)
 {

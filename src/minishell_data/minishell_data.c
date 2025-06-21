@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_data.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 14:48:44 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:50:07 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 
 /*FALTA DE INCLUIR: data->tokens_by_segment = NULL; */
-int	data_init(t_data *data, char**envp)
+int	data_init(t_data *data, char **envp)
 {
 	data->g_builtin[0] = (t_builtin){.name = "exit", .foo = shell_exit};
 	data->g_builtin[1] = (t_builtin){.name = "env", .foo = shell_env};

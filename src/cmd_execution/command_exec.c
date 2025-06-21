@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/10 13:30:41 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:47:58 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*absolute_path_case(char **args)
 
 static void	non_builtin_exec(char **args, t_env **shell_envp)
 {
-	char		*cmd_path;
+	char	*cmd_path;
 
 	if (args[0][0] == '/')
 		cmd_path = absolute_path_case(args);
@@ -66,7 +66,10 @@ int	command_exec(char **args, t_data *data)
 		current = data->g_builtin[i].name;
 		if (!ft_strncmp(current, args[0], ft_strlen(args[0])))
 		{
-			return (data->g_builtin[i].foo(args + 1, data));
+			if (args[1])
+				return (data->g_builtin[i].foo(args + 1, data));
+			else
+				return (data->g_builtin[i].foo(NULL, data));
 		}
 		i++;
 	}

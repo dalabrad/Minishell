@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/12 18:04:55 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:47:37 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,17 @@ char	*expand_variables(char *str, t_env *env)
 	return (expanded);
 }
 
-void expand_tokens(t_tokens *tokens, t_env *env)
+void	expand_tokens(t_tokens *tokens, t_env *env)
 {
-	t_tokens *tmp;
+	t_tokens	*tmp;
+	char		*expanded;
 
 	tmp = tokens;
 	while (tmp)
 	{
 		if (tmp->str && tmp->type != ERROR)
 		{
-			char *expanded = expand_variables(tmp->str, env);
+			expanded = expand_variables(tmp->str, env);
 			free(tmp->str);
 			tmp->str = expanded;
 		}
