@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/21 19:50:09 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/23 20:06:03 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef enum e_err
 	CMD_NOT_FOUND,
 	PIPE_ERROR,
 	FORK_ERROR,
-	DUP2_ERROR, // esto es nuevo
+	DUP2_ERROR,
 }						t_err;
 
 typedef struct s_env
@@ -85,7 +85,6 @@ struct					s_cmd
 struct					s_data
 {
 	t_env				*shell_envp;
-	// t_tokens	*tokens_by_segment;
 	t_builtin			g_builtin[8];
 	int					pipes[2][2];
 	t_cmd				*first_cmd;

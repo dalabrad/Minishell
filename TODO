@@ -19,11 +19,78 @@ int is_exit_command(char *line)
 static void	sigint_handler(int signum)
 {
 	(void)signum;
+
 	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 }
 // llamar a la builtin EXIT aqui arriba
+----
 ~ esto va a carpeta home
-historial
+historial: add_history (cuando cierres borra el archivo)
+----
+➜  Minishell git:(expansion) ✗ ./minishell patata
+Too many arguments.???
+----
+PATH QUOTES!!!!
+➜  Minishell git:(expansion) ✗ ./minishell       
+minishell>>./minishell
+-----> Tokenizing: [./minishell]
+TOKEN: [./minishell] | type: PATH
+minishell: command not found: ./minishell
+minishell>>exit
+OJO!!! ./ tambien es ejecutable
+---
+Comillas simples no expande
+----
+REVISAR: testing_path_quotes.sh
+----
+minishell>>cd                                        "docs"                      "|"
+Syntax error
+minishell>> cd                                        "docs"                      "|" cd ..
+Syntax error
+minishell>>echo                                        "docs"                      "|" cd ..
+Syntax error
+minishell>>echo                                        "docs"                      "|" "cd .."
+Syntax error
+minishell>>echo                                        "docs"                      "| cd .."
+Syntax error
+minishell>>echo                                        "docs                      | cd .."
+Syntax error
+minishell>>echo                                        docs | cd ..
+-----> Tokenizing: [echo                                        docs ]
+TOKEN: [echo] | type: COMMAND
+TOKEN: [docs] | type: ARG
+-----> Tokenizing: [ cd ..]
+TOKEN: [cd] | type: COMMAND
+TOKEN: [..] | type: ARG
+minishell>>echo"docs                      |" cd ..
+Syntax error
+minishell>>echo                                        "docs"                      " | " cd ..
+Syntax error
+minishell>>:lala
+-----> Tokenizing: [:lala]
+TOKEN: [:lala] | type: COMMAND
+minishell: command not found: :lala
+minishell>>./lala
+-----> Tokenizing: [./lala]
+TOKEN: [./lala] | type: PATH
+minishell: command not found: ./lala
+minishell>>bash ./minishell
+-----> Tokenizing: [bash ./minishell]
+TOKEN: [bash] | type: COMMAND
+TOKEN: [./minishell] | type: PATH
+./minishell: ./minishell: cannot execute binary file
+minishell>>
+---
+PA METER COMMITS SIN QUE APAREZCA REGISTRADO
+➜  Minishell git:(expansion) ✗ git add .
+➜  Minishell git:(expansion) ✗ git commit --amend
+[expansion d90bfe5] TODO
+ Date: Mon Jun 23 20:05:16 2025 +0200
+ 4 files changed, 60 insertions(+), 4 deletions(-)
+ delete mode 100644 echo
+ delete mode 100644 export
+➜  Minishell git:(expansion) git push
+-----
