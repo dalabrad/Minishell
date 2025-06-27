@@ -6,13 +6,21 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/21 16:49:25 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:35:32 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 #include "minishell_signals.h"
+
+//EXIT
+int	main_exit(t_data *data)
+{
+	free_all_data(data);
+	rl_clear_history();
+	return data->last_status;
+}
 
 // MAIN LOOP CALLING SEGMENTS/PIPES FOR TOKENIZATION AND CONVERSION TO CMD FOR EXEC
 void	restore_stdio(int in, int out)
@@ -80,10 +88,8 @@ int	main(int argc, char **argv, char **envp)
 		printf("Failed to initialize data\n");
 		return (EXIT_FAILURE);
 	}
-	// print_shell_envp_list(data.shell_envp);
 	main_loop(&data);
-	free_data(&data);
-	return (EXIT_SUCCESS);
+	return (main_exit(&data));  // Devuelve data->last_status y libera memoria
 }
 
 /*

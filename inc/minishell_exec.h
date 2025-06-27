@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/23 20:06:03 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/27 20:08:05 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_env
 	bool				was_added;
 	char				*name;
 	char				*value;
+	bool				visible;
 	struct s_env		*next;
 }						t_env;
 
@@ -89,6 +90,7 @@ struct					s_data
 	int					pipes[2][2];
 	t_cmd				*first_cmd;
 	size_t				nbr_cmds;
+	int					last_status;
 };
 
 ////////////////////////////////////////////////
@@ -113,8 +115,8 @@ char					*get_shell_envp_value(t_env *shell_envp,
 //	src/environment/shell_envp_list_utils_1.c
 t_env					*new_shell_envp(char *envp, bool was_added);
 t_env					*last_shell_envp(t_env *shell_envp);
-void					add_shell_envp(t_env **list, t_env *new);
 char					*get_env_value_from_list(const char *name, t_env *env);
+void 					add_shell_envp(t_env **env_list, t_env *new_node);
 
 //	src/environment/shell_envp_list_utils_2.c
 void					free_shell_envp_list(t_env **shell_envp);
@@ -124,7 +126,7 @@ void					delete_shell_envp_node(t_env **shell_envp,
 //	src/environment/shell_envp_list_create.c
 void					print_shell_envp_list(t_env *shell_envp);
 int						shell_envp_list_create(char **envp, t_env **shell_envp);
-
+char **shell_envp_to_array(t_env *env);
 ////////////////////////////////////////////////
 //------MINISHELL_DATA--------------------------
 ////////////////////////////////////////////////
@@ -139,7 +141,7 @@ void					free_data(t_data *data);
 ////////////////////////////////////////////////
 
 bool					is_builtin(char *cmd, t_data *data);
-int						shell_export(char **args, t_data *data);
+int 					builtin_export(char **args, t_data *data);
 int						shell_unset(char **args, t_data *data);
 int						shell_env(char **args, t_data *data);
 int						shell_echo(char **args, t_data *data);

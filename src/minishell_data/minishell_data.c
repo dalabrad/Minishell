@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/21 16:50:07 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/27 20:08:44 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	data_init(t_data *data, char **envp)
 	data->g_builtin[2] = (t_builtin){.name = "echo", .foo = shell_echo};
 	data->g_builtin[3] = (t_builtin){.name = "pwd", .foo = shell_pwd};
 	data->g_builtin[4] = (t_builtin){.name = "cd", .foo = shell_cd};
-	data->g_builtin[5] = (t_builtin){.name = "export", .foo = shell_export};
+	data->g_builtin[5] = (t_builtin){.name = "export", .foo = builtin_export};
 	data->g_builtin[6] = (t_builtin){.name = "unset", .foo = shell_unset};
 	data->g_builtin[7] = (t_builtin){.name = NULL, .foo = NULL};
 	data->shell_envp = NULL;

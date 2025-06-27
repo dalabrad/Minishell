@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/21 18:53:47 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/27 19:41:52 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,41 +46,52 @@ char	*get_env_value_from_list(const char *name, t_env *env)
 }
 
 // Procesa y reemplaza todas las ocurrencias de $VAR por su valor en shell_envp
-char	*expand_variables(const char *str, t_env *env, int was_quoted)
+char	*expand_variables(const char *str, t_env *env, int was_quoted, int last_status)
 {
 	char	*result = ft_strdup("");
 	size_t	i = 0;
 
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
+		if (str[i] == '$' && str[i + 1])
 		{
-			size_t	start = ++i;
-			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+			if (str[i + 1] == '?')
+			{
 				i++;
-			char *var = ft_substr(str, start, i - start);
-			char *value = get_env_value_from_list(var, env);
-			if (!value)
-				value = "";
-			char *tmp = result;
-			result = ft_strjoin(tmp, value);
-			free(tmp);
-			free(var);
+				char *exit_code = ft_itoa(last_status);
+				char *tmp = result;
+				result = ft_strjoin(tmp, exit_code);
+				free(tmp);
+				free(exit_code);
+				continue;
+			}
+			if (ft_isalpha(str[i + 1]) || str[i + 1] == '_')
+			{
+				size_t start = ++i;
+				while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+					i++;
+				char *var = ft_substr(str, start, i - start);
+				char *value = get_env_value_from_list(var, env);
+				if (!value)
+					value = "";
+				char *tmp = result;
+				result = ft_strjoin(tmp, value);
+				free(tmp);
+				free(var);
+				continue;
+			}
 		}
-		else
-		{
-			char buffer[2] = {str[i++], 0};
-			char *tmp = result;
-			result = ft_strjoin(tmp, buffer);
-			free(tmp);
-		}
+		char buffer[2] = {str[i++], 0};
+		char *tmp = result;
+		result = ft_strjoin(tmp, buffer);
+		free(tmp);
 	}
 	if (was_quoted == 2) // comillas simples
 		return (ft_strdup(str));
 	return (result);
 }
 
-void	expand_tokens(t_tokens *tokens, t_env *env)
+void	expand_tokens(t_tokens *tokens, t_env *env, int last_status)
 {
 	t_tokens	*tmp;
 	char		*expanded;
@@ -90,7 +101,7 @@ void	expand_tokens(t_tokens *tokens, t_env *env)
 	{
 		if (tmp->str && tmp->type != ERROR)
 		{
-			expanded = expand_variables(tmp->str, env, tmp->was_quoted);
+			expanded = expand_variables(tmp->str, env, tmp->was_quoted, last_status);
 			free(tmp->str);
 			tmp->str = expanded;
 		}

@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/21 18:49:56 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/27 20:10:28 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,13 +153,11 @@ void					process_segments(char **segments, t_tokens **tokens,
 
 // TOK_TO_CMD
 t_cmd					*tokens_to_cmd(t_tokens *tokens);
+int						is_invalid_redirection_sequence(t_tokens *token);
 
 // EXPAND & FOR EXEC
-char					**tokens_to_args(t_tokens *tokens);
-char					*expand_variables(const char *str, t_env *env,
-							int was_quoted);
-void					expand_tokens(t_tokens *tokens, t_env *env);
-char					*extract_env_value(char *envp_str);
 char					*get_env_value_from_list(const char *name, t_env *env);
-
+char					*expand_variables(const char *str, t_env *env,
+							int was_quoted, int last_status);
+void expand_tokens(t_tokens *tokens, t_env *env, int last_status);
 #endif

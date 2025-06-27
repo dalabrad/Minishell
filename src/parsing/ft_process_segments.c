@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:36:10 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/12 13:57:06 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/27 20:09:59 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data
             i++;
             continue;
         }
-        expand_tokens(tokens[i], data->shell_envp);
+        void expand_tokens(t_tokens * tokens, t_env * env);
         current_cmd = tokens_to_cmd(tokens[i]);
         if (!current_cmd)
         {
