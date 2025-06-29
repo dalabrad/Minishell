@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/27 20:08:05 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:05:10 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ struct					s_cmd
 	char				**args;
 	char				*file_in;
 	char				*file_out;
-	// bool heredoc
 	bool append_out; // esto es nuevo
 	pid_t				pid;
 	t_cmd				*next;
@@ -89,6 +88,7 @@ struct					s_data
 	t_builtin			g_builtin[8];
 	int					pipes[2][2];
 	t_cmd				*first_cmd;
+	t_tokens			**tokens_by_segment;
 	size_t				nbr_cmds;
 	int					last_status;
 };
@@ -101,6 +101,7 @@ struct					s_data
 int						error_msg(t_err error_code);
 int						error_msg_arg(t_err error_code, char *arg);
 void					error_msg_exit(t_err error_code);
+int 					syntax_error(char *token);
 
 ////////////////////////////////////////////////
 //------ENVIRONMENT-----------------------------
@@ -126,7 +127,10 @@ void					delete_shell_envp_node(t_env **shell_envp,
 //	src/environment/shell_envp_list_create.c
 void					print_shell_envp_list(t_env *shell_envp);
 int						shell_envp_list_create(char **envp, t_env **shell_envp);
-char **shell_envp_to_array(t_env *env);
+
+//	src/environment/shell_envp_to_array.c
+char 					**shell_envp_to_array(t_env *env);
+
 ////////////////////////////////////////////////
 //------MINISHELL_DATA--------------------------
 ////////////////////////////////////////////////

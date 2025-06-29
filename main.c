@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/27 18:35:32 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/29 12:40:12 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //EXIT
 int	main_exit(t_data *data)
 {
-	free_all_data(data);
+	free_data(data);
 	rl_clear_history();
 	return data->last_status;
 }

@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/27 20:10:28 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/29 11:27:16 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,5 +159,5 @@ int						is_invalid_redirection_sequence(t_tokens *token);
 char					*get_env_value_from_list(const char *name, t_env *env);
 char					*expand_variables(const char *str, t_env *env,
 							int was_quoted, int last_status);
-void expand_tokens(t_tokens *tokens, t_env *env, int last_status);
+void 					expand_tokens(t_tokens *tokens, t_env *env, int last_status);
 #endif
