@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:36:10 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/29 11:59:11 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/03 20:11:23 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 void process_single_segment(char *segment, t_tokens **token_ptr, t_cmd **cmd_ptr, size_t index)
 {
     size_t words = 0;
+
+    printf("blablabla");
 
     token_ptr[index] = check_args_fixed(segment, &words);
     if (!token_ptr[index])
@@ -39,7 +41,9 @@ void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data
     size_t i;
     t_cmd *current_cmd;
     t_cmd *last;
-
+    
+    printf("blablabla");
+    
     data->first_cmd = NULL;
     i = 0;
     while (i < n)
@@ -62,6 +66,7 @@ void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data
             i++;
             continue;
         }
+        process_single_segment(segments[i], tokens, &current_cmd, i);
         if (!data->first_cmd)
             data->first_cmd = current_cmd;
         else

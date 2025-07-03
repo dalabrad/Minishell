@@ -6,18 +6,18 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:20:39 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/27 20:02:46 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/03 21:36:47 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-/**
+/*
  * Imprime la lista del entorno exportado en formato:
  * declare -x VAR="valor"
  */
-int print_export_env(t_env *env_list)
+int	print_export_env(t_env *env_list)
 {
 	while (env_list)
 	{
@@ -38,10 +38,13 @@ int print_export_env(t_env *env_list)
 	return (0);
 }
 
-void add_or_update_env(t_env *env_list, const char *name, const char *value, bool overwrite)
+void	add_or_update_env(t_env *env_list, const char *name, const char *value,
+		bool overwrite)
 {
-	t_env *current = env_list;
+	t_env	*current;
+	t_env	*new;
 
+	current = env_list;
 	while (current)
 	{
 		if (ft_strcmp(current->name, name) == 0)
@@ -51,22 +54,22 @@ void add_or_update_env(t_env *env_list, const char *name, const char *value, boo
 				free(current->value);
 				current->value = value ? ft_strdup(value) : NULL;
 			}
-			return;
+			return ;
 		}
 		current = current->next;
 	}
 	// No encontrada: añadir al final
-	t_env *new = malloc(sizeof(t_env));
+	new = malloc(sizeof(t_env));
 	if (!new)
 	{
 		error_msg(MALLOC_ERROR);
-		return;
+		return ;
 	}
 	new->name = ft_strdup(name);
 	new->value = value ? ft_strdup(value) : NULL;
+		// si existe haz strdup y sobreescribe, sino iguala a NULL
 	new->visible = true;
 	new->next = NULL;
-
 	// Insertar al final
 	current = env_list;
 	while (current->next)
@@ -74,34 +77,38 @@ void add_or_update_env(t_env *env_list, const char *name, const char *value, boo
 	current->next = new;
 }
 
-int builtin_export(char **args, t_data *data)
+int	builtin_export(char **args, t_data *data)
 {
-    int i = 0;
+	int		i;
+	char	*var;
+	char	*name;
+	char	*value;
 
-    if (!args || !args[0])
-        return (print_export_env(data->shell_envp));
-    while (args[i])
-    {
-        char *var = args[i];
-        if (!ft_strchr(var, '='))
-        {
-            add_or_update_env(data->shell_envp, var, NULL, false);
-        }
-        else
-        {
-            char *name = ft_substr(var, 0, ft_strchr(var, '=') - var);
-            char *value = ft_strdup(ft_strchr(var, '=') + 1);
-            if (!name || !value)
-            {
-                free(name);
-                free(value);
-                return (error_msg(MALLOC_ERROR));
-            }
-            add_or_update_env(data->shell_envp, name, value, true);
-            free(name);
-            free(value);
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	if (!args || !args[0])
+		return (print_export_env(data->shell_envp));
+	while (args[i])
+	{
+		var = args[i];
+		if (!ft_strchr(var, '='))
+		{
+			add_or_update_env(data->shell_envp, NULL, var, false);
+		}
+		else
+		{
+			name = ft_substr(var, 0, ft_strchr(var, '=') - var);
+			value = ft_strdup(ft_strchr(var, '=') + 1);
+			if (!name || !value)
+			{
+				free(name);
+				free(value);
+				return (error_msg(MALLOC_ERROR));
+			}
+			add_or_update_env(data->shell_envp, name, value, true);
+			free(name);
+			free(value);
+		}
+		i++;
+	}
+	return (0);
 }

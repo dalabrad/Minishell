@@ -5,56 +5,69 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/29 12:53:07 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/29 13:04:38 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/06/27 18:46:34 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/07/03 21:00:17 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
-
-#include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-//Conviertimos lista variables entorno t_env-> a array **envp tipo "VAR=VALUE"
-char **shell_envp_to_array(t_env *env_list)
+/*
+ * Convierte la lista enlazada de variables de entorno (t_env)
+ * en un array de strings tipo "NAME=VALUE" para pasar a execve.
+ */
+
+ char *ft_strjoin_3(const char *s1, const char *s2, const char *s3)
 {
-    size_t  count = 0;
-    t_env   *tmp = env_list;
-    char    **array;
-    char    *tmp_str;
+	char *tmp = ft_strjoin(s1, s2);
+	char *res = ft_strjoin(tmp, s3);
+	free(tmp);
+	return res;
+}
 
-    //Cuenta las variables visibles
-    while (tmp)
-    {
-        if (tmp->visible)
-            count++;
-        tmp = tmp->next;
-    }
+char **shell_envp_to_array(t_env *env)
+{
+	char	**array;
+	int		count = 0;
+	int		i = 0;
+	t_env	*tmp = env;
 
-    //Reserva memoria pa array de strings
-    array = ft_calloc(count + 1, sizeof(char *));
-    if (!array)
-        return (NULL);
+	// Contar elementos visibles
+	while (tmp)
+	{
+		if (tmp->visible)
+			count++;
+		tmp = tmp->next;
+	}
 
-    tmp = env_list;
-    size_t i = 0;
-    while (tmp)
-    {
-        if (tmp->visible)
-        {
-            tmp_str = ft_strjoin(tmp->name, "=");
-            if (!tmp_str)
-                return (free_array(array), NULL);
+	printf("%d\n", count);
 
-            array[i] = ft_strjoin(tmp_str, tmp->value);
-            free(tmp_str);
+	array = ft_calloc(count + 1, sizeof(char *));
+	if (!array)
+		return (NULL);
+	
+	printf("SHELL_ENVP_ARRAY::::ONE_CMD_PIPELINE\n");
 
-            if (!array[i])
-                return (free_array(array), NULL);
-            i++;
-        }
-        tmp = tmp->next;
-    }
-    array[i] = NULL;
-    return (array);
+	tmp = env;
+	while (tmp)
+	{
+		write(1, "*****", 5);
+		if (tmp->visible)
+		{
+			write(1, "*****", 5);
+			array[i] = ft_strjoin_3(tmp->name, "=", tmp->value);
+			if (!array[i++])
+			{
+				printf("SI ME PASO DE VUELTAS::::SHELL_ENVP_ARRAY\n");
+				free_array(array);
+				return (NULL);
+			}
+		}
+		tmp = tmp->next;
+	}
+	write(1, "*****", 5);
+	printf("%s\n", array[0]);
+
+	return (array);
 }
