@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:20:39 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/07 19:41:43 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/07 20:51:22 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,61 @@
  * Imprime la lista del entorno exportado en formato:
  * declare -x VAR="valor"
  */
+
+/* void	add_or_update_env(t_env **env_list, const char *name, const char *value, bool overwrite)
+{
+	t_env	*current;
+	t_env	*new;
+
+	if (!name)
+		return ;
+
+	current = *env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+		{
+			if (overwrite)
+			{
+				free(current->value);
+				current->value = value ? ft_strdup(value) : NULL;
+			}
+			return ;
+		}
+		current = current->next;
+	}
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+	{
+		error_msg(MALLOC_ERROR);
+		return ;
+	}
+	if(value == NULL)
+	{
+		new->name = ft_strdup(name);
+		new->visible = true;
+		new->next = NULL;
+	}
+	else
+	{
+		new->name = ft_strdup(name);
+		new->value = ft_strdup(value);
+		new->visible = true;
+		new->next = NULL;
+	}
+
+	if (!*env_list)
+		*env_list = new;
+	else
+	{
+		current = *env_list;
+		while (current->next)
+			current = current->next;
+		current->next = new;
+	}
+} */
+
 int	print_export_env(t_env *env_list)
 {
 	while (env_list)
@@ -67,19 +122,10 @@ void	add_or_update_env(t_env **env_list, const char *name, const char *value, bo
 		error_msg(MALLOC_ERROR);
 		return ;
 	}
-	if(value == NULL)
-	{
-		new->name = ft_strdup(name);
-		new->visible = true;
-		new->next = NULL;
-	}
-	else
-	{
-		new->name = ft_strdup(name);
-		new->value = ft_strdup(value);
-		new->visible = true;
-		new->next = NULL;
-	}
+	new->name = ft_strdup(name);
+	new->value = value ? ft_strdup(value) : NULL;
+	new->visible = true;
+	new->next = NULL;
 
 	if (!*env_list)
 		*env_list = new;

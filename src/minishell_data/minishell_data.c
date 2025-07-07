@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/29 12:47:40 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/07 20:01:50 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,8 @@ void	free_data(t_data *data)
 		}
 		free(data->tokens_by_segment);
 	}
-
 	//Limpia historial readline
 	rl_clear_history();
 
 	//NO libera data, ya que no fue mallocado.
 }
-

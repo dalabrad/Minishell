@@ -1,6 +1,4 @@
 NOTAS para yo futuro
-Strcmp ESTALLA, cuando? cuando hago export sin "=", porque? en add_or_update NULL , var
-export export no le gusta, coge doble builtins???
 Cuando no PIPE y no es builtin: no llega a execv!!
 Seguir printeos (la cadeneta)
 recuerda Dios te ama!!!!
