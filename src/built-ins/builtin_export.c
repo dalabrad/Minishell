@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:20:39 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/03 21:36:47 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:41:43 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,15 @@ int	print_export_env(t_env *env_list)
 	return (0);
 }
 
-void	add_or_update_env(t_env *env_list, const char *name, const char *value,
-		bool overwrite)
+void	add_or_update_env(t_env **env_list, const char *name, const char *value, bool overwrite)
 {
 	t_env	*current;
 	t_env	*new;
 
-	current = env_list;
+	if (!name)
+		return ;
+
+	current = *env_list;
 	while (current)
 	{
 		if (ft_strcmp(current->name, name) == 0)
@@ -58,23 +60,36 @@ void	add_or_update_env(t_env *env_list, const char *name, const char *value,
 		}
 		current = current->next;
 	}
-	// No encontrada: añadir al final
+
 	new = malloc(sizeof(t_env));
 	if (!new)
 	{
 		error_msg(MALLOC_ERROR);
 		return ;
 	}
-	new->name = ft_strdup(name);
-	new->value = value ? ft_strdup(value) : NULL;
-		// si existe haz strdup y sobreescribe, sino iguala a NULL
-	new->visible = true;
-	new->next = NULL;
-	// Insertar al final
-	current = env_list;
-	while (current->next)
-		current = current->next;
-	current->next = new;
+	if(value == NULL)
+	{
+		new->name = ft_strdup(name);
+		new->visible = true;
+		new->next = NULL;
+	}
+	else
+	{
+		new->name = ft_strdup(name);
+		new->value = ft_strdup(value);
+		new->visible = true;
+		new->next = NULL;
+	}
+
+	if (!*env_list)
+		*env_list = new;
+	else
+	{
+		current = *env_list;
+		while (current->next)
+			current = current->next;
+		current->next = new;
+	}
 }
 
 int	builtin_export(char **args, t_data *data)
@@ -92,7 +107,7 @@ int	builtin_export(char **args, t_data *data)
 		var = args[i];
 		if (!ft_strchr(var, '='))
 		{
-			add_or_update_env(data->shell_envp, NULL, var, false);
+			add_or_update_env(&(data->shell_envp), var, NULL, false);
 		}
 		else
 		{
@@ -104,7 +119,7 @@ int	builtin_export(char **args, t_data *data)
 				free(value);
 				return (error_msg(MALLOC_ERROR));
 			}
-			add_or_update_env(data->shell_envp, name, value, true);
+			add_or_update_env(&(data->shell_envp), name, value, true);
 			free(name);
 			free(value);
 		}
