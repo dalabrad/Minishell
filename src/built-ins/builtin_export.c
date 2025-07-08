@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:20:39 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/07 20:51:22 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:31:46 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,12 @@ int	builtin_export(char **args, t_data *data)
 		{
 			name = ft_substr(var, 0, ft_strchr(var, '=') - var);
 			value = ft_strdup(ft_strchr(var, '=') + 1);
+			if (value && ft_strlen(value) >= 2 && value[0] == '"' && value[ft_strlen(value) - 1] == '"')
+			{
+				char *trimmed = ft_substr(value, 1, ft_strlen(value) - 2);
+				free(value);
+				value = trimmed;
+			}
 			if (!name || !value)
 			{
 				free(name);
