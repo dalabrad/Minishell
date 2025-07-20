@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   one_command_pipeline.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 12:26:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/18 16:17:35 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:41:24 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	one_cmd_pipeline(t_data *data)
     if (!cmd)
         return;
     if (is_builtin(cmd->args[0], data))
-        command_exec(cmd->args, data);
+        data->status = command_exec(cmd->args, data);
     else
     {
         cmd->pid = fork();
@@ -30,7 +30,7 @@ void	one_cmd_pipeline(t_data *data)
 			return;
 		}
         if (cmd->pid)
-            waitpid(cmd->pid, NULL, 0);
+            waitpid(cmd->pid, &data->status, 0);
         else
         {
             if (cmd->file_in)

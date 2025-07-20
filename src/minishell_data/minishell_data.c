@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 14:48:44 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:30:11 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	data_init(t_data *data, char**envp)
 	data->g_builtin[7] = (t_builtin){.name = NULL, .foo = NULL};
 	data->shell_envp = NULL;
 	data->first_cmd = NULL;
+	data->status = 0;
 	if (shell_envp_list_create(envp, &(data->shell_envp)))
 	{
 		data->shell_envp = NULL;

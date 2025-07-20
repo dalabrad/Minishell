@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 13:38:29 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:29:37 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ struct s_data
 	t_builtin	g_builtin[8];
 	int			pipes[2][2];
 	t_cmd		*first_cmd;
+	int			status;
 	size_t		nbr_cmds;
 };
 

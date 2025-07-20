@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:23:11 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/18 15:52:09 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:41:13 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	parent_process(t_data *data, t_cmd *cmd, size_t i)
 		close(data->pipes[(i + 1) % 2][R_PIPE]);
 		close(data->pipes[(i + 1) % 2][W_PIPE]);
 	}
-	waitpid(cmd->pid, NULL, 0);
+	waitpid(cmd->pid, &data->status, 0);
 }
 
 static void	child_process(t_data *data, t_cmd *cmd, size_t i)
