@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 22:54:26 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/21 16:49:57 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:35:35 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int	shell_envp_list_create(char **envp, t_env **shell_envp)
 			return (error_msg(MALLOC_ERROR), EXIT_FAILURE);
 		}
 		add_shell_envp(shell_envp, tmp);
-		// printf("////////////Añadido: %s=%s\n", tmp->name, tmp->value);
-		// <--- DEBUG
 		i++;
 	}
 	return (EXIT_SUCCESS);

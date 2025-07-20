@@ -6,25 +6,27 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:21:53 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/03 19:20:32 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:43:04 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
-
+/* 
 int process_heredoc(t_cmd *cmd)
 {
 	int		pipefd[2];
 	char	*line;
 
+	printf(">>> ENTRANDO en PROCESS_HEREDOC para delimiter: %s\n", cmd->heredoc_delimiter);
+	
 	if (!cmd->heredoc_delimiter)
 		return (0);
 	if (pipe(pipefd) == -1)
 		return (error_msg(PIPE_ERROR));
 	while (1)
 	{
-		line = readline("> ");
+		line = readline("> HEREDOC");
 		if (!line || ft_strcmp(line, cmd->heredoc_delimiter) == 0)
 			break;
 		ft_putstr_fd(line, pipefd[1]);
@@ -35,7 +37,7 @@ int process_heredoc(t_cmd *cmd)
 	close(pipefd[1]);
 	cmd->heredoc_fd = pipefd[0];
 	return (0);
-}
+} */
 
 static char *absolute_path_case(char **args)
 {

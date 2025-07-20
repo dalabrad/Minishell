@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/27 19:41:52 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/08 20:40:30 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	expand_tokens(t_tokens *tokens, t_env *env, int last_status)
 {
 	t_tokens	*tmp;
 	char		*expanded;
-
 	tmp = tokens;
 	while (tmp)
 	{
@@ -105,6 +104,8 @@ void	expand_tokens(t_tokens *tokens, t_env *env, int last_status)
 			free(tmp->str);
 			tmp->str = expanded;
 		}
+		tokens = tmp;
+		printf("TOKEN-->STR %s\n\n", tokens->str);
 		tmp = tmp->next;
 	}
 }

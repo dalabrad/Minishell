@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 12:26:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/03 20:39:33 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:20:19 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,13 @@ void	one_cmd_pipeline(t_data *data)
 				close(fd_out);
 			}
             
-            printf("ELSE_NO_BUILTIN::::ONE_CMD_PIPELINE\n");
+            printf("::::ONE_CMD_PIPELINE\n");
+
+			if (!cmd->args[0])
+			{
+				syntax_error("missing command after redirection");
+				
+			}
 
 			envp = shell_envp_to_array(data->shell_envp);
 			execve(cmd->args[0], cmd->args, envp);

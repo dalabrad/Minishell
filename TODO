@@ -99,3 +99,5 @@ PA METER COMMITS SIN QUE APAREZCA REGISTRADO
  delete mode 100644 export
 ➜  Minishell git:(expansion) git push
 -----
+dalabrad: heredoc
+vlorenzo: segfalut pipes & history
