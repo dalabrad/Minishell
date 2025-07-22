@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/20 16:30:11 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:25:57 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ int	data_init(t_data *data, char**envp)
 	data->shell_envp = NULL;
 	data->first_cmd = NULL;
 	data->status = 0;
+	data->pipes[0][R_PIPE] = -1;
+	data->pipes[0][W_PIPE] = -1;
+	data->pipes[1][R_PIPE] = -1;
+	data->pipes[1][W_PIPE] = -1;
 	if (shell_envp_list_create(envp, &(data->shell_envp)))
 	{
 		data->shell_envp = NULL;
@@ -36,10 +40,14 @@ int	data_init(t_data *data, char**envp)
 
 void	close_pipes(t_data *data)
 {
-	close(data->pipes[0][R_PIPE]);
-	close(data->pipes[0][W_PIPE]);
-	close(data->pipes[1][R_PIPE]);
-	close(data->pipes[1][W_PIPE]);
+	if (data->pipes[0][R_PIPE] > 0)
+		close(data->pipes[0][R_PIPE]);
+	if (data->pipes[0][W_PIPE] > 0)
+		close(data->pipes[0][W_PIPE]);
+	if (data->pipes[1][R_PIPE] > 0)
+		close(data->pipes[1][R_PIPE]);
+	if (data->pipes[1][W_PIPE] > 0)
+		close(data->pipes[1][W_PIPE]);
 }
 
 void	free_data(t_data *data)
