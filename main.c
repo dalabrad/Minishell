@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/03 19:43:50 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/22 21:09:15 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ static void	main_loop(t_data *data)
 		clean = ft_strtrim(line, "\n");
 		free(line);
 		line = clean;
-		if (is_exit_command(line))
-			break ;
+		//if (is_exit_command(line))
+			//break ;
 		if (!init_pipe_segments(line, &pipe_seg, &n_pipe)
 			|| !(tokens = init_tokens_by_segment(n_pipe)))
 			continue ;
