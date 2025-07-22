@@ -90,7 +90,7 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
 $(AU_LIB): $(AU_OBJS)
-	@echo "$(YELLOW)Compiling array_utis.a library...$(RESET)"
+	@echo "$(YELLOW)Compiling array_utils.a library...$(RESET)"
 	@ar rcs $(AU_LIB) $(AU_OBJS)
 	@echo "$(GREEN)array_utils.a created successfully.$(RESET)"	
 
@@ -129,6 +129,9 @@ fclean: clean
 # ─────────────────────────────────────────────────────────────
 
 re: fclean all
+
+run: re
+	./minishell
 
 # ─────────────────────────────────────────────────────────────
 # VALGRIND TESTING
