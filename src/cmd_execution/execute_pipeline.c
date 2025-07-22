@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:23:11 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/20 16:41:13 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/22 20:50:53 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	parent_process(t_data *data, t_cmd *cmd, size_t i)
 		close(data->pipes[(i + 1) % 2][R_PIPE]);
 		close(data->pipes[(i + 1) % 2][W_PIPE]);
 	}
-	waitpid(cmd->pid, &data->status, 0);
+	waitpid(cmd->pid, &data->last_status, 0);
 }
 
 static void	child_process(t_data *data, t_cmd *cmd, size_t i)
@@ -89,10 +89,8 @@ void	execute_pipeline(t_data *data)
 {
 	t_cmd	*cmd;
 
-	printf("execute_pipeline, OUT\n");
 	if (data->nbr_cmds == 1)
 	{
-		printf("execute_pipeline, IN\n");
 		one_cmd_pipeline(data);
 		return ;
 	}

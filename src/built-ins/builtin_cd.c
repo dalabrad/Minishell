@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:08:15 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/27 20:00:00 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/22 20:48:27 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	export_pwd(t_data *data, char *pwd_path, char *pwd_type)
 		return (error_msg(MALLOC_ERROR));
 	}
 	tmp[1] = NULL;
-	builtin_export(tmp, data);
+	shell_export(tmp, data);
 	free_array(tmp);
 	return (EXIT_SUCCESS);
 }
