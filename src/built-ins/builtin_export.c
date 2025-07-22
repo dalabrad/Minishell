@@ -13,169 +13,47 @@
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-/*
- * Imprime la lista del entorno exportado en formato:
- * declare -x VAR="valor"
- */
-
-/* void	add_or_update_env(t_env **env_list, const char *name, const char *value, bool overwrite)
+int	shell_export(char **args, t_data *data)
 {
-	t_env	*current;
-	t_env	*new;
+	int			name_len;
+	t_env		*tmp;
+	t_env		**shell_envp;
+	int			i;
 
-	if (!name)
-		return ;
-
-	current = *env_list;
-	while (current)
-	{
-		if (ft_strcmp(current->name, name) == 0)
-		{
-			if (overwrite)
-			{
-				free(current->value);
-				current->value = value ? ft_strdup(value) : NULL;
-			}
-			return ;
-		}
-		current = current->next;
-	}
-
-	new = malloc(sizeof(t_env));
-	if (!new)
-	{
-		error_msg(MALLOC_ERROR);
-		return ;
-	}
-	if(value == NULL)
-	{
-		new->name = ft_strdup(name);
-		new->visible = true;
-		new->next = NULL;
-	}
-	else
-	{
-		new->name = ft_strdup(name);
-		new->value = ft_strdup(value);
-		new->visible = true;
-		new->next = NULL;
-	}
-
-	if (!*env_list)
-		*env_list = new;
-	else
-	{
-		current = *env_list;
-		while (current->next)
-			current = current->next;
-		current->next = new;
-	}
-} */
-
-int	print_export_env(t_env *env_list)
-{
-	while (env_list)
-	{
-		if (env_list->visible)
-		{
-			ft_putstr_fd("declare -x ", STDOUT_FILENO);
-			ft_putstr_fd(env_list->name, STDOUT_FILENO);
-			if (env_list->value)
-			{
-				ft_putstr_fd("=\"", STDOUT_FILENO);
-				ft_putstr_fd(env_list->value, STDOUT_FILENO);
-				ft_putstr_fd("\"", STDOUT_FILENO);
-			}
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		}
-		env_list = env_list->next;
-	}
-	return (0);
-}
-
-void	add_or_update_env(t_env **env_list, const char *name, const char *value, bool overwrite)
-{
-	t_env	*current;
-	t_env	*new;
-
-	if (!name)
-		return ;
-
-	current = *env_list;
-	while (current)
-	{
-		if (ft_strcmp(current->name, name) == 0)
-		{
-			if (overwrite)
-			{
-				free(current->value);
-				current->value = value ? ft_strdup(value) : NULL;
-			}
-			return ;
-		}
-		current = current->next;
-	}
-
-	new = malloc(sizeof(t_env));
-	if (!new)
-	{
-		error_msg(MALLOC_ERROR);
-		return ;
-	}
-	new->name = ft_strdup(name);
-	new->value = value ? ft_strdup(value) : NULL;
-	new->visible = true;
-	new->next = NULL;
-
-	if (!*env_list)
-		*env_list = new;
-	else
-	{
-		current = *env_list;
-		while (current->next)
-			current = current->next;
-		current->next = new;
-	}
-}
-
-int	builtin_export(char **args, t_data *data)
-{
-	int		i;
-	char	*var;
-	char	*name;
-	char	*value;
-
-	i = 0;
 	if (!args || !args[0])
-		return (print_export_env(data->shell_envp));
+		return (EXIT_FAILURE);
+	shell_envp = &(data->shell_envp);
+	i = 0;
 	while (args[i])
 	{
-		var = args[i];
-		if (!ft_strchr(var, '='))
+		if (!ft_strchr(args[i], '='))
 		{
-			add_or_update_env(&(data->shell_envp), var, NULL, false);
+			printf("'=' not found in argument!!\n");
+			i++;
+			continue ;
 		}
-		else
+		name_len = ft_strchr(args[i], '=') - &args[i][0];
+		tmp = *shell_envp;
+		while (tmp)
 		{
-			name = ft_substr(var, 0, ft_strchr(var, '=') - var);
-			value = ft_strdup(ft_strchr(var, '=') + 1);
-			if (value && ft_strlen(value) >= 2 && value[0] == '"' && value[ft_strlen(value) - 1] == '"')
+			if (!ft_strncmp(tmp->name, args[i], name_len) && !ft_strncmp(tmp->name, args[i], ft_strlen(tmp->name)))
 			{
-				char *trimmed = ft_substr(value, 1, ft_strlen(value) - 2);
-				free(value);
-				value = trimmed;
+				free(tmp->value);
+				tmp->value = get_envp_value(args[i]);
+				break ;
 			}
-			if (!name || !value)
-			{
-				free(name);
-				free(value);
-				return (error_msg(MALLOC_ERROR));
-			}
-			add_or_update_env(&(data->shell_envp), name, value, true);
-			free(name);
-			free(value);
+			tmp = tmp->next;
 		}
+		if (tmp)
+		{
+			i++;
+			continue ;
+		}
+		tmp = new_shell_envp(args[i], true);
+		if (!tmp)
+			return (error_msg(MALLOC_ERROR));
+		add_shell_envp(shell_envp, tmp);
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
