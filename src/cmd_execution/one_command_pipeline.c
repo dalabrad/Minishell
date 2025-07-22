@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 12:26:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/20 16:41:24 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:20:19 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	one_cmd_pipeline(t_data *data)
         return;
     if (is_builtin(cmd->args[0], data))
         data->status = command_exec(cmd->args, data);
+        data->last_status = command_exec(cmd->args, data);
     else
     {
         cmd->pid = fork();
@@ -30,7 +31,7 @@ void	one_cmd_pipeline(t_data *data)
 			return;
 		}
         if (cmd->pid)
-            waitpid(cmd->pid, &data->status, 0);
+            waitpid(cmd->pid, &data->last_status, 0);
         else
         {
             if (cmd->file_in)

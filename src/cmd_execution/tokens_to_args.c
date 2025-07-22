@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:33:07 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/18 15:50:54 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/03 20:05:23 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static size_t	args_size(t_tokens *token_list)
 	size = 0;
 	while (token_list)
 	{
-		if (token_list->type == COMMAND || token_list->type == ARG
+		if (token_list->type == COMMAND || token_list->type == ARG 
 			|| token_list->type == OPTION || token_list->type == SETTING)
 			size++;
 		token_list = token_list->next;

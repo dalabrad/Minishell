@@ -6,16 +6,15 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/18 16:09:57 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:49:31 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "minishell_parsing.h"
 #include "minishell_exec.h"
+#include "minishell_parsing.h"
 
 // EXIT COMMAND
-int is_exit_command(char *line)
+int	is_exit_command(char *line)
 {
 	if (!line)
 	{
@@ -49,7 +48,7 @@ t_pipes	*clean_struct(t_pipes *args)
 // FREE TOKENS
 void	free_tokens_list(t_tokens *head)
 {
-	t_tokens *tmp;
+	t_tokens	*tmp;
 
 	while (head && head != NULL)
 	{
@@ -61,12 +60,14 @@ void	free_tokens_list(t_tokens *head)
 }
 
 // CLEAN-UP SEGMENTS/TOKENIZED-ARGS ARRAY
-void cleanup(char *line, char **segments, t_tokens **tokens, size_t n)
+void	cleanup(char *line, char **segments, t_tokens **tokens, size_t n)
 {
+	size_t	j;
+
 	free_array(segments);
 	if (tokens)
 	{
-		size_t j = 0;
+		j = 0;
 		while (j < n)
 			free_tokens_list(tokens[j++]);
 		free(tokens);
