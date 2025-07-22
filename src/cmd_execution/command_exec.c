@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/03 20:18:49 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:07:58 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static char *absolute_path_case(char **args)
 
 static void non_builtin_exec(char **args, t_data *data)
 {
-	char *cmd_path;
-	char **envp = shell_envp_to_array(data->shell_envp);
+	char		*cmd_path;
+	char		**envp;
 
 	if (args[0][0] == '/')
 		cmd_path = absolute_path_case(args);
@@ -52,12 +52,18 @@ static void non_builtin_exec(char **args, t_data *data)
 	{
 		free_array(envp);
 		return ;
+
+	envp = shell_envp_array_create(*shell_envp);
+	if (!envp)
+	{
+		free(cmd_path);
+		return ;
 	}
-	printf("non-builtin: EXECV\n");
-	execve(cmd_path, args, envp);
-	free(cmd_path);
-	free_array(envp);
-	exit(127);
+	if (execve(cmd_path, args, envp) == -1)
+	{
+		free(cmd_path);
+		free_array(envp);
+	}
 }
 
 int command_exec(char **args, t_data *data)
