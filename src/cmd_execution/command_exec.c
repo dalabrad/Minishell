@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/12 13:07:58 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/20 19:11:45 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*absolute_path_case(char **args)
 	return (cmd_path);
 }
 
-static void	non_builtin_exec(char **args, t_env **shell_envp)
+static int	non_builtin_exec(char **args, t_env **shell_envp)
 {
 	char		*cmd_path;
 	char		**envp;
@@ -49,18 +49,21 @@ static void	non_builtin_exec(char **args, t_env **shell_envp)
 	else
 		cmd_path = find_path(args, shell_envp);
 	if (!cmd_path)
-		return ;
+		exit (127);
 	envp = shell_envp_array_create(*shell_envp);
 	if (!envp)
 	{
 		free(cmd_path);
-		return ;
+		return(EXIT_FAILURE);
 	}
 	if (execve(cmd_path, args, envp) == -1)
 	{
 		free(cmd_path);
 		free_array(envp);
+		exit(2);
+		return (2);
 	}
+	return (EXIT_SUCCESS);
 }
 
 int	command_exec(char **args, t_data *data)
@@ -80,6 +83,5 @@ int	command_exec(char **args, t_data *data)
 		}
 		i++;
 	}
-	non_builtin_exec(args, shell_envp);
-	return (EXIT_SUCCESS);
+	return (non_builtin_exec(args, shell_envp));
 }
