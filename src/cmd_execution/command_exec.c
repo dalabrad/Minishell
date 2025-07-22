@@ -13,9 +13,9 @@
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-static char *absolute_path_case(char **args)
+static char	*absolute_path_case(char **args)
 {
-	char *cmd_path;
+	char	*cmd_path;
 
 	if (access(args[0], F_OK | X_OK))
 	{
@@ -39,7 +39,7 @@ static char *absolute_path_case(char **args)
 	return (cmd_path);
 }
 
-static void non_builtin_exec(char **args, t_data *data)
+static int	non_builtin_exec(char **args, t_env **shell_envp)
 {
 	char		*cmd_path;
 	char		**envp;
@@ -47,47 +47,41 @@ static void non_builtin_exec(char **args, t_data *data)
 	if (args[0][0] == '/')
 		cmd_path = absolute_path_case(args);
 	else
-		cmd_path = find_path(args, &data->shell_envp);
+		cmd_path = find_path(args, shell_envp);
 	if (!cmd_path)
-	{
-		free_array(envp);
-		return ;
-
+		exit (127);
 	envp = shell_envp_array_create(*shell_envp);
 	if (!envp)
 	{
 		free(cmd_path);
-		return ;
+		return(EXIT_FAILURE);
 	}
 	if (execve(cmd_path, args, envp) == -1)
 	{
 		free(cmd_path);
 		free_array(envp);
+		exit(2);
+		return (2);
 	}
+	return (EXIT_SUCCESS);
 }
 
-int command_exec(char **args, t_data *data)
+int	command_exec(char **args, t_data *data)
 {
-	int i;
-	const char *current;
+	int			i;
+	const char	*current;
+	t_env		**shell_envp;
 
+	shell_envp = &(data->shell_envp);
 	i = 0;
 	while (data->g_builtin[i].name)
 	{
 		current = data->g_builtin[i].name;
-		if (!ft_strncmp(current, args[0], ft_strlen(args[0]))
-			&& ft_strlen(current) == ft_strlen(args[0]))
+		if (!ft_strncmp(current, args[0], ft_strlen(args[0])))
 		{
-			int res;
-			if (args[1])
-				res = data->g_builtin[i].foo(args + 1, data);
-			else
-				res = data->g_builtin[i].foo(NULL, data);
-			return (res);
+			return (data->g_builtin[i].foo(args + 1, data));
 		}
 		i++;
 	}
-	printf("command_exec: NON_BUILTIN_EXEC\n");
-	non_builtin_exec(args, data);
-	return (EXIT_SUCCESS);
+	return (non_builtin_exec(args, shell_envp));
 }

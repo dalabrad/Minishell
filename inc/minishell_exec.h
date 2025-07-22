@@ -70,7 +70,7 @@ typedef struct s_builtin
 	int					(*foo)(char **args, t_data *data);
 }						t_builtin;
 
-typedef struct s_cmd
+struct s_cmd
 {
 	char	**args;
 	char	*file_in;
