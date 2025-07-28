@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 12:26:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 18:14:12 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:21:21 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	one_cmd_pipeline(t_data *data)
 	cmd = data->first_cmd;
 	if (!cmd)
 		return ;
-	if (is_builtin(cmd->args[0], data)) //FALTAN REDIRECCIONES PARA BUILT_INS!!!!
-		data->last_status = command_exec(cmd->args, data);
+	if (is_builtin(cmd->args[0], data))
+		one_builtin_with_redir(data, cmd);
 	else
 	{
 		cmd->pid = fork();

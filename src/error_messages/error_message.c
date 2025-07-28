@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 23:16:31 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 18:44:38 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:16:52 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	error_msg(t_err error_code)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (error_code == MALLOC_ERROR)
 		ft_putstr_fd("malloc: unable to allocate memory\n", 2);
-	else if (error_code == DUP2_ERROR)
-		ft_putstr_fd("dup2: error redirecting file descriptor\n", 2);
+	else if (error_code == DUP_ERROR)
+		ft_putstr_fd("dup: error redirecting file descriptor\n", 2);
 	else if (error_code == CD_ERROR)
 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
 	else if (error_code == CHDIR_ERROR)
