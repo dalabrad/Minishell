@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 20:23:50 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:33:17 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ t_tokens				**init_tokens_by_segment(size_t count);
 
 t_pipes					*clean_struct(t_pipes *args);
 void					free_tokens_list(t_tokens *head);
-int						is_exit_command(char *line);
+int						is_exit_command(char **line, t_data *data);
 void					cleanup(char **segments, t_tokens **tokens, size_t n);
 
 // FT-MINI-SPLIT

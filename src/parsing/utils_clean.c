@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/28 20:30:03 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:37:23 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int is_exit_command(char **line, t_data *data)
 	}
 	if (ft_strcmp(line[0], "exit") == 0)
 	{
+		//printf("exit\n");
 		shell_exit(line, data);
 		return (1);
 	}
