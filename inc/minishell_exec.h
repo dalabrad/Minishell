@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/22 20:49:09 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 18:18:52 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,11 @@ int						syntax_error(char *token);
 ////////////////////////////////////////////////
 
 //	src/environment/envp_attribute_getters.c
-char	*get_envp_name(char	*envp);
-char	*get_envp_value(char *envp);
-char	*get_shell_envp_value(t_env *shell_envp, const char *name);
-char	*get_shell_envp_str(t_env *shell_envp);
+char					*get_envp_name(char	*envp);
+char					*get_envp_value(char *envp);
+char					*get_shell_envp_value(t_env *shell_envp,
+							const char *name);
+char					*get_shell_envp_str(t_env *shell_envp);
 
 //	src/environment/shell_envp_list_utils_1.c
 t_env					*new_shell_envp(char *envp, bool was_added);
@@ -123,12 +124,12 @@ void					delete_shell_envp_node(t_env **shell_envp,
 							char *VAR_NAME);
 
 //	src/environment/shell_envp_list_create.c
-void	print_shell_envp_list(t_env *shell_envp);
-int		shell_envp_list_create(char **envp, t_env **shell_envp);
-size_t	shell_envp_size(t_env *shell_envp_node);
+void					print_shell_envp_list(t_env *shell_envp);
+int						shell_envp_list_create(char **envp, t_env **shell_envp);
+size_t					shell_envp_size(t_env *shell_envp_node);
 
 //	src/environment/shell_envp_array_create.c
-char	**shell_envp_array_create(t_env *shell_envp);
+char					**shell_envp_array_create(t_env *shell_envp);
 
 ////////////////////////////////////////////////
 //------MINISHELL_DATA--------------------------
@@ -162,8 +163,16 @@ char					*find_path(char **args, t_env **shell_envp);
 //	src/cmd_execution/command_exec.c
 int						command_exec(char **args, t_data *data);
 
+// src/cmd_execution/file_redirections.c
+void					file_in_redir(t_cmd *cmd);
+void					file_out_redir(t_cmd *cmd);
+
 // src/cmd_execution/one_command_pipeline.c
 void					one_cmd_pipeline(t_data *data);
+
+// src/cmd_execution/pipeline_processes.c
+void					parent_process(t_data *data, t_cmd *cmd, size_t i);
+void					child_process(t_data *data, t_cmd *cmd, size_t i);
 
 // src/cmd_execution/execute_pipeline.c
 void					execute_pipeline(t_data *data);
