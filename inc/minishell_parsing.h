@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/06/29 11:27:16 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:23:50 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef enum t_TokenType
 	ERROR
 }						t_TokenType;
 // PIPES
-typedef struct s_pipes // pipes
+typedef struct s_pipes
 {
 	char *str;
 	size_t index;
@@ -88,7 +88,6 @@ struct					s_tokens
 // comms
 typedef struct s_comms
 {
-	/* t_env				*env; */
 	t_tokens			*token;
 	int					i;
 	struct s_comms		*next;
@@ -118,8 +117,7 @@ t_tokens				**init_tokens_by_segment(size_t count);
 t_pipes					*clean_struct(t_pipes *args);
 void					free_tokens_list(t_tokens *head);
 int						is_exit_command(char *line);
-void					cleanup(char *line, char **segments, t_tokens **tokens,
-							size_t n);
+void					cleanup(char **segments, t_tokens **tokens, size_t n);
 
 // FT-MINI-SPLIT
 size_t					splitted_len(const char *s, char c);

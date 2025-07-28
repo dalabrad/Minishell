@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_segments.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:36:10 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/22 20:55:48 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:27:16 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data
             i++;
             continue;
         }
-        //process_single_segment(segments[i], tokens, &current_cmd, i);
         if (!data->first_cmd)
             data->first_cmd = current_cmd;
         else
