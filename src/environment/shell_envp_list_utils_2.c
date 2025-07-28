@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:30:57 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/22 19:20:23 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 18:32:24 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	delete_shell_envp_node(t_env **shell_envp, char *VAR_NAME)
 	if (!shell_envp || !*shell_envp)
 		return ;
 	tmp = *shell_envp;
-	if (!ft_strncmp(tmp->name, VAR_NAME, ft_strlen(VAR_NAME)) && !ft_strncmp(tmp->name, VAR_NAME, ft_strlen(tmp->name)))
+	if (!ft_strcmp(tmp->name, VAR_NAME))
 	{
 		*shell_envp = (*shell_envp)->next;
 		free_shell_envp_node(tmp);
@@ -55,7 +55,7 @@ void	delete_shell_envp_node(t_env **shell_envp, char *VAR_NAME)
 	tmp = tmp->next;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->name, VAR_NAME, ft_strlen(VAR_NAME)) && !ft_strncmp(tmp->name, VAR_NAME, ft_strlen(tmp->name)))
+		if (!ft_strcmp(tmp->name, VAR_NAME))
 		{
 			prev_tmp->next = tmp->next;
 			free_shell_envp_node(tmp);
