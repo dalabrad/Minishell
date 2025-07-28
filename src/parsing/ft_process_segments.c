@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:36:10 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/18 16:55:27 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:04:08 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,3 @@ void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data
     }
     data->nbr_cmds = number_of_cmds(data->first_cmd);
 }
-

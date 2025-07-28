@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/05/26 13:00:56 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:38:50 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@
 // HEADERS FROM INCLUDED LIBRARIES
 //////////////////////////////////
 
-# include "minishell_exec.h"
-# include "minishell_signals.h"
 # include "array_utils.h"
 # include "libft.h"
-# include <stddef.h>
+# include "minishell_exec.h"
+# include "minishell_signals.h"
 # include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -29,13 +28,14 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <string.h>
 
 //////////////////////////////////
 //-----MINISHELL PROMTP----------
@@ -47,12 +47,13 @@
 //-----STRUCTURES----------------
 //////////////////////////////////
 
-typedef struct s_cmd t_cmd;
-typedef struct s_data t_data;
-typedef struct s_tokens t_tokens;
+typedef struct s_cmd	t_cmd;
+typedef struct s_data	t_data;
+typedef struct s_tokens	t_tokens;
 
 // ENUM TOKENS STRUCT
-typedef enum t_TokenType {
+typedef enum t_TokenType
+{
 	RED_IN,
 	RED_OUT,
 	HEREDOC,
@@ -70,11 +71,11 @@ typedef struct s_pipes // pipes
 	char *str;
 	size_t index;
 	struct s_pipes *next;
-}	t_pipes;
+}						t_pipes;
 
 // TOKENS
 
-struct s_tokens
+struct					s_tokens
 {
 	int					was_quoted;
 	int					skip;
@@ -86,7 +87,6 @@ struct s_tokens
 // COMMANDS
 typedef struct s_commands
 {
-	/* t_env				*env; */
 	t_tokens			*token;
 	int					i;
 	struct s_commands	*next;
@@ -106,16 +106,17 @@ typedef struct s_split
 
 // UTILS INIT & HANDLE
 int						handle_token_alloc_fail(char **segments, char *line);
-t_pipes 				*init_struct(t_pipes *args);
-int						init_pipe_segments(char *line, char ***segments, size_t *n);
-t_tokens 				**init_tokens_by_segment(size_t count);
+t_pipes					*init_struct(t_pipes *args);
+int						init_pipe_segments(char *line, char ***segments,
+							size_t *n);
+t_tokens				**init_tokens_by_segment(size_t count);
 
 // UTILS CLEAN STRUCTS
 
 t_pipes					*clean_struct(t_pipes *args);
-void 					free_tokens_list(t_tokens *head);
-int						is_exit_command(char *line);
-void 					cleanup(char *line, char **segments, t_tokens **tokens, size_t n);
+void					free_tokens_list(t_tokens *head);
+int 					is_exit_command(char **line, t_data *data);
+void					cleanup(char **segments, t_tokens **tokens, size_t n);
 
 // FT-MINI-SPLIT
 size_t					splitted_len(const char *s, char c);
@@ -125,30 +126,33 @@ char					**ft_minisplit(const char *s, char c, size_t *n);
 size_t					count_splitted(const char *s, char c);
 
 // UTILS PARSING
-int 					is_path(const char *str);
-int 					is_path(const char *str);
+int						is_path(const char *str);
+int						is_path(const char *str);
 void					print_tokens(t_tokens *list);
-int 					ft_lstadd_front2(t_pipes **lst, t_pipes *new);
-int 					ft_lstadd_front2(t_pipes **lst, t_pipes *new);
+int						ft_lstadd_front2(t_pipes **lst, t_pipes *new);
+int						ft_lstadd_front2(t_pipes **lst, t_pipes *new);
 const char				*skip_space(const char *s);
 size_t					is_open(const char *s);
 
 // FT_CLASIFY TOKENS
 t_TokenType				clasify_token(const char *str);
-void 					set_command_type(t_tokens *tokens);
-const 					char *token_type_str(t_TokenType type);
-char 					*poly_substr(const char *s, size_t *i, int *was_quoted);
+void					set_command_type(t_tokens *tokens);
+const char				*token_type_str(t_TokenType type);
+char					*poly_substr(const char *s, size_t *i, int *was_quoted);
 t_tokens				*check_args_fixed(const char *input, size_t *i_words);
 
 // PROCESS BY SEGMENT OR PIPE
-void process_single_segment(char *segment, t_tokens **token_ptr, t_cmd **cmd_ptr, size_t index);
-void process_segments(char **segments, t_tokens **tokens, size_t n, t_data *data);
+void					process_single_segment(char *segment,
+							t_tokens **token_ptr, t_cmd **cmd_ptr,
+							size_t index);
+void					process_segments(char **segments, t_tokens **tokens,
+							size_t n, t_data *data);
 
 // TOK_TO_CMD
-t_cmd	*tokens_to_cmd(t_tokens *tokens);
+t_cmd					*tokens_to_cmd(t_tokens *tokens);
 
 // EXPAND & FOR EXEC
-char	**tokens_to_args(t_tokens *tokens);
-char 	*expand_variables(char *str);
+char					**tokens_to_args(t_tokens *tokens);
+char					*expand_variables(char *str);
 
 #endif

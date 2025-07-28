@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 17:36:30 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:40:42 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ static void	process_input_line(char *line, t_data *data, int in, int out)
 void	reset_cmd_state(t_data *data, char *line, char **segments,
 		t_tokens **tokens)
 {
+	(void)*line;
 	free_cmd_list(data->first_cmd);
 	data->first_cmd = NULL;
-	cleanup(line, segments, tokens, 0);
+	cleanup(segments, tokens, 0);
 }
 
 static void	main_loop(t_data *data)
@@ -73,10 +74,11 @@ static void	main_loop(t_data *data)
 	{
 		setup_signal_handlers();
 		line = readline(PROMPT);
-		if (!line || is_exit_command(line))
+		if (!line || is_exit_command(&line, data))
 			break ;
 		process_input_line(line, data, in, out);
-		free(line);
+		if (line)
+			free(line);
 	}
 	write_history(".minishell_history");
 	rl_clear_history();
