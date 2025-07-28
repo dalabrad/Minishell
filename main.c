@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 00:50:54 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:36:30 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,8 @@
 #include "minishell_parsing.h"
 #include "minishell_signals.h"
 
-#include "minishell_exec.h"
-#include "minishell_parsing.h"
-#include "minishell_signals.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-
 // MAIN LOOP CALLING SEGMENTS/PIPES FOR TOKENIZATION
-void restore_stdio(int in, int out)
+void	restore_stdio(int in, int out)
 {
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
@@ -32,15 +26,14 @@ static void	process_input_line(char *line, t_data *data, int in, int out)
 	char		**pipe_seg;
 	t_tokens	**tokens;
 	size_t		n_pipe;
+	HIST_ENTRY	**entries;
 
 	if (!line || !*line)
-		return;
-
+		return ;
 	add_history(line);
-
 	if (ft_strcmp(line, "history") == 0)
 	{
-		HIST_ENTRY **entries = history_list();
+		entries = history_list();
 		if (entries)
 		{
 			for (int i = 0; entries[i]; i++)
@@ -48,19 +41,17 @@ static void	process_input_line(char *line, t_data *data, int in, int out)
 		}
 		return ;
 	}
-
 	if (!init_pipe_segments(line, &pipe_seg, &n_pipe)
 		|| !(tokens = init_tokens_by_segment(n_pipe)))
-		return;
-
+		return ;
 	process_segments(pipe_seg, tokens, n_pipe, data);
 	execute_pipeline(data);
 	restore_stdio(in, out);
 	reset_cmd_state(data, line, pipe_seg, tokens);
 }
 
-void reset_cmd_state(t_data *data, char *line,
-	char **segments, t_tokens **tokens)
+void	reset_cmd_state(t_data *data, char *line, char **segments,
+		t_tokens **tokens)
 {
 	free_cmd_list(data->first_cmd);
 	data->first_cmd = NULL;
@@ -70,24 +61,23 @@ void reset_cmd_state(t_data *data, char *line,
 static void	main_loop(t_data *data)
 {
 	char	*line;
-	int		in = dup(STDIN_FILENO);
-	int		out = dup(STDOUT_FILENO);
+	int		in;
+	int		out;
 
+	in = dup(STDIN_FILENO);
+	out = dup(STDOUT_FILENO);
 	if (in < 0 || out < 0)
 		return (perror("dup"), (void)0);
-
 	read_history(".minishell_history");
-
 	while (1)
 	{
 		setup_signal_handlers();
 		line = readline(PROMPT);
 		if (!line || is_exit_command(line))
-			break;
+			break ;
 		process_input_line(line, data, in, out);
 		free(line);
 	}
-
 	write_history(".minishell_history");
 	rl_clear_history();
 	close(in);
@@ -95,11 +85,11 @@ static void	main_loop(t_data *data)
 }
 
 // MAIN PARSING ENVP VARIABLES FOR LATER EXPANSION
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	t_data data;
+	t_data	data;
 
+	(void)argv;
 	if (argc != 1)
 	{
 		printf("Too many arguments.\n");
@@ -114,18 +104,3 @@ int main(int argc, char **argv, char **envp)
 	free_data(&data);
 	return (EXIT_SUCCESS);
 }
-
-
-/*
-//PARA PROBAR MINISHELL//
-> escribir por Terminal:
-> make 
-> ./minishell + ENTER
-> tokens
->
-//PARA PORBAR VALGRIND//
-> escribir por Terminal:
-> make valgrind
-> ./ minishell + ENTER
-> minishell>> cat /var/log/.log | grep -i "error" | wc -l | sort -n | head -n 10
-*/
