@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:10:22 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/24 14:55:17 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 16:23:48 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	shell_echo(char **args, t_data *data)
 	nl_flag = true;
 	(void)data;
 	if (!args || !args[0])
-		return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
 	if (args[i] && !ft_strncmp("-n", args[i], ft_strlen(args[i])))
 	{
 		nl_flag = false;
