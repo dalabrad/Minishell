@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 00:29:51 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/27 19:25:07 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:21:38 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ void	reset_cmd_state(t_data *data, char *line, char **segments, t_tokens **token
 {
 	free_cmd_list(data->first_cmd);
 	data->first_cmd = NULL;
-	cleanup(line, segments, tokens, 0); // <- Asegúrate de que cleanup acepta n = 0 sin fallar
+	cleanup(segments, tokens, 0);
 }

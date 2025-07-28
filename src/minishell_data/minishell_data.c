@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_data.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 18:38:17 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:26:28 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	data_init(t_data *data, char **envp)
 	data->g_builtin[7] = (t_builtin){.name = NULL, .foo = NULL};
 	data->shell_envp = NULL;
 	data->first_cmd = NULL;
+	data->nbr_cmds = 0;
 	data->last_status = 0;
 	data->pipes[0][R_PIPE] = -1;
 	data->pipes[0][W_PIPE] = -1;
