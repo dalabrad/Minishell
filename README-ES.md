@@ -60,10 +60,15 @@ Una vez compilado, puedes iniciar la minishell con:
 Una vez compilado, puedes iniciar la minishell con:
 
 ```bash
+make run
+```
+
+o
+
+```bash
 ./minishell
 ```
 
-Ejemplo de uso:
 Ejemplo de uso:
 
 ```bash
@@ -76,53 +81,6 @@ Para salir:
 minishell>> exit
 ```
 ---
-
-## Estructura del proyecto
-
-minishell/
-├── src/
-│   ├── parsing/
-│   ├── cmd_execution/
-│   ├── built-ins/
-│   ├── environment/
-│   ├── error_messages/
-│   └── minishell_data/
-├── inc/
-├── libft/
-└── main.c
-
----
-
-## Visualizacion TEMPORAL
-
-Resultado por pantalla, que se eliminara una vez mini esté completa:
-
-```bash
-=========== PIPE SEGMENTS ===========
-PIPE[0]: echo "hola" > out.txt 
-→ Token: echo            | Type: COMMAND     
-→ Token: "hola"          | Type: ARG         
-→ Token: >               | Type: RED_OUT     
-→ Token: out.txt         | Type: ARG
-
-PIPE[1]: ls -l
-→ Token: ls              | Type: COMMAND
-→ Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
-
-PIPE[2]: wc -l
-→ Token: wc              | Type: COMMAND
-→ Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
-```
----
-
-## Testeo
-
-Los script incluyen pruebas automáticas para:
-- `testing_all.sh`         → GENERAL
-- `testing_meta_error.sh`  → METACARACTERES
-- `testing_path_quotes.sh` → PATH&BALANCEO
-- `testing_redir_error.sh` → ERROR
-- `testing_expansion.sh` → EXPANSIONS
 
 ## Como lanzar el testeo
 
