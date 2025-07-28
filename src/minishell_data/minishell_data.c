@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 12:25:36 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/22 20:49:33 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 18:38:17 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	data_init(t_data *data, char **envp)
 	data->pipes[1][R_PIPE] = -1;
 	data->pipes[1][W_PIPE] = -1;
 	data->tokens_by_segment = NULL;
-
 	if (shell_envp_list_create(envp, &(data->shell_envp)))
 	{
 		data->shell_envp = NULL;
