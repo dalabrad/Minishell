@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/21 16:49:31 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:37:23 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 #include "minishell_parsing.h"
 
 // EXIT COMMAND
-int	is_exit_command(char *line)
+int is_exit_command(char **line, t_data *data)
 {
 	if (!line)
 	{
 		printf("exit\n");
 		return (1);
 	}
-	if (!ft_strcmp(line, "exit"))
+	if (ft_strcmp(line[0], "exit") == 0)
 	{
-		free(line);
+		//printf("exit\n");
+		shell_exit(line, data);
 		return (1);
 	}
 	return (0);
@@ -60,7 +61,7 @@ void	free_tokens_list(t_tokens *head)
 }
 
 // CLEAN-UP SEGMENTS/TOKENIZED-ARGS ARRAY
-void	cleanup(char *line, char **segments, t_tokens **tokens, size_t n)
+void	cleanup(char **segments, t_tokens **tokens, size_t n)
 {
 	size_t	j;
 
@@ -72,5 +73,4 @@ void	cleanup(char *line, char **segments, t_tokens **tokens, size_t n)
 			free_tokens_list(tokens[j++]);
 		free(tokens);
 	}
-	free(line);
 }
