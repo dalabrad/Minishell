@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:18 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/18 16:10:05 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:03:35 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,6 @@ int is_path(const char *str)
 		return 1;
 
 	return 0;
-}
-
-
-// PRINT TOKENS
-void	print_tokens(t_tokens *list)
-{
-	if (!list)
-	{
-		printf("→ No tokens to show.\n");
-		return;
-	}
-
-	while (list)
-	{
-		printf("→ Token: %-15s | Type: %-12s | Quoted: %s\n",
-			list->str,
-			token_type_str(list->type),
-			list->was_quoted ? "yes" : "no");
-		list = list->next;
-	}
 }
 
 // LLENAR LISTA POR HEAD/FRONT

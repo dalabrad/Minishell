@@ -6,10 +6,10 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 20:33:17 by vlorenzo         ###   ########.fr       */
-/*   Updated: 2025/07/28 21:48:02 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:04:04 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_PARSING_H
 # define MINISHELL_PARSING_H
@@ -130,7 +130,6 @@ size_t					count_splitted(const char *s, char c);
 // UTILS PARSING
 int						is_path(const char *str);
 int						is_path(const char *str);
-void					print_tokens(t_tokens *list);
 int						ft_lstadd_front2(t_pipes **lst, t_pipes *new);
 int						ft_lstadd_front2(t_pipes **lst, t_pipes *new);
 const char				*skip_space(const char *s);
@@ -144,9 +143,6 @@ char					*poly_substr(const char *s, size_t *i, int *was_quoted);
 t_tokens				*check_args_fixed(const char *input, size_t *i_words);
 
 // PROCESS BY SEGMENT OR PIPE
-void					process_single_segment(char *segment,
-							t_tokens **token_ptr, t_cmd **cmd_ptr,
-							size_t index);
 void					process_segments(char **segments, t_tokens **tokens,
 							size_t n, t_data *data);
 

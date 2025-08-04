@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:46:34 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/03 21:00:17 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:03:20 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,20 @@ char **shell_envp_to_array(t_env *env)
 	if (!array)
 		return (NULL);
 	
-	printf("SHELL_ENVP_ARRAY::::ONE_CMD_PIPELINE\n");
-
 	tmp = env;
 	while (tmp)
 	{
-		write(1, "*****", 5);
 		if (tmp->visible)
 		{
-			write(1, "*****", 5);
 			array[i] = ft_strjoin_3(tmp->name, "=", tmp->value);
 			if (!array[i++])
 			{
-				printf("SI ME PASO DE VUELTAS::::SHELL_ENVP_ARRAY\n");
 				free_array(array);
 				return (NULL);
 			}
 		}
 		tmp = tmp->next;
 	}
-	write(1, "*****", 5);
 	printf("%s\n", array[0]);
 
 	return (array);
