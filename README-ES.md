@@ -43,12 +43,12 @@ Compila el proyecto introduciendo `make` por tu Terminal. También existen las s
 | Comando            | Descripción                                                 |
 |--------------------|-------------------------------------------------------------|
 | `make`             | Compila el proyecto y genera el ejecutable `minishell`.     |
+| `make re`          | Equivalente a `fclean` seguido de `make`.                   |
+| `make run`  |		 | Equivalente a `fclean` seguido de `make re` y ./minishell.  |
 | `make gdb`         | Compila el proyecto con símbolos de depuración (`-g3`).     |
 | `make valgrind`    | Compila con `-g3` y flags útiles para ejecutar con Valgrind.|
 | `make clean`       | Elimina los archivos `.o`.                                  |
 | `make fclean`      | Elimina ejecutables y archivos `.o`.                        |
-| `make re`          | Equivalente a `fclean` seguido de `make`.                   |
-| `make main_test_d` | Compila una versión que incluye EJECUCION (`main_test_d`).  |
 |--------------------|-------------------------------------------------------------|
 ---
 
@@ -75,54 +75,6 @@ Para salir:
 ```bash
 minishell>> exit
 ```
----
-
-## Estructura del proyecto
-
-minishell/
-├── src/
-│   ├── parsing/
-│   ├── cmd_execution/
-│   ├── built-ins/
-│   ├── environment/
-│   ├── error_messages/
-│   └── minishell_data/
-├── inc/
-├── libft/
-└── main.c
-
----
-
-## Visualizacion TEMPORAL
-
-Resultado por pantalla, que se eliminara una vez mini esté completa:
-
-```bash
-=========== PIPE SEGMENTS ===========
-PIPE[0]: echo "hola" > out.txt 
-→ Token: echo            | Type: COMMAND     
-→ Token: "hola"          | Type: ARG         
-→ Token: >               | Type: RED_OUT     
-→ Token: out.txt         | Type: ARG
-
-PIPE[1]: ls -l
-→ Token: ls              | Type: COMMAND
-→ Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
-
-PIPE[2]: wc -l
-→ Token: wc              | Type: COMMAND
-→ Token: -l              | Type: COMMAND (it's OPTION but for exec better COMMAND)
-```
----
-
-## Testeo
-
-Los script incluyen pruebas automáticas para:
-- `testing_all.sh`         → GENERAL
-- `testing_meta_error.sh`  → METACARACTERES
-- `testing_path_quotes.sh` → PATH&BALANCEO
-- `testing_redir_error.sh` → ERROR
-- `testing_expansion.sh` → EXPANSIONS
 
 ## Como lanzar el testeo
 
@@ -137,13 +89,6 @@ Resumen final de `PASS` y `FAIL` al final de la ejecución.
 
 ---
 
-### Comprobaciones, sujetas a mejoras futuras
-- Comprobación de comillas balanceadas
-- Clasificación de tipos de token (comandos, paths, opciones, redirecciones)
-- Manejo de errores de sintaxis
-
----
-
 ## Debugging y Valgrind
 
 ### Ejecutar con GDB:
@@ -151,15 +96,6 @@ Resumen final de `PASS` y `FAIL` al final de la ejecución.
 ```bash
 make gdb
 gdb ./minishell
-```
-Referencia a archivo gdbinit_v.gdb, con breapoints:
-```bash
-break main
-break ft_minisplit
-break count_splitted
-break split2array
-break check_args_fixed
-etc..
 ```
 Editar en funcion de necesidad.
 
@@ -169,10 +105,6 @@ Editar en funcion de necesidad.
 make valgrind
 valgrind --leak-check=full ./minishell
 ```
-
-## Estructura del Proyecto
-
-
 ---
 
 ## Limpieza

@@ -7,33 +7,12 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:36:10 by vlorenzo          #+#    #+#             */
 /*   Updated: 2025/07/28 20:27:16 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 21:50:16 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 #include "minishell_exec.h"
-
-// PROCESS TOKENS BY PIPE AND CALL TOK_TO_CMD
-/* void process_single_segment(char *segment, t_tokens **token_ptr, t_cmd **cmd_ptr, size_t index)
-{
-    size_t words = 0;
-
-    printf("PRIMERO TOKEN_PTR %s\n\n", token_ptr[index + 1]->str);
-    token_ptr[index] = check_args_fixed(segment, &words);
-    printf("SEGUNDO TOKEN_PTR %s\n\n", token_ptr[index + 1]->str);
-    if (!token_ptr[index])
-    {
-        printf("Error tokenizing segment.\n");
-        return;
-    }
-
-    printf("PIPE[%zu]: %s\n", index, segment);
-    print_tokens(token_ptr[index]);
-
-    cmd_ptr[index] = tokens_to_cmd(token_ptr[index]);
-    if (!cmd_ptr[index]) 
-        printf("Error converting tokens to cmd.\n");
-} */
 
 void process_single_segment(char *segment, t_tokens **token_ptr, t_cmd **cmd_ptr, size_t index)
 {
