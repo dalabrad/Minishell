@@ -9,8 +9,6 @@ PA METER COMMITS SIN QUE APAREZCA REGISTRADO
 ➜  Minishell git:(expansion) git push
 ----
 
-----
-
 ✅ y checkear:
 static void	sigint_handler(int signum)
 {
@@ -76,5 +74,3 @@ TOKEN: [./minishell] | type: PATH
 ./minishell: ./minishell: cannot execute binary file
 minishell>>
 ---
-
------

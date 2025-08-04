@@ -6,24 +6,23 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:44:09 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/20 18:25:49 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:09:49 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-
 int	is_invalid_redirection_sequence(t_tokens *token)
 {
 	if (!token || !token->next)
-		return 0;
+		return (0);
 	if ((token->type == RED_IN || token->type == RED_OUT
-		|| token->type == APPEND_OUT || token->type == HEREDOC)
+			|| token->type == APPEND_OUT || token->type == HEREDOC)
 		&& (token->next->type == RED_IN || token->next->type == RED_OUT
-		|| token->next->type == APPEND_OUT || token->next->type == HEREDOC))
-		return 1;
-	return 0;
+			|| token->next->type == APPEND_OUT || token->next->type == HEREDOC))
+		return (1);
+	return (0);
 }
 
 static void	handle_heredoc_child(const char *delim)
@@ -31,6 +30,7 @@ static void	handle_heredoc_child(const char *delim)
 	char	buffer[4096];
 	char	*delim_line;
 	int		fd;
+	ssize_t	r;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
@@ -38,19 +38,17 @@ static void	handle_heredoc_child(const char *delim)
 	fd = open("/tmp/1", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		exit(1);
-
 	delim_line = ft_strjoin(delim, "\n");
 	if (!delim_line)
 		exit(1);
-
 	while (1)
 	{
-		ssize_t r = read(STDIN_FILENO, buffer, 4095);
+		r = read(STDIN_FILENO, buffer, 4095);
 		if (r <= 0)
-			break;
+			break ;
 		buffer[r] = '\0';
 		if (ft_strcmp(buffer, delim_line) == 0)
-			break;
+			break ;
 		write(fd, buffer, r);
 		write(STDOUT_FILENO, "> ", 2);
 	}
@@ -82,14 +80,15 @@ t_cmd	*tokens_to_cmd(t_tokens *tokens)
 {
 	t_cmd		*cmd;
 	t_tokens	*tmp;
-	size_t		args_count = 0;
-	size_t		i = 0;
+	size_t		args_count;
+	size_t		i;
 
+	args_count = 0;
+	i = 0;
 	cmd = new_cmd();
 	if (!cmd)
 		return (NULL);
 	cmd->append_out = false;
-
 	tmp = tokens;
 	while (tmp)
 	{
@@ -100,11 +99,9 @@ t_cmd	*tokens_to_cmd(t_tokens *tokens)
 			args_count++;
 		tmp = tmp->next;
 	}
-
 	cmd->args = ft_calloc(args_count + 1, sizeof(char *));
 	if (!cmd->args)
 		return (free_cmd_list(cmd), NULL);
-
 	tmp = tokens;
 	while (tmp)
 	{
@@ -137,6 +134,5 @@ t_cmd	*tokens_to_cmd(t_tokens *tokens)
 		syntax_error("missing command after redirection");
 		return (free_cmd_list(cmd), NULL);
 	}
-
 	return (cmd);
 }

@@ -60,10 +60,15 @@ Una vez compilado, puedes iniciar la minishell con:
 Una vez compilado, puedes iniciar la minishell con:
 
 ```bash
+make run
+```
+
+o
+
+```bash
 ./minishell
 ```
 
-Ejemplo de uso:
 Ejemplo de uso:
 
 ```bash

@@ -90,7 +90,7 @@ static void	main_loop(t_data *data)
 // MAIN PARSING ENVP VARIABLES FOR LATER EXPANSION
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data;
+	t_data data;
 
 	(void)argv;
 	if (argc != 1)

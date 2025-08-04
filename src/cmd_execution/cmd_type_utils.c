@@ -16,8 +16,9 @@
 t_cmd	*new_cmd(void)
 {
 	t_cmd	*cmd;
-
+  
 	cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
+
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;

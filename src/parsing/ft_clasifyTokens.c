@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/08 19:25:08 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:13:20 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ char	*poly_substr(const char *s, size_t *i, int *was_quoted)
 			break ;
 		(*i)++;
 	}
+	if (in_single || in_double) // Si quedaron comillas abiertas
+		return (NULL);
 	return (ft_substr(s, start, *i - start));
 }
 
@@ -151,7 +153,6 @@ t_tokens	*check_args_fixed(const char *input, size_t *i_words)
 	head = NULL;
 	curr = NULL;
 	k = 0;
-	printf("-----> Tokenizing: [%s]\n", input);
 	while (input[k])
 	{
 		while (input[k] == ' ')
@@ -162,6 +163,12 @@ t_tokens	*check_args_fixed(const char *input, size_t *i_words)
 		if (!new_tok)
 			break ;
 		new_tok->str = poly_substr(input, &k, &new_tok->was_quoted);
+		if (!new_tok->str)
+		{
+			free(new_tok);
+			free_tokens_list(head); // limpia todo acumulado
+			return (NULL);          // evita cleanup posterior doble
+		}
 		new_tok->type = clasify_token(new_tok->str);
 		new_tok->skip = 0;
 		new_tok->next = NULL;
@@ -175,9 +182,6 @@ t_tokens	*check_args_fixed(const char *input, size_t *i_words)
 	set_command_type(head);
 	tmp = head;
 	while (tmp)
-	{
-		printf("TOKEN: [%s] | type: %s\n", tmp->str, token_type_str(tmp->type));
 		tmp = tmp->next;
-	}
 	return (head);
 }

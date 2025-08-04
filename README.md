@@ -1,3 +1,4 @@
+
 ✅ Exit Command Fix and Memory Management
 
 A memory-related issue with the exit command was detected using Valgrind:
@@ -23,5 +24,3 @@ indirectly lost: (yes but from readline)
 no invalid free() or uninitialized value errors
 
 Exit works as expected and prints exit before terminating the shell.
-
-Main loop and signal handlers remain clean and stable.

@@ -14,7 +14,7 @@
 #include "minishell_parsing.h"
 
 // EXIT COMMAND
-int is_exit_command(char **line, t_data *data)
+int	is_exit_command(char **line, t_data *data)
 {
 	if (ft_strcmp(line[0], "exit") == 0)
 	{
