@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/20 19:11:45 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:47:38 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	non_builtin_exec(char **args, t_env **shell_envp)
 	if (!envp)
 	{
 		free(cmd_path);
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	if (execve(cmd_path, args, envp) == -1)
 	{

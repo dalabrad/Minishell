@@ -6,6 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
+/*   Updated: 2025/07/28 20:18:59 by vlorenzo         ###   ########.fr       */
 /*   Updated: 2025/07/28 21:38:54 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -14,6 +15,7 @@
 #include "minishell_parsing.h"
 #include "minishell_signals.h"
 
+// MAIN LOOP CALLING SEGMENTS/PIPES FOR TOKENIZATION
 void	restore_stdio(int in, int out)
 {
 	dup2(in, STDIN_FILENO);

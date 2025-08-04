@@ -50,15 +50,6 @@ $(NAME): $(LIBFT) $(AU_LIB) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MIN
 	@echo "$(GREEN)./minishell executable created successfully.$(RESET)"
 
 # ─────────────────────────────────────────────────────────────
-# TEST: D- DALABRAD
-# ─────────────────────────────────────────────────────────────
-
-testd: $(LIBFT) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(MINISHELL_SIGNALS_LIB) $(AU_LIB)
-	@echo "$(YELLOW)Compiling David's ./minishell test executable...$(RESET)"
-	$(CC) $(CFLAGS) -o $(NAME) $(TEST_D) $(MINISHELL_EXEC_LIB) $(MINISHELL_PARSING_LIB) $(AU_LIB) $(LIBFT) $(LDFLAGS)
-	@echo "$(GREEN)David's ./minishell test executable created successfully.$(RESET)"
-
-# ─────────────────────────────────────────────────────────────
 # GDB DEBUGGING V VLORENZO
 # ─────────────────────────────────────────────────────────────
 

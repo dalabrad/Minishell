@@ -56,7 +56,7 @@ void	free_tokens_list(t_tokens *head)
 }
 
 // CLEAN-UP SEGMENTS/TOKENIZED-ARGS ARRAY
-void cleanup(char **segments, t_tokens **tokens, size_t n)
+void	cleanup(char **segments, t_tokens **tokens, size_t n)
 {
 	free_array(segments);
 	if (tokens)
