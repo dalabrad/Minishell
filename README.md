@@ -1,4 +1,5 @@
-Command Fix and Memory Management
+
+✅ Exit Command Fix and Memory Management
 
 A memory-related issue with the exit command was detected using Valgrind:
 
@@ -6,7 +7,7 @@ A memory-related issue with the exit command was detected using Valgrind:
 
     Additionally, the line string returned by readline() was being freed twice, causing an invalid free().
 
-✔ Fixes applied:
+✅ Fixes applied:
 
     The condition if (ft_strcmp(line[0], "exit")) was corrected to if (ft_strcmp(line[0], "exit") == 0) to properly detect the exit command.
 
@@ -14,15 +15,12 @@ A memory-related issue with the exit command was detected using Valgrind:
 
     The memory cleanup logic was centralized: line is now freed either inside cleanup() or after process_input_line(), not both.
 
-Result:
+✅ Result:
 
     Valgrind now reports:
 
-    definitely lost: 0 bytes
-    indirectly lost: 0 bytes
-    no invalid free() or uninitialized value errors
+definitely lost: 0 bytes
+indirectly lost: (yes but from readline)
+no invalid free() or uninitialized value errors
 
-    exit works as expected and prints exit before terminating the shell.
-
-    Main loop and signal handlers remain clean and stable.
-
+Exit works as expected and prints exit before terminating the shell.

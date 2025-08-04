@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   one_command_pipeline.c                             :+:      :+:    :+:   */
+/*   pipeline_processes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/10 12:26:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 19:21:21 by dalabrad         ###   ########.fr       */
+/*   Created: 2025/07/28 17:18:35 by dalabrad          #+#    #+#             */
+/*   Updated: 2025/07/28 18:16:13 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-static void	parent(t_data *data, t_cmd *cmd)
+void	parent_process(t_data *data, t_cmd *cmd, size_t i)
 {
 	int	status;
 
+	if (i > 0)
+	{
+		close(data->pipes[(i + 1) % 2][R_PIPE]);
+		close(data->pipes[(i + 1) % 2][W_PIPE]);
+	}
 	status = 0;
 	waitpid(cmd->pid, &status, 0);
 	if (WIFEXITED(status))
@@ -25,40 +30,23 @@ static void	parent(t_data *data, t_cmd *cmd)
 		data->last_status = 128 + WTERMSIG(status);
 }
 
-static void	child(t_data *data, t_cmd *cmd)
+void	child_process(t_data *data, t_cmd *cmd, size_t i)
 {
+	if (i > 0)
+		dup2(data->pipes[(i + 1) % 2][R_PIPE], STDIN_FILENO);
+	if (i < (data->nbr_cmds - 1))
+		dup2(data->pipes[i % 2][W_PIPE], STDOUT_FILENO);
 	if (cmd->file_in)
+	{
 		file_in_redir(cmd);
+	}
 	if (cmd->file_out)
+	{
 		file_out_redir(cmd);
+	}
+	close_pipes(data);
 	command_exec(cmd->args, data);
 	free_cmd_list(data->first_cmd);
 	free_data(data);
 	exit(EXIT_SUCCESS);
-}
-
-void	one_cmd_pipeline(t_data *data)
-{
-	t_cmd	*cmd;
-
-	cmd = data->first_cmd;
-	if (!cmd)
-		return ;
-	if (is_builtin(cmd->args[0], data))
-		one_builtin_with_redir(data, cmd);
-  
-	else
-	{
-		cmd->pid = fork();
-		if (cmd->pid == -1)
-		{
-			error_msg(FORK_ERROR);
-			return ;
-		}
-		if (cmd->pid)
-
-			parent(data, cmd);
-		else
-			child(data, cmd);
-	}
 }

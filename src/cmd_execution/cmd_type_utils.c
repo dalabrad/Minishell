@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_type_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:46:09 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/08/04 18:09:41 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:09:24 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 t_cmd	*new_cmd(void)
 {
 	t_cmd	*cmd;
+  
+	cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 
-	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;

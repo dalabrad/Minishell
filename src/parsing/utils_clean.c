@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/04 18:09:54 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/07/28 21:51:10 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@
 // EXIT COMMAND
 int	is_exit_command(char **line, t_data *data)
 {
-	if (!line)
-	{
-		printf("exit\n");
-		return (1);
-	}
 	if (ft_strcmp(line[0], "exit") == 0)
 	{
 		printf("exit\n");
@@ -63,12 +58,10 @@ void	free_tokens_list(t_tokens *head)
 // CLEAN-UP SEGMENTS/TOKENIZED-ARGS ARRAY
 void	cleanup(char **segments, t_tokens **tokens, size_t n)
 {
-	size_t	j;
-
 	free_array(segments);
 	if (tokens)
 	{
-		j = 0;
+		size_t j = 0;
 		while (j < n)
 			free_tokens_list(tokens[j++]);
 		free(tokens);
