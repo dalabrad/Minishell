@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 00:02:44 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/06/12 13:41:46 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:41:40 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,5 @@ typedef struct s_tokens	t_tokens;
 
 void					setup_signal_handlers(void);
 void					restore_stdio(int in, int out);
-void					reset_cmd_state(t_data *data, char *line,
-char                    **segments, t_tokens **tokens);
 
 #endif

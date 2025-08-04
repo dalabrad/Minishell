@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/28 21:51:10 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:14:13 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,16 @@ void	free_tokens_list(t_tokens *head)
 {
 	t_tokens	*tmp;
 
-	while (head && head != NULL)
+	while (head)
 	{
-		tmp = head;
-		head = head->next;
-		free(tmp->str);
-		free(tmp);
+		tmp = head->next;
+		if (head->str)
+			free(head->str);
+		free(head);
+		head = tmp;
 	}
 }
+
 
 // CLEAN-UP SEGMENTS/TOKENIZED-ARGS ARRAY
 void	cleanup(char **segments, t_tokens **tokens, size_t n)

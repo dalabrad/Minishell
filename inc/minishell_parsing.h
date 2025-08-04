@@ -6,10 +6,9 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/08/04 20:04:04 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:41:48 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_PARSING_H
 # define MINISHELL_PARSING_H
@@ -70,9 +69,9 @@ typedef enum t_TokenType
 // PIPES
 typedef struct s_pipes
 {
-	char *str;
-	size_t index;
-	struct s_pipes *next;
+	char				*str;
+	size_t				index;
+	struct s_pipes		*next;
 }						t_pipes;
 
 // TOKENS
@@ -154,5 +153,6 @@ int						is_invalid_redirection_sequence(t_tokens *token);
 char					*get_env_value_from_list(const char *name, t_env *env);
 char					*expand_variables(const char *str, t_env *env,
 							int was_quoted, int last_status);
-void 					expand_tokens(t_tokens *tokens, t_env *env, int last_status);
+void					expand_tokens(t_tokens *tokens, t_env *env,
+							int last_status);
 #endif

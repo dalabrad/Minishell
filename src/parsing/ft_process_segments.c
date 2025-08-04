@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:36:10 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/28 21:50:16 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:40:34 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ void	process_segments(char **segments, t_tokens **tokens, size_t n,
 		current_cmd = tokens_to_cmd(tokens[i]);
 		if (!current_cmd)
 		{
-			i++; // Libera tokens[i], incluyendo token->str (doble free?)
-			continue ;
+			free_tokens_list(tokens[i]);	//	liberar la lista de tokens
+			tokens[i] = NULL;
+			i++;
+			continue;
 		}
+		
 		if (!data->first_cmd)
 			data->first_cmd = current_cmd;
 		else

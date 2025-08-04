@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/04 18:13:20 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:17:13 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,10 @@ t_tokens	*check_args_fixed(const char *input, size_t *i_words)
 			break ;
 		new_tok = malloc(sizeof(t_tokens));
 		if (!new_tok)
-			break ;
+		{
+			free_tokens_list(head);
+			return (NULL);
+		}
 		new_tok->str = poly_substr(input, &k, &new_tok->was_quoted);
 		if (!new_tok->str)
 		{

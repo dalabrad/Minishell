@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/04 20:02:10 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:36:25 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@ char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*joined;
 
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+	{
+		free(s1);
+		return (ft_strdup(""));
+	}
 	joined = ft_strjoin(s1, s2);
 	free(s1);
 	return (joined);
@@ -45,7 +54,7 @@ char	*get_env_value_from_list(const char *name, t_env *env)
 	return (NULL);
 }
 
-// Procesa y reemplaza todas las ocurrencias de $VAR por su valor en shell_envp
+
 char	*expand_variables(const char *str, t_env *env, int was_quoted, int last_status)
 {
 	char	*result = ft_strdup("");
@@ -57,11 +66,9 @@ char	*expand_variables(const char *str, t_env *env, int was_quoted, int last_sta
 		{
 			if (str[i + 1] == '?')
 			{
-				i++;
+				i += 2;
 				char *exit_code = ft_itoa(last_status);
-				char *tmp = result;
-				result = ft_strjoin(tmp, exit_code);
-				free(tmp);
+				result = ft_strjoin_free(result, exit_code);
 				free(exit_code);
 				continue;
 			}
@@ -74,21 +81,20 @@ char	*expand_variables(const char *str, t_env *env, int was_quoted, int last_sta
 				char *value = get_env_value_from_list(var, env);
 				if (!value)
 					value = "";
-				char *tmp = result;
-				result = ft_strjoin(tmp, value);
-				free(tmp);
+				result = ft_strjoin_free(result, value);
 				free(var);
 				continue;
 			}
 		}
 		char buffer[2] = {str[i++], 0};
-		char *tmp = result;
-		result = ft_strjoin(tmp, buffer);
-		free(tmp);
+		result = ft_strjoin_free(result, buffer);
 	}
-	if (was_quoted == 2) // comillas simples
-		return (ft_strdup(str));
-	return (result);
+	if (was_quoted == 2)
+	{
+		free(result);
+		return ft_strdup(str);
+	}
+	return result;
 }
 
 void	expand_tokens(t_tokens *tokens, t_env *env, int last_status)

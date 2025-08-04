@@ -6,10 +6,10 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 20:18:59 by vlorenzo         ###   ########.fr       */
-/*   Updated: 2025/07/28 21:38:54 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:31:15 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
@@ -48,16 +48,15 @@ static void	process_input_line(char *line, t_data *data, int in, int out)
 	process_segments(pipe_seg, tokens, n_pipe, data);
 	execute_pipeline(data);
 	restore_stdio(in, out);
-	reset_cmd_state(data, line, pipe_seg, tokens);
+	reset_cmd_state(data, line, pipe_seg, tokens, n_pipe);
 }
 
-void	reset_cmd_state(t_data *data, char *line, char **segments,
-		t_tokens **tokens)
+void	reset_cmd_state(t_data *data, char *line, char **segments, t_tokens **tokens, size_t n)
 {
-	(void)*line;
+	(void)line;
 	free_cmd_list(data->first_cmd);
 	data->first_cmd = NULL;
-	cleanup(segments, tokens, 0);
+	cleanup(segments, tokens, n);
 }
 
 static void	main_loop(t_data *data)
