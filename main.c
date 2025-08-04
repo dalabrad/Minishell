@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:59 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 20:18:59 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:14:02 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	main_loop(t_data *data)
 // MAIN PARSING ENVP VARIABLES FOR LATER EXPANSION
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data;
+	t_data data;
 
 	(void)argv;
 	if (argc != 1)

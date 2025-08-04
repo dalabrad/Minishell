@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/07/28 20:47:29 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:09:54 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell_parsing.h"
 
 // EXIT COMMAND
-int is_exit_command(char **line, t_data *data)
+int	is_exit_command(char **line, t_data *data)
 {
 	if (!line)
 	{

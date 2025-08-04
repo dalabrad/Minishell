@@ -6,15 +6,15 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/05/26 13:00:56 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:13:13 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_parsing.h"
 #include "minishell_exec.h"
+#include "minishell_parsing.h"
 
 // HANDLE TOKEN ALLOC FAILURE
-int handle_token_alloc_fail(char **segments, char *line)
+int	handle_token_alloc_fail(char **segments, char *line)
 {
 	free_array(segments);
 	free(line);
@@ -29,34 +29,33 @@ t_pipes	*init_struct(t_pipes *args)
 		return (NULL);
 	args->index = 0;
 	args->str = NULL;
-	args->next = NULL; 
+	args->next = NULL;
 	return (args);
 }
 
 // INIT PIPE SEGMENTS FOR TOKENIZING
-int init_pipe_segments(char *line, char ***segments, size_t *n)
+int	init_pipe_segments(char *line, char ***segments, size_t *n)
 {
 	*segments = ft_minisplit(line, '|', n);
 	if (!*segments)
-	{
-		free(line);
 		return (0);
-	}
 	return (1);
 }
 
 // ARRAY OF TOKENS BY SEGMENT READY FOR SENDING TO EXEC
-t_tokens **init_tokens_by_segment(size_t count)
+t_tokens	**init_tokens_by_segment(size_t count)
 {
-	t_tokens **arr = malloc(sizeof(t_tokens *) * (count + 1));
+	t_tokens	**arr;
+	size_t		i;
+
+	arr = malloc(sizeof(t_tokens *) * (count + 1));
 	if (!arr)
 	{
 		perror("malloc tokens_by_segment");
 		return (NULL);
 	}
-	size_t i = 0;
+	i = 0;
 	while (i <= count)
 		arr[i++] = NULL;
 	return (arr);
 }
-
