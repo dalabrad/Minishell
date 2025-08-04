@@ -43,12 +43,12 @@ Compila el proyecto introduciendo `make` por tu Terminal. También existen las s
 | Comando            | Descripción                                                 |
 |--------------------|-------------------------------------------------------------|
 | `make`             | Compila el proyecto y genera el ejecutable `minishell`.     |
+| `make re`          | Equivalente a `fclean` seguido de `make`.                   |
+| `make run`  |		 | Equivalente a `fclean` seguido de `make re` y ./minishell.  |
 | `make gdb`         | Compila el proyecto con símbolos de depuración (`-g3`).     |
 | `make valgrind`    | Compila con `-g3` y flags útiles para ejecutar con Valgrind.|
 | `make clean`       | Elimina los archivos `.o`.                                  |
 | `make fclean`      | Elimina ejecutables y archivos `.o`.                        |
-| `make re`          | Equivalente a `fclean` seguido de `make`.                   |
-| `make main_test_d` | Compila una versión que incluye EJECUCION (`main_test_d`).  |
 |--------------------|-------------------------------------------------------------|
 ---
 
@@ -95,13 +95,6 @@ Resumen final de `PASS` y `FAIL` al final de la ejecución.
 
 ---
 
-### Comprobaciones, sujetas a mejoras futuras
-- Comprobación de comillas balanceadas
-- Clasificación de tipos de token (comandos, paths, opciones, redirecciones)
-- Manejo de errores de sintaxis
-
----
-
 ## Debugging y Valgrind
 
 ### Ejecutar con GDB:
@@ -109,15 +102,6 @@ Resumen final de `PASS` y `FAIL` al final de la ejecución.
 ```bash
 make gdb
 gdb ./minishell
-```
-Referencia a archivo gdbinit_v.gdb, con breapoints:
-```bash
-break main
-break ft_minisplit
-break count_splitted
-break split2array
-break check_args_fixed
-etc..
 ```
 Editar en funcion de necesidad.
 
@@ -127,10 +111,6 @@ Editar en funcion de necesidad.
 make valgrind
 valgrind --leak-check=full ./minishell
 ```
-
-## Estructura del Proyecto
-
-
 ---
 
 ## Limpieza
