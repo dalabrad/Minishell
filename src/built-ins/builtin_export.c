@@ -6,12 +6,35 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:20:39 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 16:57:28 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:21:01 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
+
+static bool	valid_export_arg(char *arg)
+{
+	int	i;
+
+	if (!ft_strchr(arg, '='))
+		return (false);
+	i = 0;
+	while (arg[i])
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_' && arg[i] != '=')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+static void	unvalid_arg_error(char *arg)
+{
+	ft_putstr_fd("bash: export: '", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier \n", 2);
+}
 
 static void	export_one(char	*arg, t_env **shell_envp, size_t name_len)
 {
@@ -43,15 +66,19 @@ int	shell_export(char **args, t_data *data)
 	size_t		name_len;
 	t_env		**shell_envp;
 	int			i;
+	int			status;
 
 	if (!args || !args[0])
 		return (EXIT_SUCCESS);
 	shell_envp = &(data->shell_envp);
 	i = 0;
+	status = 0;
 	while (args[i])
 	{
-		if (!ft_strchr(args[i], '='))
+		if (!valid_export_arg(args[i]))
 		{
+			unvalid_arg_error(args[i]);
+			status = 1;
 			i++;
 			continue ;
 		}
@@ -59,5 +86,5 @@ int	shell_export(char **args, t_data *data)
 		export_one(args[i], shell_envp, name_len);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (status);
 }
