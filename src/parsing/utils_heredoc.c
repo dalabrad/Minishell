@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 19:45:33 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 19:45:38 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/05 21:11:26 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	process_heredoc_runtime(const char *delimiter)
 	pid_t	pid;
 	int		status;
 
+	status = 0;
 	pid = fork();
 	if (pid < 0)
 		return (error_msg(FORK_ERROR), -1);

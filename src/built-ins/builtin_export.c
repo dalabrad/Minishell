@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 12:20:39 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/08/05 18:21:01 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/08/05 21:26:07 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,19 @@
 
 static bool	valid_export_arg(char *arg)
 {
-	int	i;
+	int		i;
+	bool	name;
 
 	if (!ft_strchr(arg, '='))
 		return (false);
 	i = 0;
+	name = true;
 	while (arg[i])
 	{
-		if (!ft_isalnum(arg[i]) && arg[i] != '_' && arg[i] != '=')
+		if (name && !ft_isalnum(arg[i]) && arg[i] != '_' && arg[i] != '=')
 			return (false);
+		if (arg[i] == '=')
+			name = false;
 		i++;
 	}
 	return (true);

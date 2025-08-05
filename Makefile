@@ -37,7 +37,7 @@ TEST_D = main_test_d.c
 # COMPILER
 # ─────────────────────────────────────────────────────────────
 
-CC = gcc
+CC = cc
 CFLAGS = -g3 -Iinc -Ilibft/inc -Wall -Werror -Wextra
 LDFLAGS = -lreadline -lncurses
 
