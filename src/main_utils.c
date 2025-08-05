@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 00:29:51 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 20:34:05 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/05 21:06:06 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void	main_loop(t_data *data)
 	{
 		setup_signal_handlers();
 		line = readline(PROMPT);
-		if (!line || is_exit_command(&line, data))
-			break ;
+		if (!line)
+			shell_exit(&line, data);
 		process_input_line(line, data, in, out);
 		if (line)
 			free(line);
