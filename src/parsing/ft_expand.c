@@ -6,60 +6,29 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/04 21:36:25 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:22:13 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "array_utils.h"
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
+#include "minishell_signals.h"
 
-// Auxiliar join
-char	*ft_strjoin_free(char *s1, char *s2)
+void	append_char_to_result(char **result, char c)
 {
-	char	*joined;
+	char	buffer[2];
 
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s1)
-		return (ft_strdup(s2));
-	if (!s2)
-	{
-		free(s1);
-		return (ft_strdup(""));
-	}
-	joined = ft_strjoin(s1, s2);
-	free(s1);
-	return (joined);
+	buffer[0] = c;
+	buffer[1] = '\0';
+	*result = ft_strjoin_free(*result, buffer);
 }
 
-// Añade caracter al final
-char	*ft_strjoin_char_free(char *s1, char c)
+char	*expand_loop(const char *str, t_env *env, int last_status, char *result)
 {
-	char	str[2];
+	size_t	i;
 
-	str[0] = c;
-	str[1] = '\0';
-	return (ft_strjoin_free(s1, str));
-}
-
-// Devuelve el valor de una variable en shell_envp (o NULL)
-char	*get_env_value_from_list(const char *name, t_env *env)
-{
-	while (env)
-	{
-		if (ft_strcmp(env->name, name) == 0)
-			return (env->value);
-		env = env->next;
-	}
-	return (NULL);
-}
-
-
-char	*expand_variables(const char *str, t_env *env, int was_quoted, int last_status)
-{
-	char	*result = ft_strdup("");
-	size_t	i = 0;
-
+	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1])
@@ -67,50 +36,53 @@ char	*expand_variables(const char *str, t_env *env, int was_quoted, int last_sta
 			if (str[i + 1] == '?')
 			{
 				i += 2;
-				char *exit_code = ft_itoa(last_status);
-				result = ft_strjoin_free(result, exit_code);
-				free(exit_code);
-				continue;
+				if (handle_exit_status(&result, last_status))
+					break ;
+				continue ;
 			}
 			if (ft_isalpha(str[i + 1]) || str[i + 1] == '_')
 			{
-				size_t start = ++i;
-				while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-					i++;
-				char *var = ft_substr(str, start, i - start);
-				char *value = get_env_value_from_list(var, env);
-				if (!value)
-					value = "";
-				result = ft_strjoin_free(result, value);
-				free(var);
-				continue;
+				i = handle_variable(str, ++i, &result, env);
+				continue ;
 			}
 		}
-		char buffer[2] = {str[i++], 0};
-		result = ft_strjoin_free(result, buffer);
+		append_char_to_result(&result, str[i++]);
 	}
+	return (result);
+}
+
+char	*expand_variables(const char *str, t_env *env, int was_quoted,
+		int last_status)
+{
+	char	*result;
+
+	result = ft_strdup("");
+	if (!result)
+		return (NULL);
+	result = expand_loop(str, env, last_status, result);
 	if (was_quoted == 2)
 	{
 		free(result);
-		return ft_strdup(str);
+		return (ft_strdup(str));
 	}
-	return result;
+	return (result);
 }
 
 void	expand_tokens(t_tokens *tokens, t_env *env, int last_status)
 {
 	t_tokens	*tmp;
 	char		*expanded;
+
 	tmp = tokens;
 	while (tmp)
 	{
 		if (tmp->str && tmp->type != ERROR)
 		{
-			expanded = expand_variables(tmp->str, env, tmp->was_quoted, last_status);
+			expanded = expand_variables(tmp->str, env, tmp->was_quoted,
+					last_status);
 			free(tmp->str);
 			tmp->str = expanded;
 		}
-		tokens = tmp;
 		tmp = tmp->next;
 	}
 }

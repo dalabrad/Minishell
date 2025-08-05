@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/08/04 21:41:48 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/05 19:46:15 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_pipes
 }						t_pipes;
 
 // TOKENS
-
 struct					s_tokens
 {
 	int					was_quoted;
@@ -85,7 +84,7 @@ struct					s_tokens
 	t_tokens			*next;
 };
 
-// comms
+// COMMS
 typedef struct s_comms
 {
 	t_tokens			*token;
@@ -100,6 +99,14 @@ typedef struct s_split
 	const char			*s;
 	char				c;
 }						t_split;
+
+// STRUCTURA DE CLEANUP ARGS
+typedef struct s_cleanup_args
+{
+	char				**segments;
+	t_tokens			**tokens;
+	size_t				count;
+}						t_cleanup_args;
 
 //////////////////////////////////
 //-----FUNCTIONS-----------------
@@ -140,6 +147,15 @@ void					set_command_type(t_tokens *tokens);
 const char				*token_type_str(t_TokenType type);
 char					*poly_substr(const char *s, size_t *i, int *was_quoted);
 t_tokens				*check_args_fixed(const char *input, size_t *i_words);
+int						is_token_sep(char c);
+void					handle_quotes(char c, bool *in_s, bool *in_d,
+							int *quoted);
+
+// UTILS_TOKENS
+t_tokens				*create_token(const char *input, size_t *k,
+							size_t *i_words);
+char					*poly_substr(const char *s, size_t *i, int *was_quoted);
+t_tokens				*check_args_fixed(const char *input, size_t *i_words);
 
 // PROCESS BY SEGMENT OR PIPE
 void					process_segments(char **segments, t_tokens **tokens,
@@ -147,12 +163,25 @@ void					process_segments(char **segments, t_tokens **tokens,
 
 // TOK_TO_CMD
 t_cmd					*tokens_to_cmd(t_tokens *tokens);
-int						is_invalid_redirection_sequence(t_tokens *token);
 
 // EXPAND & FOR EXEC
 char					*get_env_value_from_list(const char *name, t_env *env);
+void					append_char_to_result(char **result, char c);
 char					*expand_variables(const char *str, t_env *env,
 							int was_quoted, int last_status);
+char					*expand_loop(const char *str, t_env *env,
+							int last_status, char *result);
 void					expand_tokens(t_tokens *tokens, t_env *env,
 							int last_status);
+
+// UTILS EXPAND
+char					*ft_strjoin_free(char *s1, char *s2);
+char					*ft_strjoin_char_free(char *s1, char c);
+char					*get_env_value_from_list(const char *name, t_env *env);
+int						handle_exit_status(char **result, int last_status);
+size_t					handle_variable(const char *str, size_t i,
+							char **result, t_env *env);
+
+// UTILS HEREDOC
+int						process_heredoc_runtime(const char *delimiter);
 #endif

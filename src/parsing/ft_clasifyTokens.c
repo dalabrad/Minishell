@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/04 21:17:13 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:41:56 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,28 @@ t_TokenType	clasify_token(const char *str)
 // ENUM TO STRING
 const char	*token_type_str(t_TokenType type)
 {
-	switch (type)
-	{
-	case RED_IN:
+	if (type == RED_IN)
 		return ("RED_IN");
-	case RED_OUT:
+	else if (type == RED_OUT)
 		return ("RED_OUT");
-	case HEREDOC:
+	else if (type == HEREDOC)
 		return ("HEREDOC");
-	case APPEND_OUT:
+	else if (type == APPEND_OUT)
 		return ("APPEND_OUT");
-	case OPTION:
+	else if (type == OPTION)
 		return ("OPTION");
-	case COMMAND:
+	else if (type == COMMAND)
 		return ("COMMAND");
-	case SETTING:
+	else if (type == SETTING)
 		return ("SETTING");
-	case PATH:
+	else if (type == PATH)
 		return ("PATH");
-	case ARG:
+	else if (type == ARG)
 		return ("ARG");
-	case ERROR:
+	else if (type == ERROR)
 		return ("ERROR");
-	default:
+	else
 		return ("UNKNOWN");
-	}
 }
 
 // SET COMMAND TYPE
@@ -75,7 +72,6 @@ void	set_command_type(t_tokens *tokens)
 	tmp = tokens;
 	while (tmp)
 	{
-		// Saltamos redirecciones y sus argumentos
 		if (tmp->type == RED_IN || tmp->type == RED_OUT || tmp->type == HEREDOC
 			|| tmp->type == APPEND_OUT)
 		{
@@ -84,107 +80,34 @@ void	set_command_type(t_tokens *tokens)
 				tmp = tmp->next;
 			continue ;
 		}
-		// Si es ARG u OPTION, y NO está quoted → es un comando
 		if ((tmp->type == ARG || tmp->type == OPTION) && tmp->was_quoted == 0)
 		{
 			tmp->type = COMMAND;
 			break ;
 		}
-		// Si es PATH
 		if (tmp->type == PATH && tmp->was_quoted == 0)
-		{
-			// Mantenemos PATH como está, pero lo consideramos el ejecutable
 			break ;
-		}
 		tmp = tmp->next;
 	}
 }
 
 // SPLIT WORDS + QUOTES
-char	*poly_substr(const char *s, size_t *i, int *was_quoted)
+int	is_token_sep(char c)
 {
-	size_t	start;
-	bool	in_single;
-	bool	in_double;
-
-	start = *i;
-	in_single = false;
-	in_double = false;
-	*was_quoted = 0;
-	if (s[*i] == '|' || s[*i] == '<' || s[*i] == '>')
-	{
-		if ((s[*i] == '<' || s[*i] == '>') && s[*i + 1] == s[*i])
-			(*i) += 2;
-		else
-			(*i)++;
-		return (ft_substr(s, start, *i - start));
-	}
-	while (s[*i])
-	{
-		if (s[*i] == '"' && !in_single)
-		{
-			in_double = !in_double;
-			*was_quoted = 1;
-		}
-		else if (s[*i] == '\'' && !in_double)
-		{
-			in_single = !in_single;
-			*was_quoted = 1;
-		}
-		else if ((s[*i] == ' ' || s[*i] == '|' || s[*i] == '<' || s[*i] == '>')
-			&& !in_single && !in_double)
-			break ;
-		(*i)++;
-	}
-	if (in_single || in_double) // Si quedaron comillas abiertas
-		return (NULL);
-	return (ft_substr(s, start, *i - start));
+	return (c == '|' || c == '<' || c == '>');
 }
 
-// MAIN TOKENIZER + EXPAND
-t_tokens	*check_args_fixed(const char *input, size_t *i_words)
+// CHECK QUOTES
+void	handle_quotes(char c, bool *in_s, bool *in_d, int *quoted)
 {
-	t_tokens	*head;
-	t_tokens	*curr;
-	size_t		k;
-	t_tokens	*new_tok;
-	t_tokens	*tmp;
-
-	head = NULL;
-	curr = NULL;
-	k = 0;
-	while (input[k])
+	if (c == '"' && !*in_s)
 	{
-		while (input[k] == ' ')
-			k++;
-		if (!input[k])
-			break ;
-		new_tok = malloc(sizeof(t_tokens));
-		if (!new_tok)
-		{
-			free_tokens_list(head);
-			return (NULL);
-		}
-		new_tok->str = poly_substr(input, &k, &new_tok->was_quoted);
-		if (!new_tok->str)
-		{
-			free(new_tok);
-			free_tokens_list(head); // limpia todo acumulado
-			return (NULL);          // evita cleanup posterior doble
-		}
-		new_tok->type = clasify_token(new_tok->str);
-		new_tok->skip = 0;
-		new_tok->next = NULL;
-		(*i_words)++;
-		if (!head)
-			head = new_tok;
-		else
-			curr->next = new_tok;
-		curr = new_tok;
+		*in_d = !*in_d;
+		*quoted = 1;
 	}
-	set_command_type(head);
-	tmp = head;
-	while (tmp)
-		tmp = tmp->next;
-	return (head);
+	else if (c == '\'' && !*in_d)
+	{
+		*in_s = !*in_s;
+		*quoted = 1;
+	}
 }

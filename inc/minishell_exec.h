@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:32:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 19:18:01 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:14:13 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_EXEC_H
 # define MINISHELL_EXEC_H
+
+//////////////////////////////////
+// HEADERS FROM INCLUDED LIBRARIES
+//////////////////////////////////
 
 # include "array_utils.h"
 # include "libft.h"
@@ -51,7 +55,7 @@ typedef enum e_err
 	PIPE_ERROR,
 	FORK_ERROR,
 	DUP_ERROR,
-}	t_err;
+}						t_err;
 
 typedef struct s_env
 {
@@ -70,17 +74,17 @@ typedef struct s_builtin
 	int					(*foo)(char **args, t_data *data);
 }						t_builtin;
 
-struct s_cmd
+struct					s_cmd
 {
-	char	**args;
-	char	*file_in;
-	char	*file_out;
-	bool	append_out;
-	pid_t	pid;
-	t_cmd	*next;
+	char				**args;
+	char				*file_in;
+	char				*file_out;
+	bool				append_out;
+	pid_t				pid;
+	t_cmd				*next;
 };
 
-struct s_data
+struct					s_data
 {
 	t_env				*shell_envp;
 	t_builtin			g_builtin[8];
@@ -106,7 +110,7 @@ int						syntax_error(char *token);
 ////////////////////////////////////////////////
 
 //	src/environment/envp_attribute_getters.c
-char					*get_envp_name(char	*envp);
+char					*get_envp_name(char *envp);
 char					*get_envp_value(char *envp);
 char					*get_shell_envp_value(t_env *shell_envp,
 							const char *name);
@@ -168,7 +172,7 @@ void					file_in_redir(t_cmd *cmd);
 void					file_out_redir(t_cmd *cmd);
 
 // src/cmd_execution/one_builtin_with_redir.c
-void 					one_builtin_with_redir(t_data *data, t_cmd *cmd);
+void					one_builtin_with_redir(t_data *data, t_cmd *cmd);
 
 // src/cmd_execution/one_command_pipeline.c
 void					one_cmd_pipeline(t_data *data);

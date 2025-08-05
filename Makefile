@@ -12,7 +12,14 @@ AU_SRCS = src/array_utils/array_utils.c
 AU_OBJS = $(AU_SRCS:.c=.o)
 
 MINISHELL_EXEC_LIB = ./inc/minishell_exec.a
-EXEC_SRCS = $(wildcard src/cmd_execution/*.c) $(wildcard src/built-ins/*.c) $(wildcard src/environment/*.c) $(wildcard src/error_messages/*.c) $(wildcard src/minishell_data/*.c)
+EXEC_SRCS = $(wildcard src/cmd_execution/*.c) \
+            $(wildcard src/built-ins/*.c) \
+            $(wildcard src/environment/*.c) \
+            $(wildcard src/error_messages/*.c) \
+            $(wildcard src/minishell_data/*.c) \
+            $(wildcard src/minishell_exec/*.c) \
+			 $(wildcard src/main_utils.c)
+
 EXEC_OBJS = $(EXEC_SRCS:.c=.o)
 
 MINISHELL_PARSING_LIB = ./inc/minishell_parsing.a
@@ -106,7 +113,7 @@ $(MINISHELL_SIGNALS_LIB): $(SIGNALS_OBJS)
 
 clean:
 	@echo "$(YELLOW)Deleting all the object files...$(RESET)"
-	@$(RM) $(EXEC_OBJS) $(PARSING_OBJS) $(SIGNALS_OBJS) $(AU_OBJS)
+	@$(RM) $(EXEC_OBJS) $(PARSING_OBJS) $(SIGNALS_OBJS) $(AU_OBJS) .minishell_history
 	@make -C $(LIBFT_DIR) clean
 	@echo "$(GREEN)All the object files deleted successfully.$(RESET)"
 

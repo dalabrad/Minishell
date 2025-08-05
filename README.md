@@ -1,26 +1,72 @@
+# Minishell
 
-✅ Exit Command Fix and Memory Management
+This project is a simplified Unix shell developed in C. It replicates the basic behavior of Bash: command input, parsing, execution, redirections, pipes, environment variables, built-ins, and signal handling. The goal is to understand how a shell works internally and manage memory, file descriptors, and system calls at a low level.
 
-A memory-related issue with the exit command was detected using Valgrind:
+## Features
 
-    The issue involved a conditional jump based on an uninitialized value in shell_exit() when called from is_exit_command().
+- Prompt and line reading
+- Command parsing with support for:
+  - Quotes (`'`, `"`)
+  - Pipes (`|`)
+  - Redirections (`>`, `>>`, `<`, `<<`)
+  - Environment variable expansion (`$VAR`, `$?`)
+- Execution of system binaries and built-in commands
+- Built-ins implemented:
+  - `echo`
+  - `cd`
+  - `pwd`
+  - `export`
+  - `unset`
+  - `env`
+  - `exit`
+- Heredocs (`<<`) with temporary file management
+- Signal handling (`SIGINT`, `SIGQUIT`, etc.)
+- History support via readline
 
-    Additionally, the line string returned by readline() was being freed twice, causing an invalid free().
+## Requirements
 
-✅ Fixes applied:
+- GCC and Make
+- GNU Readline library
 
-    The condition if (ft_strcmp(line[0], "exit")) was corrected to if (ft_strcmp(line[0], "exit") == 0) to properly detect the exit command.
+## Compilation
 
-    Double free was avoided by freeing line only once after command processing.
+```bash
+make
 
-    The memory cleanup logic was centralized: line is now freed either inside cleanup() or after process_input_line(), not both.
+## Running the Shell
 
-✅ Result:
+./minishell
 
-    Valgrind now reports:
+Use the prompt to enter commands like you would in Bash. To exit:
 
-definitely lost: 0 bytes
-indirectly lost: (yes but from readline)
-no invalid free() or uninitialized value errors
+exit
 
-Exit works as expected and prints exit before terminating the shell.
+## Examples
+
+echo "Hello World"
+ls -l | grep txt > result.txt
+cat < result.txt
+export NAME=Vanessa
+echo $NAME
+
+## File Structure
+
+    src/ – Source files grouped by logic (parsing, execution, utils...)
+
+    inc/ – Header files
+
+    libft/ – Custom implementation of common C library functions
+
+    Makefile – Compilation rules
+
+    .minishell_history – Saved command history (created at runtime)
+
+## Bonus
+
+    Handling of quotes with and without expansion
+
+    Management of multiple pipes and redirections
+
+    Full support for environment variable expansion in command arguments
+
+    Leak-free memory management validated with Valgrind
