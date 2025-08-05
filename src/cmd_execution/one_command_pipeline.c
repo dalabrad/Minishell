@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   one_command_pipeline.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 12:26:53 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 19:21:21 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:28:15 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	one_cmd_pipeline(t_data *data)
 		return ;
 	if (is_builtin(cmd->args[0], data))
 		one_builtin_with_redir(data, cmd);
-  
 	else
 	{
 		cmd->pid = fork();
@@ -56,7 +55,6 @@ void	one_cmd_pipeline(t_data *data)
 			return ;
 		}
 		if (cmd->pid)
-
 			parent(data, cmd);
 		else
 			child(data, cmd);
