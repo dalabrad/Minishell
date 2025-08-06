@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:46 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 19:22:37 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:42:39 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ t_pipes	*init_struct(t_pipes *args)
 
 int	init_pipe_segments(char *line, char ***segments, size_t *n)
 {
+	if (is_open(line) || has_invalid_pipe_usage(line))
+	{
+		write(1, "Syntax error\n", 14);
+		return (0);
+	}
 	*segments = ft_minisplit(line, '|', n);
 	if (!*segments)
 		return (0);

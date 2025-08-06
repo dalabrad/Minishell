@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   array_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:15:03 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/04/15 18:28:22 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:31:53 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	free_array(char **array)
 {
 	size_t	i;
 
+	if (!array)
+		return ;
 	i = 0;
 	while (array[i])
 	{

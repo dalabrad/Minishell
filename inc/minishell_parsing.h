@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/08/05 19:46:15 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:06:45 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ t_tokens				*create_token(const char *input, size_t *k,
 							size_t *i_words);
 char					*poly_substr(const char *s, size_t *i, int *was_quoted);
 t_tokens				*check_args_fixed(const char *input, size_t *i_words);
+void					strip_quotes_inplace(char *str);
 
 // PROCESS BY SEGMENT OR PIPE
 void					process_segments(char **segments, t_tokens **tokens,

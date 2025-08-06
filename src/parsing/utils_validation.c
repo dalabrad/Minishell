@@ -1,41 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*   utils_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/20 12:10:22 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/08/06 18:19:08 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/08/06 17:41:37 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/08/06 18:32:52 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-int	shell_echo(char **args, t_data *data)
+int	has_invalid_pipe_usage(const char *s)
 {
 	int		i;
-	bool	nl_flag;
+	bool	pipe_found;
 
 	i = 0;
-	nl_flag = true;
-	(void)data;
-	if (!args || !args[0])
-		return (EXIT_SUCCESS);
-	if (args[i] && !ft_strncmp("-n", args[i], ft_strlen(args[i])))
+	pipe_found = false;
+	while (s[i])
 	{
-		nl_flag = false;
+		if (s[i] == '|')
+		{
+			if (pipe_found || i == 0 || !s[i + 1] || s[i + 1] == '|')
+				return (1);
+			pipe_found = true;
+		}
+		else if (s[i] != ' ')
+			pipe_found = false;
 		i++;
 	}
-	while (args[i])
-	{
-		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (nl_flag)
-		printf("\n");
-	return (EXIT_SUCCESS);
+	return (0);
 }

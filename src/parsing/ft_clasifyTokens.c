@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:38 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 18:41:56 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:55:33 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,19 @@ void	set_command_type(t_tokens *tokens)
 	tmp = tokens;
 	while (tmp)
 	{
-		if (tmp->type == RED_IN || tmp->type == RED_OUT || tmp->type == HEREDOC
-			|| tmp->type == APPEND_OUT)
+		if (tmp->type == RED_IN || tmp->type == RED_OUT
+			|| tmp->type == HEREDOC || tmp->type == APPEND_OUT)
 		{
 			tmp = tmp->next;
 			if (tmp)
 				tmp = tmp->next;
 			continue ;
 		}
-		if ((tmp->type == ARG || tmp->type == OPTION) && tmp->was_quoted == 0)
+		if (tmp->type == ARG || tmp->type == OPTION || tmp->type == PATH)
 		{
 			tmp->type = COMMAND;
 			break ;
 		}
-		if (tmp->type == PATH && tmp->was_quoted == 0)
-			break ;
 		tmp = tmp->next;
 	}
 }

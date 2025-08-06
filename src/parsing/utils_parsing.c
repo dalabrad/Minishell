@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:51:18 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 19:21:55 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:24:24 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ size_t	is_open(const char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == '\'' && s[i - 1] != '\\' && !is_double_quote)
+		if (s[i] == '\'' && (!i || s[i - 1] != '\\') && !is_double_quote)
 			is_single_quote = !is_single_quote;
-		else if (s[i] == '\"' && s[i - 1] != '\\' && !is_single_quote)
+		else if (s[i] == '"' && (!i || s[i - 1] != '\\') && !is_single_quote)
 			is_double_quote = !is_double_quote;
 		i++;
 	}

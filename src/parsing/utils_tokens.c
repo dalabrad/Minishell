@@ -6,12 +6,28 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 18:32:39 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 20:20:38 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:12:50 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
+
+void	strip_quotes_inplace(char *str)
+{
+	size_t	i;
+	size_t	j;
+	char	quote;
+
+	if (!str || (str[0] != '\'' && str[0] != '"'))
+		return ;
+	quote = str[0];
+	i = 1;
+	j = 0;
+	while (str[i] && str[i] != quote)
+		str[j++] = str[i++];
+	str[j] = '\0';
+}
 
 char	*poly_substr(const char *s, size_t *i, int *was_quoted)
 {
@@ -31,9 +47,11 @@ char	*poly_substr(const char *s, size_t *i, int *was_quoted)
 			(*i)++;
 		return (ft_substr(s, start, *i - start));
 	}
-	while (s[*i] && (!in_s && !in_d)
-		&& !(s[*i] == ' ' || is_token_sep(s[*i])))
-		handle_quotes(s[(*i)++], &in_s, &in_d, was_quoted);
+	while (s[*i] && !(s[*i] == ' ' || is_token_sep(s[*i])))
+	{
+		handle_quotes(s[*i], &in_s, &in_d, was_quoted);
+		(*i)++;
+	}
 	if (in_s || in_d)
 		return (NULL);
 	return (ft_substr(s, start, *i - start));
