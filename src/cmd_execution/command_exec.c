@@ -6,7 +6,7 @@
 /*   By: dalabrad <dalabrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:38:55 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/28 17:47:38 by dalabrad         ###   ########.fr       */
+/*   Updated: 2025/08/07 19:40:34 by dalabrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,25 @@ static char	*absolute_path_case(char **args)
 	return (cmd_path);
 }
 
+static char	*executable_case(char *exec_dir)
+{
+	if (access(exec_dir, F_OK))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(exec_dir, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		exit(127);
+	}
+	if (access(exec_dir, X_OK))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(exec_dir, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		exit(126);
+	}
+	return (ft_strdup(exec_dir));
+}
+
 static int	non_builtin_exec(char **args, t_env **shell_envp)
 {
 	char		*cmd_path;
@@ -46,6 +65,8 @@ static int	non_builtin_exec(char **args, t_env **shell_envp)
 
 	if (args[0][0] == '/')
 		cmd_path = absolute_path_case(args);
+	else if (args[0][0] == '.' && args[0][1] == '/')
+		cmd_path = executable_case(args[0]);
 	else
 		cmd_path = find_path(args, shell_envp);
 	if (!cmd_path)
