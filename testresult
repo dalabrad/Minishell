@@ -1,0 +1,33 @@
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ #   │ Descripción                       │ Comando(s)                                 │ OUT   │ ERR   │ STS   │
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+│ 1   │ export + env: crea y lee VAR1      │ export VAR1=hola; env | grep '^VAR1='      │ NO    │ NO    │ OK    │
+│ 2   │ export con espacios (VAR2)         │ export VAR2="con espacios"; env | grep '^… │ NO    │ OK    │ OK    │
+│ 3   │ reasignación VAR1                  │ export VAR1=adios; env | grep '^VAR1='     │ NO    │ NO    │ OK    │
+│ 4   │ unset TMPVAR                       │ export TMPVAR=test; env | grep '^TMPVAR='… │ NO    │ NO    │ OK    │
+│ 5   │ pwd / cd / pwd                     │ pwd; cd /; pwd                             │ NO    │ NO    │ OK    │
+│ 6   │ cd .. y pwd                        │ cd ..; pwd                                 │ NO    │ NO    │ OK    │
+│ 7   │ cd noexiste (status)               │ cd noexiste; echo \$?                      │ NO    │ NO    │ OK    │
+│ 8   │ cd . y pwd                         │ cd .; pwd                                  │ NO    │ NO    │ OK    │
+│ 9   │ cd (HOME) y pwd                    │ cd; pwd                                    │ NO    │ NO    │ OK    │
+│ 10  │ /bin/ls ok (status)                │ /bin/ls >/dev/null; echo \$?               │ NO    │ NO    │ OK    │
+│ 11  │ /bin/ls fallo (status)             │ /bin/ls noexiste; echo \$?                 │ NO    │ NO    │ OK    │
+│ 12  │ /bin/echo hola mundo               │ /bin/echo hola mundo                       │ NO    │ OK    │ OK    │
+│ 13  │ echo "hola mundo"                  │ echo "hola mundo"                          │ NO    │ OK    │ OK    │
+│ 14  │ echo con espacios extra            │ echo "hola     con   espacios"             │ NO    │ OK    │ OK    │
+│ 15  │ echo texto con tubería literal     │ echo "cat lol.c | grep main"               │ NO    │ OK    │ OK    │
+│ 16  │ variable X sin comillas            │ export X=42; echo \$X                      │ NO    │ NO    │ OK    │
+│ 17  │ variable X con comillas dobles     │ export X=42; echo "\$X"                    │ NO    │ NO    │ OK    │
+│ 18  │ variable X dentro de simples       │ export X=42; echo '\$X'                    │ NO    │ NO    │ OK    │
+│ 19  │ echo \$ (vacío en bash)            │ echo \$                                    │ NO    │ OK    │ OK    │
+│ 20  │ echo "\$"                          │ echo "\$"                                  │ NO    │ OK    │ OK    │
+│ 21  │ comilla simple sin cerrar (error)  │ echo '\$                                   │ NO    │ NO    │ OK    │
+│ 22  │ relative path ./rel42.sh           │ ./rel42.sh                                 │ NO    │ NO    │ OK    │
+│ 23  │ /bin/ls simple                     │ /bin/ls | head -n 3                        │ NO    │ OK    │ OK    │
+│ 24  │ retorno ok y error                 │ /bin/ls >/dev/null; echo \$?; /bin/ls noex…│ NO    │ NO    │ OK    │
+│ 25  │ /bin/ls -l (argumentos)            │ /bin/ls -l >/dev/null                      │ NO    │ OK    │ OK    │
+│ 26  │ /bin/ls -la /tmp                   │ /bin/ls -la /tmp >/dev/null                │ NO    │ OK    │ OK    │
+│ 27  │ echo hola                          │ echo hola                                  │ NO    │ OK    │ OK    │
+│ 28  │ echo -n "sin salto"                │ echo -n "sin salto"                        │ NO    │ OK    │ OK    │
+│ 29  │ echo "hola" "mundo"                │ echo "hola" "mundo"                        │ NO    │ OK    │ OK    │
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────
