@@ -31,3 +31,18 @@
 │ 28  │ echo -n "sin salto"                │ echo -n "sin salto"                        │ NO    │ OK    │ OK    │
 │ 29  │ echo "hola" "mundo"                │ echo "hola" "mundo"                        │ NO    │ OK    │ OK    │
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+✅ 
+
+echo $ → línea vacía.
+
+echo '$' → $.
+
+echo "$" → $.
+
+echo $? → 0 (o último status).
+
+echo '$?' → $? literal.
+
+echo "$?" → 0 (expansión dentro de comillas dobles).

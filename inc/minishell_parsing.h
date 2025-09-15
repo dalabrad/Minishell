@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:52 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/08/06 18:06:45 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/09/14 23:45:39 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ int						ft_lstadd_front2(t_pipes **lst, t_pipes *new);
 int						ft_lstadd_front2(t_pipes **lst, t_pipes *new);
 const char				*skip_space(const char *s);
 size_t					is_open(const char *s);
-
 // FT_CLASIFY TOKENS
 t_TokenType				clasify_token(const char *str);
 void					set_command_type(t_tokens *tokens);

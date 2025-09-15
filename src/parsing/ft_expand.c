@@ -5,12 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/03 20:35:00 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 20:22:13 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/09/14 23:43:55 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/09/14 23:44:04 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "array_utils.h"
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 #include "minishell_signals.h"
@@ -31,8 +30,9 @@ char	*expand_loop(const char *str, t_env *env, int last_status, char *result)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1])
+		if (str[i] == '$')
 		{
+			/* Caso $? */
 			if (str[i + 1] == '?')
 			{
 				i += 2;
@@ -40,11 +40,15 @@ char	*expand_loop(const char *str, t_env *env, int last_status, char *result)
 					break ;
 				continue ;
 			}
-			if (ft_isalpha(str[i + 1]) || str[i + 1] == '_')
+			/* Caso $VAR válido */
+			if (str[i + 1] && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 			{
-				i = handle_variable(str, ++i, &result, env);
+				i = handle_variable(str, i + 1, &result, env);
 				continue ;
 			}
+			/* Caso $ sin nombre → no añadir nada */
+			i++;
+			continue ;
 		}
 		append_char_to_result(&result, str[i++]);
 	}
@@ -56,15 +60,14 @@ char	*expand_variables(const char *str, t_env *env, int was_quoted,
 {
 	char	*result;
 
+	/* Comillas simples → no expandir */
+	if (was_quoted == 1)
+		return (ft_strdup(str));
+
 	result = ft_strdup("");
 	if (!result)
 		return (NULL);
 	result = expand_loop(str, env, last_status, result);
-	if (was_quoted == 2)
-	{
-		free(result);
-		return (ft_strdup(str));
-	}
 	return (result);
 }
 

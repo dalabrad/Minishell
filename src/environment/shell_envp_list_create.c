@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 22:54:26 by dalabrad          #+#    #+#             */
-/*   Updated: 2025/07/20 16:35:35 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:57:25 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,22 @@
  * This function prints all the shell_envp list in the same format that
  * env shell command uses.
  */
-void	print_shell_envp_list(t_env *shell_envp)
+void	print_shell_envp_list(t_env *env)
 {
-	while (shell_envp)
+	while (env)
 	{
-		printf("%s=%s\n", shell_envp->name, shell_envp->value);
-		shell_envp = shell_envp->next;
+		if (env->name && env->name[0] != '\0')
+		{
+			ft_putstr_fd(env->name, 1);
+			ft_putstr_fd("=", 1);
+			if (env->value)
+				ft_putstr_fd(env->value, 1);
+			ft_putstr_fd("\n", 1);
+		}
+		env = env->next;
 	}
 }
+
 
 /*
  * This function creates the shell_envp list from the char **envp of main.

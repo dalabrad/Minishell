@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:44:09 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/06 18:32:10 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/09/14 23:33:11 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	count_args(t_tokens *tokens)
 	return (count);
 }
 
-static int	handle_redirs_and_heredoc(t_cmd *cmd, t_tokens **tokens)
+/* static int	handle_redirs_and_heredoc(t_cmd *cmd, t_tokens **tokens)
 {
 	if (((*tokens)->type == RED_OUT || (*tokens)->type == APPEND_OUT)
 		&& (*tokens)->next)
@@ -63,32 +63,35 @@ static int	handle_redirs_and_heredoc(t_cmd *cmd, t_tokens **tokens)
 		*tokens = (*tokens)->next;
 	}
 	return (0);
-}
+} */
 
+// tokens_to_cmd.c (reemplaza fill_cmd_args)
 static int	fill_cmd_args(t_cmd *cmd, t_tokens *tokens)
 {
-	size_t	idx;
+	size_t	i;
 
-	idx = 0;
+	i = 0;
 	while (tokens)
 	{
 		if (tokens->type == COMMAND || tokens->type == ARG
 			|| tokens->type == OPTION || tokens->type == PATH
 			|| tokens->type == SETTING)
 		{
-			cmd->args[idx] = ft_strdup(tokens->str);
-			if (tokens->type == COMMAND)
-				strip_quotes_inplace(cmd->args[idx]);
-			idx++;
+			cmd->args[i] = ft_strdup(tokens->str);
+			if (!cmd->args[i])
+				return (-1);
+			/* quitar comillas de cada argumento */
+			strip_quotes_inplace(cmd->args[i]);
+			i++;
 		}
 		else if (tokens->type == RED_IN || tokens->type == RED_OUT
 			|| tokens->type == APPEND_OUT || tokens->type == HEREDOC)
 		{
-			if (handle_redirs_and_heredoc(cmd, &tokens) == -1)
-				return (-1);
+			/* redirecciones… */
 		}
 		tokens = tokens->next;
 	}
+	cmd->args[i] = NULL;
 	return (0);
 }
 

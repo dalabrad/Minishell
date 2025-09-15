@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 18:59:35 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 18:59:38 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:12:41 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,33 @@ int	handle_exit_status(char **result, int last_status)
 	return (0);
 }
 
-size_t	handle_variable(const char *str, size_t i, char **result, t_env *env)
+/*
+ * Maneja expansión de $VAR
+ * s[i] apunta al primer carácter tras el '$'
+ * Devuelve el índice en s tras el nombre de la variable
+ */
+size_t	handle_variable(const char *s, size_t i, char **out, t_env *env)
 {
-	size_t	start;
-	char	*var;
-	char	*value;
+	size_t		start;
+	char		*name;
+	const char	*raw;
+	char		*val;
 
 	start = i;
-	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+	while (s[i] && (ft_isalnum((unsigned char)s[i]) || s[i] == '_'))
 		i++;
-	var = ft_substr(str, start, i - start);
-	value = get_env_value_from_list(var, env);
-	if (!value)
-		value = "";
-	*result = ft_strjoin_free(*result, value);
-	free(var);
+	name = ft_substr(s, start, i - start);
+	if (!name)
+		return (i);
+	raw = get_env_value_from_list(name, env);
+	free(name);
+	if (!raw)
+		val = ft_strdup("");
+	else
+		val = ft_strdup(raw);
+	if (!val)
+		return (i);
+	*out = ft_strjoin_free(*out, val);
+	free(val);
 	return (i);
 }
