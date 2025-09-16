@@ -6,17 +6,18 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:15:13 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/08/05 19:20:12 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/09/01 23:55:13 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-// EXIT COMMAND
+
+/* ---- EXIT COMMAND ---- */
 int	is_exit_command(char **line, t_data *data)
 {
-	if (ft_strcmp(line[0], "exit") == 0)
+	if (line && line[0] && ft_strcmp(line[0], "exit") == 0)
 	{
 		shell_exit(line, data);
 		return (1);
@@ -24,13 +25,13 @@ int	is_exit_command(char **line, t_data *data)
 	return (0);
 }
 
-// CLEAN STRUCT T_PIPES
+/* ---- CLEAN STRUCT T_PIPES ---- */
 t_pipes	*clean_struct(t_pipes *args)
 {
 	t_pipes	*temp;
 
 	temp = NULL;
-	while (args->next)
+	while (args && args->next)
 	{
 		temp = args;
 		args = args->next;
@@ -40,7 +41,7 @@ t_pipes	*clean_struct(t_pipes *args)
 	return (temp);
 }
 
-// FREE TOKENS
+/* ---- FREE TOKENS ---- */
 void	free_tokens_list(t_tokens *head)
 {
 	t_tokens	*tmp;
@@ -55,7 +56,7 @@ void	free_tokens_list(t_tokens *head)
 	}
 }
 
-// CLEAN-UP SEGMENTS/TOKENIZED-ARGS ARRAY
+/* ---- CLEAN-UP SEGMENTS/TOKENIZED-ARGS ARRAY ---- */
 void	cleanup(char **segments, t_tokens **tokens, size_t n)
 {
 	size_t	j;

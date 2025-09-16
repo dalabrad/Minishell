@@ -6,37 +6,27 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 18:32:39 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/09/14 21:50:15 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:12:50 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-void	strip_quotes_inplace(char *s)
+void	strip_quotes_inplace(char *str)
 {
 	size_t	i;
 	size_t	j;
-	char	q;
+	char	quote;
 
-	if (!s)
+	if (!str || (str[0] != '\'' && str[0] != '"'))
 		return ;
-	i = 0;
+	quote = str[0];
+	i = 1;
 	j = 0;
-	q = 0;
-	while (s[i])
-	{
-		if ((s[i] == '\'' || s[i] == '\"') && q == 0)
-			q = s[i++];              // abrir comillas
-		else if (q && s[i] == q)
-		{
-			q = 0;                  // cerrar comillas
-			i++;
-		}
-		else
-			s[j++] = s[i++];        // copiar todo lo demás
-	}
-	s[j] = '\0';
+	while (str[i] && str[i] != quote)
+		str[j++] = str[i++];
+	str[j] = '\0';
 }
 
 char	*poly_substr(const char *s, size_t *i, int *was_quoted)

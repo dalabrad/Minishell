@@ -6,92 +6,126 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:44:09 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/09/14 23:33:11 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/09/15 22:51:32 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "minishell_parsing.h"
 
-static int	is_invalid_redirection_sequence(t_tokens *token)
+/* redir seguida de otra redir -> error de sintaxis */
+static int	is_invalid_redirection_sequence(t_tokens *t)
 {
-	if (!token || !token->next)
+	if (!t || !t->next)
 		return (0);
-	if ((token->type == RED_IN || token->type == RED_OUT
-			|| token->type == APPEND_OUT || token->type == HEREDOC)
-		&& (token->next->type == RED_IN || token->next->type == RED_OUT
-			|| token->next->type == APPEND_OUT || token->next->type == HEREDOC))
+	if ((t->type == RED_IN || t->type == RED_OUT
+			|| t->type == APPEND_OUT || t->type == HEREDOC)
+		&& (t->next->type == RED_IN || t->next->type == RED_OUT
+			|| t->next->type == APPEND_OUT || t->next->type == HEREDOC))
 		return (1);
 	return (0);
 }
 
-static int	count_args(t_tokens *tokens)
+static int	count_args(t_tokens *t)
 {
-	int	count;
+	int	n;
 
-	count = 0;
-	while (tokens)
+	n = 0;
+	while (t)
 	{
-		if (tokens->type == COMMAND || tokens->type == ARG
-			|| tokens->type == OPTION || tokens->type == PATH
-			|| tokens->type == SETTING)
-			count++;
-		tokens = tokens->next;
+		if (t->type == COMMAND || t->type == ARG
+			|| t->type == OPTION || t->type == PATH
+			|| t->type == SETTING)
+			n++;
+		t = t->next;
 	}
-	return (count);
+	return (n);
 }
 
-/* static int	handle_redirs_and_heredoc(t_cmd *cmd, t_tokens **tokens)
+/* helpers: sobrescriben liberando lo previo (last wins) */
+static int	set_file_in(t_cmd *cmd, const char *path)
 {
-	if (((*tokens)->type == RED_OUT || (*tokens)->type == APPEND_OUT)
-		&& (*tokens)->next)
+	if (cmd->file_in)
+		free(cmd->file_in);
+	cmd->file_in = ft_strdup(path);
+	return (cmd->file_in == NULL);
+}
+
+static int	set_file_out(t_cmd *cmd, const char *path, int append)
+{
+	if (cmd->file_out)
+		free(cmd->file_out);
+	cmd->file_out = ft_strdup(path);
+	cmd->append_out = (append != 0);
+	return (cmd->file_out == NULL);
+}
+
+/* procesa una redirección + su target; avanza *tokens al target */
+static int	handle_redirs_and_heredoc(t_cmd *cmd, t_tokens **tokens)
+{
+	char	*hd_path;
+
+	if (((*tokens)->type == RED_OUT || (*tokens)->type == APPEND_OUT))
 	{
-		cmd->file_out = ft_strdup((*tokens)->next->str);
-		cmd->append_out = ((*tokens)->type == APPEND_OUT);
+		if (!(*tokens)->next)
+			return (syntax_error("newline"), -1);
+		if (set_file_out(cmd, (*tokens)->next->str,
+				((*tokens)->type == APPEND_OUT)) != 0)
+			return (-1);
 		*tokens = (*tokens)->next;
 	}
-	else if ((*tokens)->type == RED_IN && (*tokens)->next)
+	else if ((*tokens)->type == RED_IN)
 	{
-		cmd->file_in = ft_strdup((*tokens)->next->str);
+		if (!(*tokens)->next)
+			return (syntax_error("newline"), -1);
+		if (set_file_in(cmd, (*tokens)->next->str) != 0)
+			return (-1);
 		*tokens = (*tokens)->next;
 	}
-	else if ((*tokens)->type == HEREDOC && (*tokens)->next)
+	else if ((*tokens)->type == HEREDOC)
 	{
+		if (!(*tokens)->next)
+			return (syntax_error("newline"), -1);
+		/* crea el tmp del heredoc; ajusta si tu API devuelve path distinto */
 		if (process_heredoc_runtime((*tokens)->next->str) == -1)
 			return (-1);
-		cmd->file_in = ft_strdup("/tmp/1");
+		hd_path = ft_strdup("/tmp/1");
+		if (!hd_path)
+			return (-1);
+		if (set_file_in(cmd, hd_path) != 0)
+			return (free(hd_path), -1);
+		free(hd_path);
 		*tokens = (*tokens)->next;
 	}
 	return (0);
-} */
+}
 
-// tokens_to_cmd.c (reemplaza fill_cmd_args)
-static int	fill_cmd_args(t_cmd *cmd, t_tokens *tokens)
+static int	fill_cmd_args(t_cmd *cmd, t_tokens *t)
 {
 	size_t	i;
 
 	i = 0;
-	while (tokens)
+	while (t)
 	{
-		if (tokens->type == COMMAND || tokens->type == ARG
-			|| tokens->type == OPTION || tokens->type == PATH
-			|| tokens->type == SETTING)
+		if (t->type == COMMAND || t->type == ARG
+			|| t->type == OPTION || t->type == PATH
+			|| t->type == SETTING)
 		{
-			cmd->args[i] = ft_strdup(tokens->str);
+			cmd->args[i] = ft_strdup(t->str);
 			if (!cmd->args[i])
 				return (-1);
-			/* quitar comillas de cada argumento */
-			strip_quotes_inplace(cmd->args[i]);
 			i++;
 		}
-		else if (tokens->type == RED_IN || tokens->type == RED_OUT
-			|| tokens->type == APPEND_OUT || tokens->type == HEREDOC)
+		else if (t->type == RED_IN || t->type == RED_OUT
+			|| t->type == APPEND_OUT || t->type == HEREDOC)
 		{
-			/* redirecciones… */
+			if (is_invalid_redirection_sequence(t))
+				return (syntax_error(t->next->str), -1);
+			if (handle_redirs_and_heredoc(cmd, &t) == -1)
+				return (-1);
 		}
-		tokens = tokens->next;
+		t = t->next;
 	}
-	cmd->args[i] = NULL;
 	return (0);
 }
 
@@ -105,15 +139,19 @@ t_cmd	*tokens_to_cmd(t_tokens *tokens)
 	if (!cmd)
 		return (NULL);
 	cmd->append_out = false;
-	if (is_invalid_redirection_sequence(tokens))
-		return (syntax_error(tokens->next->str), free_cmd_list(cmd), NULL);
+	cmd->file_in = NULL;
+	cmd->file_out = NULL;
 	cmd->args = ft_calloc(count_args(tokens) + 1, sizeof(char *));
 	if (!cmd->args)
 		return (free_cmd_list(cmd), NULL);
 	if (fill_cmd_args(cmd, tokens) == -1)
 		return (free_cmd_list(cmd), NULL);
-	if (!cmd->args[0])
-		return (syntax_error("missing command after redirection"),
-			free_cmd_list(cmd), NULL);
+	/* No hay comando NI redirecciones -> error de sintaxis */
+	if (!cmd->args[0] && !cmd->file_in && !cmd->file_out)
+	{
+		syntax_error("newline");
+		free_cmd_list(cmd);
+		return (NULL);
+	}
 	return (cmd);
 }
